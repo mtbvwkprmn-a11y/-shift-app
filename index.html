@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b0f17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SHIFT">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>SHIFT</title>
+<style>
+:root{
+  --bg:#070b11;--panel:#0e151f;--panel2:#131d2a;--line:#25364c;--text:#f6f8ff;--muted:#93a4bb;
+  --blue:#59a8ff;--cyan:#66d7e8;--green:#64df9f;--yellow:#ffd263;--orange:#ff9f4b;--red:#ff6878;--violet:#a878ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#1a2942 0,#090e16 42%,#05080d 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+button,input,select,textarea{font:inherit}
+.app{max-width:820px;margin:auto;min-height:100dvh;padding-bottom:86px}
+.screen{display:none;padding:10px 12px 20px}.screen.active{display:block}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.brand{font-weight:950;font-size:23px;letter-spacing:-.9px}.brand span{color:var(--blue)}
+.avatar{width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#1a2940,#111a28);border:1px solid #2f4564;display:grid;place-items:center;font-size:17px}
+.hero{position:relative;overflow:hidden;background:linear-gradient(145deg,#131d2b,#0b111a);border:1px solid #2b3e58;border-radius:26px;padding:18px;box-shadow:0 18px 55px rgba(0,0,0,.35)}
+.hero:after{content:"";position:absolute;inset:-25%;background:radial-gradient(circle at 20% 10%,#59a8ff20,transparent 30%),radial-gradient(circle at 90% 30%,#a878ff1c,transparent 28%);pointer-events:none}
+.heroTop{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}.eyebrow{font-size:9px;color:var(--muted);font-weight:900;letter-spacing:1.2px}.shiftName{font-size:33px;font-weight:950;letter-spacing:-1.4px;margin-top:3px}.shiftTime{color:#d5deec;font-size:13px;margin-top:2px}.shiftBadge{font-size:10px;border-radius:999px;padding:7px 9px;background:#101a28;border:1px solid #2b4262;height:max-content}
+.countdown{position:relative;z-index:1;margin-top:18px;padding:13px;background:#0a1019;border:1px solid #22334a;border-radius:16px}.countdown small{display:block;color:var(--muted);font-size:9px}.countdown b{font-size:26px;letter-spacing:-1px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.q{background:#0c131d;border:1px solid #23344a;border-radius:14px;padding:9px;text-align:center}.q small{display:block;color:var(--muted);font-size:8px}.q b{font-size:13px}
+.sectionTitle{font-size:15px;font-weight:950;margin:14px 3px 8px}
+.card{background:linear-gradient(145deg,#101822,#0c121a);border:1px solid #26374d;border-radius:18px;padding:13px;margin:8px 0}
+.row{display:flex;align-items:center;gap:10px}.ico{width:44px;height:44px;border-radius:13px;background:#182538;display:grid;place-items:center;font-size:22px;flex:0 0 auto}.grow{flex:1;min-width:0}.name{font-weight:900;font-size:12px}.desc{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.35}.meta{font-size:9px;color:#c4cfdd;margin-top:4px}
+.btn{border:0;border-radius:11px;padding:9px 10px;font-size:9px;font-weight:900}.primary{background:linear-gradient(180deg,#6eb6ff,#438ce3);color:#07111c}.green{background:linear-gradient(180deg,#8aeeb8,#54c98f);color:#082016}.yellow{background:linear-gradient(180deg,#ffe47a,#edb737);color:#231800}.violet{background:linear-gradient(180deg,#d0b7ff,#9a6bf0);color:#160e22}.dark{background:#172438;color:#dbe5f3;border:1px solid #2d4567}.red{background:linear-gradient(180deg,#ff8f9b,#e25566);color:white}
+.tabs{display:flex;gap:6px;overflow:auto;scrollbar-width:none;margin-bottom:8px}.tab{white-space:nowrap;border:1px solid #2a3e5a;background:#111b29;color:#afbdd0;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:850}.tab.active{background:#f8faff;color:#101722}
+.panel{display:none}.panel.active{display:block}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dow{text-align:center;color:#7f91a8;font-size:8px;font-weight:900;padding:3px}.day{min-height:58px;background:#0f1721;border:1px solid #24354b;border-radius:12px;padding:6px}.day .n{font-size:9px;color:#b9c5d4}.day .s{font-size:8px;font-weight:900;margin-top:5px}.day.today{outline:2px solid var(--blue)}.day.morning{background:#182117}.day.afternoon{background:#231a13}.day.night{background:#151427}.day.off{opacity:.45}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{display:block;color:#90a3bd;font-size:8px;margin:0 0 4px 2px}.field input,.field select,.field textarea{width:100%;background:#09111b;color:white;border:1px solid #29405f;border-radius:11px;padding:9px}.field textarea{min-height:80px;resize:vertical}
+.metricgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.metric{background:#101923;border:1px solid #26394f;border-radius:15px;padding:11px}.metric small{display:block;color:var(--muted);font-size:8px}.metric b{font-size:17px;display:block;margin-top:3px}
+.incident{border-left:3px solid var(--orange)}.expense{display:flex;justify-content:space-between;gap:12px;align-items:center}.expense .amount{font-weight:950}
+.progress{height:8px;background:#202b3c;border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:linear-gradient(90deg,#5aa8ff,#63df9f)}
+.bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(820px,100%);z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:#07101aec;backdrop-filter:blur(18px);border-top:1px solid #21334a;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
+.bottomnav button{border:0;background:transparent;color:#7f91aa;font-size:8px;font-weight:850}.bottomnav .bi{display:block;font-size:20px;margin-bottom:2px}.bottomnav button.active{color:white}
+.modal{position:fixed;inset:0;z-index:100;background:#02050ad8;backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modalbox{width:min(440px,100%);background:#0f1723;border:1px solid #304660;border-radius:23px;padding:17px}.modalbox h2{margin:0 0 5px}.modalbox p{color:#9eacc0;font-size:10px;line-height:1.4}.actions{display:flex;gap:7px;margin-top:12px}.actions .btn{flex:1}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(12px);opacity:0;transition:.2s;z-index:120;background:white;color:#101721;padding:9px 12px;border-radius:999px;font-size:9px;font-weight:900}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:430px){.quick{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.calendar{gap:3px}.day{min-height:52px;padding:5px}.shiftName{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="home" class="screen active">
+ <div class="header"><div class="brand">SHI<span>FT</span></div><div class="avatar">AG</div></div>
+ <div class="hero">
+  <div class="heroTop">
+   <div><div class="eyebrow">TURNO ACTUAL</div><div class="shiftName" id="shiftName">—</div><div class="shiftTime" id="shiftTime">Configura tu rotación</div></div>
+   <div class="shiftBadge" id="shiftBadge">Semana actual</div>
+  </div>
+  <div class="countdown"><small id="countLabel">PRÓXIMO CAMBIO</small><b id="countdown">--:--:--</b></div>
+  <div class="quick">
+   <div class="q"><small>HORAS TRABAJADAS</small><b id="monthHours">0 h</b><div class="meta" id="monthHoursPlanned">Quedan: 0 h</div></div>
+   <div class="q"><small>NOCHES SEMANA</small><b id="monthNights">0/5</b></div>
+   <div class="q"><small>GASTADO</small><b id="monthSpent">0 €</b></div>
+   <div class="q"><small>INCIDENCIAS</small><b id="incidentCount">0</b></div>
+  </div>
+ </div>
+ <div class="sectionTitle">Hoy</div>
+ <div class="card"><div class="row"><div class="ico">🕒</div><div class="grow"><div class="name" id="todaySummary">Sin turno configurado</div><div class="desc" id="todayDetail">Elige tu turno de referencia para generar todo el calendario.</div></div><button class="btn primary" onclick="openSetup()">Configurar</button></div></div>
+ <div class="sectionTitle">Accesos rápidos</div>
+ <div class="metricgrid">
+  <button class="card" onclick="showScreen('work')"><div style="font-size:23px">🏭</div><div class="name">Producción</div><div class="desc">Bobinas, pallets y objetivos</div></button>
+  <button class="card" onclick="showScreen('incidents')"><div style="font-size:23px">📝</div><div class="name">Incidencias</div><div class="desc">Registra fallos y soluciones</div></button>
+  <button class="card" onclick="showScreen('money')"><div style="font-size:23px">💰</div><div class="name">Nómina</div><div class="desc">Estimación del mes</div></button>
+  <button class="card" onclick="showScreen('expenses')"><div style="font-size:23px">💸</div><div class="name">Gastos</div><div class="desc">Control mensual rápido</div></button>
+ </div>
+</section>
+
+<section id="calendar" class="screen">
+ <div class="header"><div class="brand">📅 Calendario</div><button class="btn dark" onclick="changeMonth(0)">Hoy</button></div>
+ <div class="card"><div class="row"><button class="btn dark" onclick="changeMonth(-1)">‹</button><div class="grow" style="text-align:center"><div class="name" id="calendarTitle"></div></div><button class="btn dark" onclick="changeMonth(1)">›</button></div></div>
+ <div class="calendar" id="calendarGrid"></div>
+</section>
+
+<section id="work" class="screen">
+ <div class="header"><div class="brand">🏭 Trabajo</div><div class="shiftBadge" id="workShift">—</div></div>
+ <div class="tabs">
+  <button class="tab active" data-work="production">Producción</button><button class="tab" data-work="salary">Nómina</button>
+ </div>
+ <div id="production" class="panel active">
+  <div class="sectionTitle">Calculadora de producción</div>
+  <div class="card">
+   <div class="formgrid">
+    <div class="field"><label>METROS POR BOBINA</label><input id="metersPerRoll" type="number" value="1500"></div>
+    <div class="field"><label>BOBINAS</label><input id="rolls" type="number" value="8"></div>
+    <div class="field"><label>METROS POR MINUTO</label><input id="speed" type="number" value="120"></div>
+    <div class="field"><label>HORAS DISPONIBLES</label><input id="hoursAvailable" type="number" value="8" step=".5"></div>
+   </div>
+   <button class="btn primary" style="width:100%;margin-top:10px" onclick="calcProduction()">Calcular</button>
+  </div>
+  <div class="metricgrid">
+   <div class="metric"><small>METROS TOTALES</small><b id="prodMeters">0</b></div>
+   <div class="metric"><small>TIEMPO NECESARIO</small><b id="prodTime">0 h</b></div>
+   <div class="metric"><small>CAPACIDAD TURNO</small><b id="prodCapacity">0</b></div>
+   <div class="metric"><small>MARGEN</small><b id="prodMargin">0%</b></div>
+  </div>
+ </div>
+ <div id="salary" class="panel">
+  <div class="sectionTitle">Estimador de nómina</div>
+  <div class="card">
+   <div class="formgrid">
+    <div class="field"><label>SALARIO NETO HABITUAL</label><input id="baseSalary" type="number" value="1850"></div>
+    <div class="field"><label>NOCTURNIDAD POR NOCHE</label><input id="nightPremium" type="number" value="13" step=".01"></div>
+    <div class="field"><label>HORAS EXTRA</label><input id="overtimeHours" type="number" value="0" step=".5"></div>
+    <div class="field"><label>PRECIO HORA EXTRA</label><input id="overtimeRate" type="number" value="12" step=".01"></div>
+   </div>
+   <button class="btn green" style="width:100%;margin-top:10px" onclick="calcSalary()">Calcular este mes</button>
+  </div>
+  <div class="metricgrid">
+   <div class="metric"><small>NOCHES DEL MES</small><b id="salaryNights">0</b></div>
+   <div class="metric"><small>EXTRA NOCTURNIDAD</small><b id="salaryNightExtra">0 €</b></div>
+   <div class="metric"><small>HORAS EXTRA</small><b id="salaryOvertime">0 €</b></div>
+   <div class="metric"><small>ESTIMACIÓN TOTAL</small><b id="salaryTotal">0 €</b></div>
+  </div>
+ </div>
+</section>
+
+<section id="incidents" class="screen">
+ <div class="header"><div class="brand">📝 Incidencias</div><button class="btn primary" onclick="openIncident()">+ Nueva</button></div>
+ <div id="incidentList"></div>
+</section>
+
+<section id="expenses" class="screen">
+ <div class="header"><div class="brand">💸 Gastos</div><button class="btn primary" onclick="openExpense()">+ Añadir</button></div>
+ <div class="metricgrid">
+  <div class="metric"><small>GASTADO ESTE MES</small><b id="spentMonth">0 €</b></div>
+  <div class="metric"><small>PRESUPUESTO</small><b id="budgetMonth">1.200 €</b></div>
+ </div>
+ <div class="card"><div class="name">Presupuesto mensual</div><div class="progress"><div id="budgetProgress" style="width:0%"></div></div><div class="meta" id="budgetMeta">0 € de 1.200 €</div></div>
+ <div id="expenseList"></div>
+</section>
+
+<section id="money" class="screen">
+ <div class="header"><div class="brand">💰 Resumen</div><div class="shiftBadge">Mensual</div></div>
+ <div id="moneySummary"></div>
+</section>
+
+<section id="settings" class="screen">
+ <div class="header"><div class="brand">⚙️ Ajustes</div><div class="shiftBadge">Personal</div></div>
+ <div class="card">
+  <div class="sectionTitle" style="margin-top:0">Rotación</div><div class="desc" style="margin-bottom:10px">Noche: la semana es de lunes a viernes, pero comienza el domingo anterior a las 22:00 y termina el viernes a las 06:00. El domingo pertenece a la semana anterior en el calendario.</div>
+  <div class="formgrid">
+   <div class="field"><label>SEMANA DE REFERENCIA</label><input id="refDate" type="date"></div>
+   <div class="field"><label>TURNO ESA SEMANA</label><select id="refShift"><option value="night">Noche</option><option value="morning">Mañana</option><option value="afternoon">Tarde</option></select></div>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveRotation()">Guardar rotación</button>
+ </div>
+ <div class="card">
+  <div class="sectionTitle" style="margin-top:0">Presupuesto</div>
+  <div class="field"><label>PRESUPUESTO MENSUAL</label><input id="budgetInput" type="number" value="1200"></div>
+  <button class="btn dark" style="width:100%;margin-top:10px" onclick="saveBudget()">Guardar</button>
+ </div>
+ <div class="card">
+  <div class="row"><div class="ico">💾</div><div class="grow"><div class="name">Copia de seguridad</div><div class="desc">Exporta todos tus datos en texto para no perderlos.</div></div><button class="btn dark" onclick="openBackup()">Abrir</button></div>
+ </div>
+</section>
+
+<nav class="bottomnav">
+ <button class="active" data-screen="home"><span class="bi">🏠</span>Inicio</button>
+ <button data-screen="calendar"><span class="bi">📅</span>Calendario</button>
+ <button data-screen="work"><span class="bi">🏭</span>Trabajo</button>
+ <button data-screen="expenses"><span class="bi">💸</span>Gastos</button>
+ <button data-screen="settings"><span class="bi">⚙️</span>Ajustes</button>
+</nav>
+</div>
+
+<div class="modal" id="setupModal"><div class="modalbox"><h2>Configura tu rotación</h2><p>Elige una fecha de esta semana y el turno que te toca. SHIFT calculará automáticamente las semanas siguientes en orden noche → mañana → tarde.</p><div class="formgrid"><div class="field"><label>FECHA DE REFERENCIA</label><input id="setupDate" type="date"></div><div class="field"><label>TURNO</label><select id="setupShift"><option value="night">Noche</option><option value="morning">Mañana</option><option value="afternoon">Tarde</option></select></div></div><div class="actions"><button class="btn dark" onclick="closeSetup()">Cancelar</button><button class="btn primary" onclick="saveSetup()">Guardar</button></div></div></div>
+
+<div class="modal" id="incidentModal"><div class="modalbox"><h2>Nueva incidencia</h2><div class="formgrid"><div class="field"><label>MÁQUINA / ÁREA</label><input id="incMachine" placeholder="Laminadora, celdillas..."></div><div class="field"><label>GRAVEDAD</label><select id="incSeverity"><option>Leve</option><option>Media</option><option>Alta</option></select></div></div><div class="field" style="margin-top:8px"><label>DESCRIPCIÓN</label><textarea id="incText" placeholder="Qué pasó y cómo se resolvió"></textarea></div><div class="actions"><button class="btn dark" onclick="incidentModal.classList.remove('show')">Cancelar</button><button class="btn yellow" onclick="saveIncident()">Guardar</button></div></div></div>
+
+<div class="modal" id="expenseModal"><div class="modalbox"><h2>Nuevo gasto</h2><div class="formgrid"><div class="field"><label>CONCEPTO</label><input id="expName" placeholder="Supermercado, gasolina..."></div><div class="field"><label>IMPORTE</label><input id="expAmount" type="number" step=".01"></div></div><div class="actions"><button class="btn dark" onclick="expenseModal.classList.remove('show')">Cancelar</button><button class="btn green" onclick="saveExpense()">Guardar</button></div></div></div>
+
+<div class="modal" id="backupModal"><div class="modalbox"><h2>💾 Copia de seguridad</h2><p>Copia este texto y guárdalo donde quieras. Para restaurar una copia, pégala aquí y pulsa Importar.</p><textarea id="backupText" style="width:100%;min-height:150px;background:#08111b;color:white;border:1px solid #29405f;border-radius:12px;padding:10px"></textarea><div class="actions"><button class="btn dark" onclick="backupModal.classList.remove('show')">Cerrar</button><button class="btn primary" onclick="importBackup()">Importar</button></div></div></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY="shift_personal_save";
+const shifts={
+ night:{name:"NOCHE",time:"22:00 – 06:00",color:"night"},
+ morning:{name:"MAÑANA",time:"06:00 – 14:00",color:"morning"},
+ afternoon:{name:"TARDE",time:"14:00 – 22:00",color:"afternoon"}
+};
+const order=["night","morning","afternoon"];
+let S={refDate:null,refShift:"night",budget:1200,incidents:[],expenses:[],created:Date.now()};
+try{let r=localStorage.getItem(KEY);if(r)S={...S,...JSON.parse(r)}}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1500)}
+function mondayOf(d){let x=new Date(d);x.setHours(0,0,0,0);let day=x.getDay();let diff=(day===0?-6:1-day);x.setDate(x.getDate()+diff);return x}
+function weekDiff(a,b){return Math.floor((mondayOf(a)-mondayOf(b))/604800000)}
+function weekShiftFor(date){
+ if(!S.refDate)return null;
+ let ref=new Date(S.refDate+"T12:00:00"),diff=weekDiff(date,ref),idx=order.indexOf(S.refShift);
+ return order[((idx+diff)%3+3)%3];
+}
+
+function nextMondayShiftForSunday(date){
+ // El domingo pertenece a la semana anterior,
+ // pero el turno que empieza el domingo a las 22:00
+ // corresponde a la semana que empieza el lunes siguiente.
+ let next=new Date(date);
+ next.setDate(next.getDate()+1);
+ return weekShiftFor(next);
+}
+
+function shiftForDate(date){
+ if(!S.refDate)return null;
+ let day=date.getDay();
+
+ // DOMINGO:
+ // pertenece a la semana anterior, pero si el lunes siguiente
+ // empieza una semana de noche, se entra este domingo a las 22:00.
+ if(day===0){
+   let nextShift=nextMondayShiftForSunday(date);
+   if(nextShift==="night"){
+     return {shift:"night",working:true,startHour:22,endHour:6,crossesMidnight:true,label:"NOCHE 22:00"};
+   }
+   return {shift:weekShiftFor(date),working:false,label:"LIBRE"};
+ }
+
+ let shift=weekShiftFor(date);
+
+ // SEMANA DE NOCHE:
+ // lunes 00:00-06:00 viene del domingo anterior;
+ // lunes-jueves 22:00-06:00 son las siguientes cuatro noches;
+ // viernes solo se termina a las 06:00.
+ if(shift==="night"){
+   if(day>=1&&day<=4){
+     return {shift:"night",working:true,startHour:22,endHour:6,crossesMidnight:true,label:"NOCHE"};
+   }
+   if(day===5){
+     return {shift:"night",working:false,finishesAt6:true,label:"FIN 06:00"};
+   }
+   return {shift:"night",working:false,label:"LIBRE"};
+ }
+
+ // Mañana y tarde: lunes a viernes.
+ if(day>=1&&day<=5){
+   return {shift,working:true,label:shifts[shift].name};
+ }
+ return {shift,working:false,label:"LIBRE"};
+}
+
+function currentShiftWindow(){
+ if(!S.refDate)return null;
+ let now=new Date();
+ let day=now.getDay(),h=now.getHours();
+
+ // Domingo por la noche: se mira la semana del lunes siguiente.
+ if(day===0 && h>=22 && nextMondayShiftForSunday(now)==="night"){
+   let start=new Date(now);start.setHours(22,0,0,0);
+   let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
+   return {start,end,shift:"night"};
+ }
+
+ let weekShift=weekShiftFor(now);
+
+ if(weekShift==="night"){
+   // Madrugada lunes-viernes: turno iniciado la noche anterior.
+   if(day>=1&&day<=5&&h<6){
+     let end=new Date(now);end.setHours(6,0,0,0);
+     let start=new Date(end);start.setDate(start.getDate()-1);start.setHours(22,0,0,0);
+     return {start,end,shift:"night"};
+   }
+
+   // Lunes-jueves noche: empieza a las 22:00.
+   if(day>=1&&day<=4&&h>=22){
+     let start=new Date(now);start.setHours(22,0,0,0);
+     let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
+     return {start,end,shift:"night"};
+   }
+   return null;
+ }
+
+ let info=shiftForDate(now);
+ if(!info||!info.working)return null;
+ let start=new Date(now),end=new Date(now);
+ if(info.shift==="morning"){start.setHours(6,0,0,0);end.setHours(14,0,0,0)}
+ if(info.shift==="afternoon"){start.setHours(14,0,0,0);end.setHours(22,0,0,0)}
+ return {start,end,shift:info.shift}
+}
+
+function nextWorkStart(){
+ if(!S.refDate)return null;
+ let now=new Date();
+
+ for(let i=0;i<21;i++){
+   let d=new Date(now);d.setDate(now.getDate()+i);
+   let day=d.getDay();
+   let start=null,shift=null;
+
+   if(day===0 && nextMondayShiftForSunday(d)==="night"){
+     start=new Date(d);start.setHours(22,0,0,0);shift="night";
+   } else {
+     let weekShift=weekShiftFor(d);
+     if(weekShift==="night" && day>=1&&day<=4){
+       start=new Date(d);start.setHours(22,0,0,0);shift="night";
+     } else if(weekShift==="morning" && day>=1&&day<=5){
+       start=new Date(d);start.setHours(6,0,0,0);shift="morning";
+     } else if(weekShift==="afternoon" && day>=1&&day<=5){
+       start=new Date(d);start.setHours(14,0,0,0);shift="afternoon";
+     }
+   }
+
+   if(start&&start>now)return {start,shift};
+ }
+ return null;
+}
+
+function monthStats(){
+ let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),plannedHours=0;
+
+ // Horas previstas del mes: cada turno se cuenta por su hora de inicio.
+ for(let d=1;d<=days;d++){
+   let x=new Date(y,m,d,12),day=x.getDay();
+
+   if(day===0){
+     if(nextMondayShiftForSunday(x)==="night") plannedHours+=8;
+     continue;
+   }
+
+   let shift=weekShiftFor(x);
+   if((shift==="morning"||shift==="afternoon") && day>=1&&day<=5){
+     plannedHours+=8;
+   } else if(shift==="night" && day>=1&&day<=4){
+     plannedHours+=8;
+   }
+ }
+
+ let spent=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m}).reduce((a,b)=>a+b.amount,0);
+ return{plannedHours,spent}
+}
+
+function workedHoursThisMonth(){
+ if(!S.refDate)return 0;
+
+ let now=new Date(),y=now.getFullYear(),m=now.getMonth();
+ let monthStart=new Date(y,m,1,0,0,0,0);
+ let totalMs=0;
+
+ // Recorremos desde el primer día del mes hasta hoy.
+ let cursor=new Date(monthStart);
+
+ while(cursor<=now){
+   let day=cursor.getDay();
+
+   // Domingo anterior a semana nocturna: turno 22:00 -> lunes 06:00.
+   if(day===0 && nextMondayShiftForSunday(cursor)==="night"){
+     let start=new Date(cursor);start.setHours(22,0,0,0);
+     let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
+
+     // Solo cuenta la parte del turno que cae dentro de este mes y ya ha ocurrido.
+     let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
+     let to=new Date(Math.min(end.getTime(),now.getTime()));
+     if(to>from) totalMs+=to-from;
+   }
+
+   if(day>=1&&day<=5){
+     let shift=weekShiftFor(cursor);
+
+     if(shift==="morning"){
+       let start=new Date(cursor);start.setHours(6,0,0,0);
+       let end=new Date(cursor);end.setHours(14,0,0,0);
+       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
+       let to=new Date(Math.min(end.getTime(),now.getTime()));
+       if(to>from) totalMs+=to-from;
+     }
+
+     if(shift==="afternoon"){
+       let start=new Date(cursor);start.setHours(14,0,0,0);
+       let end=new Date(cursor);end.setHours(22,0,0,0);
+       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
+       let to=new Date(Math.min(end.getTime(),now.getTime()));
+       if(to>from) totalMs+=to-from;
+     }
+
+     // En semana nocturna, lunes-jueves empiezan turno a las 22:00.
+     if(shift==="night" && day>=1&&day<=4){
+       let start=new Date(cursor);start.setHours(22,0,0,0);
+       let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
+       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
+       let to=new Date(Math.min(end.getTime(),now.getTime()));
+       if(to>from) totalMs+=to-from;
+     }
+   }
+
+   cursor.setDate(cursor.getDate()+1);
+   cursor.setHours(0,0,0,0);
+ }
+
+ return totalMs/3600000;
+}
+
+
+function remainingWorkHoursThisMonth(){
+ if(!S.refDate)return 0;
+
+ let now=new Date();
+ let y=now.getFullYear(), m=now.getMonth();
+ let monthEnd=new Date(y,m+1,1,0,0,0,0);
+ let totalMs=0;
+
+ // Genera turnos reales por su hora de inicio.
+ // Mañana: 06-14, tarde: 14-22.
+ // Noche: domingo anterior + lunes-jueves, 22-06.
+ // Si un turno ya está empezado, solo suma la parte que queda.
+ let cursor=new Date(y,m,1,0,0,0,0);
+ let searchEnd=new Date(monthEnd);
+ // Miramos también el último día para capturar un turno nocturno que empiece antes de acabar el mes.
+ searchEnd.setDate(searchEnd.getDate()+1);
+
+ while(cursor<searchEnd){
+   let day=cursor.getDay();
+   let start=null,end=null;
+
+   if(day===0 && nextMondayShiftForSunday(cursor)==="night"){
+     start=new Date(cursor); start.setHours(22,0,0,0);
+     end=new Date(start); end.setDate(end.getDate()+1); end.setHours(6,0,0,0);
+   } else {
+     let shift=weekShiftFor(cursor);
+
+     if(shift==="morning" && day>=1&&day<=5){
+       start=new Date(cursor); start.setHours(6,0,0,0);
+       end=new Date(cursor); end.setHours(14,0,0,0);
+     } else if(shift==="afternoon" && day>=1&&day<=5){
+       start=new Date(cursor); start.setHours(14,0,0,0);
+       end=new Date(cursor); end.setHours(22,0,0,0);
+     } else if(shift==="night" && day>=1&&day<=4){
+       start=new Date(cursor); start.setHours(22,0,0,0);
+       end=new Date(start); end.setDate(end.getDate()+1); end.setHours(6,0,0,0);
+     }
+   }
+
+   if(start && end){
+     // Solo cuenta desde ahora en adelante y solo la parte que cae antes del fin de mes.
+     let from=new Date(Math.max(start.getTime(),now.getTime()));
+     let to=new Date(Math.min(end.getTime(),monthEnd.getTime()));
+     if(to>from) totalMs += (to-from);
+   }
+
+   cursor.setDate(cursor.getDate()+1);
+   cursor.setHours(0,0,0,0);
+ }
+
+ return totalMs/3600000;
+}
+
+function formatRemainingHours(hours){
+ let h=Math.floor(hours);
+ let m=Math.floor((hours-h)*60);
+ if(m===0) return `${h} h`;
+ return `${h} h ${String(m).padStart(2,"0")} min`;
+}
+
+function formatWorkedHours(hours){
+ let h=Math.floor(hours);
+ let m=Math.floor((hours-h)*60);
+ return `${h} h ${String(m).padStart(2,"0")} min`;
+}
+function currentNightWeekProgress(){
+ if(!S.refDate)return 0;
+ let now=new Date();
+ let active=currentShiftWindow();
+
+ // Si estamos dentro de una noche, contamos la noche que está transcurriendo.
+ if(active && active.shift==="night"){
+   let start=active.start;
+   let day=start.getDay(); // domingo=0, lunes=1, ..., jueves=4
+   if(day===0)return 1;
+   if(day>=1&&day<=4)return day+1;
+ }
+
+ // Si no estamos trabajando pero seguimos dentro de una semana nocturna,
+ // muestra cuántas noches ya se han completado.
+ let day=now.getDay();
+ let h=now.getHours();
+
+ // Viernes después de las 06:00: las 5 noches ya están hechas.
+ if(weekShiftFor(now)==="night" && day===5 && h>=6)return 5;
+
+ // Durante lunes-jueves antes de las 22:00, cuenta las noches anteriores.
+ if(weekShiftFor(now)==="night" && day>=1&&day<=4){
+   // lunes antes de 22:00: domingo->lunes ya cuenta como 1
+   return day;
+ }
+
+ // Domingo antes de las 22:00 todavía no ha empezado la primera noche.
+ if(day===0 && nextMondayShiftForSunday(now)==="night" && h<22)return 0;
+
+ return 0;
+}
+
+function fmtCountdown(ms){if(ms<0)ms=0;let s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`}
+function monthStats(){
+ let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),hours=0,nights=0;
+ for(let d=1;d<=days;d++){let x=new Date(y,m,d,12),i=shiftForDate(x);if(i?.working){hours+=8;if(i.shift==="night"&&x.getDay()===0)nights+=1}}
+ let spent=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m}).reduce((a,b)=>a+b.amount,0);
+ return{hours,nights,spent}
+}
+function renderHome(){
+ let now=new Date(),info=shiftForDate(now),stats=monthStats();
+ let worked=workedHoursThisMonth();monthHours.textContent=formatWorkedHours(worked);let remaining=remainingWorkHoursThisMonth();
+monthHoursPlanned.textContent="Quedan: "+formatRemainingHours(remaining);monthNights.textContent=currentNightWeekProgress()+"/5";monthSpent.textContent=stats.spent.toFixed(0)+" €";incidentCount.textContent=S.incidents.length;
+ if(!S.refDate){shiftName.textContent="SIN CONFIGURAR";shiftTime.textContent="Define tu semana de referencia";todaySummary.textContent="Configura tu rotación";todayDetail.textContent="SHIFT calculará automáticamente el calendario anual.";return}
+ let weekShift=order[((order.indexOf(S.refShift)+weekDiff(now,new Date(S.refDate+"T12:00:00")))%3+3)%3];
+ shiftName.textContent=shifts[weekShift].name;shiftTime.textContent=shifts[weekShift].time;shiftBadge.textContent="Semana actual";
+ let activeWindow=currentShiftWindow();
+ if(activeWindow){
+   todaySummary.textContent="Estás en turno de "+shifts[activeWindow.shift].name.toLowerCase();
+   todayDetail.textContent=activeWindow.shift==="night"?"22:00 – 06:00 · termina a las 06:00":shifts[activeWindow.shift].time;
+ } else if(info?.working){
+   todaySummary.textContent="Hoy trabajas de "+shifts[info.shift].name.toLowerCase();
+   todayDetail.textContent=shifts[info.shift].time;
+ } else if(info?.finishesAt6){
+   todaySummary.textContent="Semana de noche terminada";
+   todayDetail.textContent="Has terminado hoy a las 06:00";
+ } else {
+   todaySummary.textContent="Hoy libras";
+   todayDetail.textContent="No tienes turno programado hoy";
+ }
+}
+function updateCountdown(){
+ if(!S.refDate){countLabel.textContent="PRÓXIMO CAMBIO";countdown.textContent="--:--:--";return}
+ let w=currentShiftWindow(),now=new Date();
+ if(w&&now>=w.start&&now<w.end){countLabel.textContent="TERMINA EL TURNO EN";countdown.textContent=fmtCountdown(w.end-now)}
+ else{let n=nextWorkStart();countLabel.textContent="PRÓXIMO TURNO EN";countdown.textContent=n?fmtCountdown(n.start-now):"--:--:--"}
+}
+let calDate=new Date();
+function changeMonth(delta){if(delta===0)calDate=new Date();else calDate.setMonth(calDate.getMonth()+delta);renderCalendar()}
+function renderCalendar(){
+ let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),today=new Date();
+ calendarTitle.textContent=new Intl.DateTimeFormat("es-ES",{month:"long",year:"numeric"}).format(first);
+ let out=["L","M","X","J","V","S","D"].map(d=>`<div class="dow">${d}</div>`).join("");
+ let pad=(first.getDay()+6)%7;for(let i=0;i<pad;i++)out+="<div></div>";
+ for(let d=1;d<=last.getDate();d++){
+  let x=new Date(y,m,d,12),i=shiftForDate(x);
+  let cls=i?.working?i.shift:"off";
+  let label=i?.label||(i?.working?shifts[i.shift].name:"LIBRE");
+  let isToday=x.toDateString()===today.toDateString();
+  out+=`<div class="day ${cls} ${isToday?"today":""}"><div class="n">${d}</div><div class="s">${label}</div></div>`
+ }
+ calendarGrid.innerHTML=out
+}
+function calcProduction(){
+ let meters=+metersPerRoll.value*+rolls.value,mins=meters/Math.max(1,+speed.value),hours=mins/60,cap=+speed.value*60*+hoursAvailable.value,margin=(cap-meters)/Math.max(1,meters)*100;
+ prodMeters.textContent=Math.round(meters).toLocaleString("es-ES")+" m";prodTime.textContent=hours.toFixed(2)+" h";prodCapacity.textContent=Math.round(cap).toLocaleString("es-ES")+" m";prodMargin.textContent=margin.toFixed(0)+"%"
+}
+function scheduledNightStartsThisMonth(){
+ let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),count=0;
+ for(let d=1;d<=days;d++){
+   let x=new Date(y,m,d,12),day=x.getDay();
+   if(day===0){
+     if(nextMondayShiftForSunday(x)==="night")count++;
+   }else if(weekShiftFor(x)==="night" && day>=1&&day<=4){
+     count++;
+   }
+ }
+ return count;
+}
+
+function calcSalary(){
+ let st=monthStats(),nightCount=scheduledNightStartsThisMonth(),nightExtra=nightCount*+nightPremium.value,ot=+overtimeHours.value*+overtimeRate.value,total=+baseSalary.value+nightExtra+ot;
+ salaryNights.textContent=nightCount;salaryNightExtra.textContent=nightExtra.toFixed(2)+" €";salaryOvertime.textContent=ot.toFixed(2)+" €";salaryTotal.textContent=total.toFixed(2)+" €"
+}
+function openSetup(){setupDate.value=S.refDate||new Date().toISOString().slice(0,10);setupShift.value=S.refShift;setupModal.classList.add("show")}
+function closeSetup(){setupModal.classList.remove("show")}
+function saveSetup(){S.refDate=setupDate.value;S.refShift=setupShift.value;save();closeSetup();syncSettings();renderAll();toast("Rotación guardada")}
+function saveRotation(){S.refDate=refDate.value;S.refShift=refShift.value;save();renderAll();toast("Rotación actualizada")}
+function saveBudget(){S.budget=+budgetInput.value||1200;save();renderExpenses();toast("Presupuesto guardado")}
+function openIncident(){incMachine.value="";incText.value="";incSeverity.value="Leve";incidentModal.classList.add("show")}
+function saveIncident(){if(!incMachine.value.trim()&&!incText.value.trim())return;S.incidents.unshift({id:Date.now(),machine:incMachine.value.trim(),text:incText.value.trim(),severity:incSeverity.value,date:new Date().toISOString()});save();incidentModal.classList.remove("show");renderIncidents();renderHome();toast("Incidencia guardada")}
+function deleteIncident(id){S.incidents=S.incidents.filter(x=>x.id!==id);save();renderIncidents();renderHome()}
+function renderIncidents(){
+ incidentList.innerHTML=S.incidents.length?S.incidents.map(i=>`<div class="card incident"><div class="row"><div class="ico">⚠️</div><div class="grow"><div class="name">${esc(i.machine||"Incidencia")}</div><div class="desc">${esc(i.text)}</div><div class="meta">${new Intl.DateTimeFormat("es-ES",{dateStyle:"medium",timeStyle:"short"}).format(new Date(i.date))} · ${esc(i.severity)}</div></div><button class="btn red" onclick="deleteIncident(${i.id})">Borrar</button></div></div>`).join(""):`<div class="card"><div class="desc">Todavía no has registrado incidencias.</div></div>`
+}
+function openExpense(){expName.value="";expAmount.value="";expenseModal.classList.add("show")}
+function saveExpense(){let a=+expAmount.value;if(!a)return;S.expenses.unshift({id:Date.now(),name:expName.value.trim()||"Gasto",amount:a,date:new Date().toISOString()});save();expenseModal.classList.remove("show");renderExpenses();renderHome();toast("Gasto añadido")}
+function deleteExpense(id){S.expenses=S.expenses.filter(x=>x.id!==id);save();renderExpenses();renderHome()}
+function renderExpenses(){
+ let st=monthStats(),pct=Math.min(100,st.spent/Math.max(1,S.budget)*100);spentMonth.textContent=st.spent.toFixed(2)+" €";budgetMonth.textContent=S.budget.toFixed(0)+" €";budgetProgress.style.width=pct+"%";budgetMeta.textContent=st.spent.toFixed(2)+" € de "+S.budget.toFixed(0)+" €";
+ let n=new Date(),y=n.getFullYear(),m=n.getMonth(),list=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m});
+ expenseList.innerHTML=list.length?list.map(e=>`<div class="card expense"><div><div class="name">${esc(e.name)}</div><div class="desc">${new Intl.DateTimeFormat("es-ES",{dateStyle:"medium"}).format(new Date(e.date))}</div></div><div><span class="amount">${e.amount.toFixed(2)} €</span> <button class="btn red" onclick="deleteExpense(${e.id})">×</button></div></div>`).join(""):`<div class="card"><div class="desc">No hay gastos registrados este mes.</div></div>`
+}
+function renderMoney(){
+ let st=monthStats(),night=st.nights*(+nightPremium.value||13),estimate=(+baseSalary.value||1850)+night;
+ moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>SALARIO BASE ESTIMADO</small><b>${(+baseSalary.value||1850).toFixed(0)} €</b></div><div class="metric"><small>NOCTURNIDAD ESTIMADA</small><b>${night.toFixed(0)} €</b></div><div class="metric"><small>GASTOS DEL MES</small><b>${st.spent.toFixed(0)} €</b></div><div class="metric"><small>RESTANTE ESTIMADO</small><b>${(estimate-st.spent).toFixed(0)} €</b></div></div>`
+}
+function syncSettings(){refDate.value=S.refDate||"";refShift.value=S.refShift;budgetInput.value=S.budget}
+function openBackup(){backupText.value=btoa(unescape(encodeURIComponent(JSON.stringify(S))));backupModal.classList.add("show")}
+function importBackup(){try{S={...S,...JSON.parse(decodeURIComponent(escape(atob(backupText.value.trim()))))};save();backupModal.classList.remove("show");renderAll();toast("Copia restaurada")}catch(e){toast("Copia no válida")}}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="calendar")renderCalendar();if(id==="expenses")renderExpenses();if(id==="money")renderMoney();if(id==="incidents")renderIncidents();if(id==="work"){let info=shiftForDate(new Date());workShift.textContent=info?.working?shifts[info.shift].name:"LIBRE"}}
+document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
+document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
+function renderAll(){syncSettings();renderHome();updateCountdown();renderCalendar();renderIncidents();renderExpenses();renderMoney();calcProduction();calcSalary()}
+const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),monthSpent=document.getElementById("monthSpent"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),expenseList=document.getElementById("expenseList"),spentMonth=document.getElementById("spentMonth"),budgetMonth=document.getElementById("budgetMonth"),budgetProgress=document.getElementById("budgetProgress"),budgetMeta=document.getElementById("budgetMeta"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),expenseModal=document.getElementById("expenseModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText");
+renderAll();if(!S.refDate)setTimeout(openSetup,350);setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>

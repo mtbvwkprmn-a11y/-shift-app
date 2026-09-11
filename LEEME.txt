@@ -1,0 +1,69 @@
+SHIFT PERSONAL
+
+Incluye:
+- Dashboard de turno actual
+- Cuenta atrás hasta fin del turno o próximo turno
+- Rotación automática noche -> mañana -> tarde
+- Calendario mensual
+- Cálculo de horas y noches del mes
+- Calculadora de producción
+- Estimador de nómina
+- Registro de incidencias
+- Control de gastos
+- Presupuesto mensual
+- Copia de seguridad
+- Funciona offline
+- Instalable como PWA en iPhone
+
+PRIMER INICIO
+Elige una fecha de referencia y el turno que te toca esa semana.
+A partir de ahí SHIFT calcula automáticamente el resto.
+
+INSTALAR EN IPHONE
+1. Sube esta carpeta/ZIP a Netlify.
+2. Abre la URL en Safari.
+3. Compartir > Añadir a pantalla de inicio.
+
+
+ACTUALIZACIÓN 1.1
+- Turno de noche corregido: empieza domingo 22:00 y termina viernes 06:00.
+- Cuenta 5 noches por semana.
+- Calendario y cuenta atrás adaptados al cruce de medianoche.
+
+ACTUALIZACIÓN 1.2
+- Domingo corregido: pertenece a la semana anterior.
+- Si el lunes siguiente empieza una semana de noche, el turno arranca el domingo anterior a las 22:00.
+- Semana nocturna: domingo 22:00 -> viernes 06:00, pero el domingo no cambia de semana en el calendario.
+
+ACTUALIZACIÓN 1.3
+- "NOCHES" pasa a "NOCHES SEMANA" y muestra progreso 0/5 a 5/5.
+- En jueves 22:00 -> viernes 06:00 muestra 5/5.
+- Horas del mes corregidas para no duplicar horas al cruzar domingo/lunes.
+- La nómina sigue usando el número real de inicios de turno nocturno del mes.
+
+
+ACTUALIZACIÓN 1.3
+- Corregido definitivamente el contador de noches.
+- Eliminada una función monthStats duplicada que sobrescribía la lógica correcta.
+- En semana de noche muestra progreso 0/5 a 5/5.
+- Jueves 22:00 -> viernes 06:00 = quinta noche, muestra 5/5.
+- Nómina usa todas las noches programadas del mes.
+
+ACTUALIZACIÓN 1.4
+- "HORAS MES" pasa a "HORAS TRABAJADAS".
+- Cuenta solo las horas realmente realizadas hasta el momento actual.
+- Durante un turno activo suma también la fracción de hora ya trabajada.
+- Añade debajo "Previstas: X h" con el total programado del mes completo.
+
+ACTUALIZACIÓN 1.5
+- Corregido "Previstas: undefined h".
+- Las horas previstas se calculan directamente desde la rotación del mes.
+- Se actualiza la caché de la PWA para forzar la nueva versión.
+
+ACTUALIZACIÓN 1.6
+- El dato secundario de horas ya no muestra las horas previstas del mes completo.
+- Ahora muestra "Quedan: X h" con las horas de trabajo restantes desde el momento actual hasta final de mes.
+- Si estás dentro de un turno, cuenta solo las horas que quedan de ese turno.
+- Los turnos nocturnos se cuentan por su inicio real: domingo/lunes/martes/miércoles/jueves a las 22:00.
+- El domingo a las 22:00 cuenta como inicio de la semana nocturna del lunes siguiente.
+- No cuenta fines de semana salvo ese domingo nocturno cuando corresponde.
