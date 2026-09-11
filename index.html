@@ -348,8 +348,10 @@ function workedHoursThisMonth(){
  let monthStart=new Date(y,m,1,0,0,0,0);
  let totalMs=0;
 
- // Recorremos desde el primer día del mes hasta hoy.
+ // Empezamos el día anterior para incluir, si corresponde, la parte de un
+ // turno nocturno que comenzó el mes anterior y termina dentro de este mes.
  let cursor=new Date(monthStart);
+ cursor.setDate(cursor.getDate()-1);
 
  while(cursor<=now){
    let day=cursor.getDay();
@@ -410,13 +412,15 @@ function remainingWorkHoursThisMonth(){
  let monthEnd=new Date(y,m+1,1,0,0,0,0);
  let totalMs=0;
 
- // Genera turnos reales por su hora de inicio.
+ // Genera turnos reales que se solapan con el mes natural.
  // Mañana: 06-14, tarde: 14-22.
  // Noche: domingo anterior + lunes-jueves, 22-06.
  // Si un turno ya está empezado, solo suma la parte que queda.
- let cursor=new Date(y,m,1,0,0,0,0);
- // Cuenta todos los turnos que comienzan dentro del mes. Si el último
- // turno nocturno termina al mes siguiente, se contabilizan sus 8 horas.
+ let monthStart=new Date(y,m,1,0,0,0,0);
+ let cursor=new Date(monthStart);
+ // Empezamos el día anterior para incluir la madrugada del día 1 si el
+ // turno comenzó a las 22:00 del último día del mes anterior.
+ cursor.setDate(cursor.getDate()-1);
  while(cursor<monthEnd){
    let day=cursor.getDay();
    let start=null,end=null;
@@ -440,10 +444,9 @@ function remainingWorkHoursThisMonth(){
    }
 
    if(start && end){
-     // Solo cuenta desde ahora en adelante. El turno pertenece al mes de
-     // su hora de inicio, aunque una noche termine el día 1 del mes siguiente.
-     let from=new Date(Math.max(start.getTime(),now.getTime()));
-     let to=end;
+     // Cuenta únicamente el tiempo que cae dentro del mes natural.
+     let from=new Date(Math.max(start.getTime(),now.getTime(),monthStart.getTime()));
+     let to=new Date(Math.min(end.getTime(),monthEnd.getTime()));
      if(to>from) totalMs += (to-from);
    }
 

@@ -73,3 +73,9 @@ ACTUALIZACIÓN 1.7
 - Ese turno se cuenta completo (22:00 a 06:00), aunque termine el día 1 del mes siguiente.
 - Se mantiene la misma clave de almacenamiento local para conservar rotación, gastos, incidencias y presupuesto.
 - Caché de la PWA renovada para que el iPhone cargue la actualización.
+
+ACTUALIZACIÓN 1.8
+- Las horas trabajadas y restantes se limitan al mes natural: desde el día 1 a las 00:00 hasta el último día a las 23:59.
+- Los turnos nocturnos que cruzan de mes solo aportan al mes las horas que realmente caen dentro de él.
+- Septiembre de 2026 suma 178 horas reales dentro del mes con la rotación configurada.
+- Se conserva la misma clave de almacenamiento local y todos los datos guardados.
