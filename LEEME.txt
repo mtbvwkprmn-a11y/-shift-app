@@ -67,3 +67,9 @@ ACTUALIZACIÓN 1.6
 - Los turnos nocturnos se cuentan por su inicio real: domingo/lunes/martes/miércoles/jueves a las 22:00.
 - El domingo a las 22:00 cuenta como inicio de la semana nocturna del lunes siguiente.
 - No cuenta fines de semana salvo ese domingo nocturno cuando corresponde.
+
+ACTUALIZACIÓN 1.7
+- Corregido el cálculo de horas restantes cuando el último turno nocturno empieza el último día del mes.
+- Ese turno se cuenta completo (22:00 a 06:00), aunque termine el día 1 del mes siguiente.
+- Se mantiene la misma clave de almacenamiento local para conservar rotación, gastos, incidencias y presupuesto.
+- Caché de la PWA renovada para que el iPhone cargue la actualización.

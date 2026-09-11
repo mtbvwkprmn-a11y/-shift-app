@@ -415,11 +415,9 @@ function remainingWorkHoursThisMonth(){
  // Noche: domingo anterior + lunes-jueves, 22-06.
  // Si un turno ya está empezado, solo suma la parte que queda.
  let cursor=new Date(y,m,1,0,0,0,0);
- let searchEnd=new Date(monthEnd);
- // Miramos también el último día para capturar un turno nocturno que empiece antes de acabar el mes.
- searchEnd.setDate(searchEnd.getDate()+1);
-
- while(cursor<searchEnd){
+ // Cuenta todos los turnos que comienzan dentro del mes. Si el último
+ // turno nocturno termina al mes siguiente, se contabilizan sus 8 horas.
+ while(cursor<monthEnd){
    let day=cursor.getDay();
    let start=null,end=null;
 
@@ -442,9 +440,10 @@ function remainingWorkHoursThisMonth(){
    }
 
    if(start && end){
-     // Solo cuenta desde ahora en adelante y solo la parte que cae antes del fin de mes.
+     // Solo cuenta desde ahora en adelante. El turno pertenece al mes de
+     // su hora de inicio, aunque una noche termine el día 1 del mes siguiente.
      let from=new Date(Math.max(start.getTime(),now.getTime()));
-     let to=new Date(Math.min(end.getTime(),monthEnd.getTime()));
+     let to=end;
      if(to>from) totalMs += (to-from);
    }
 
