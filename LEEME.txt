@@ -98,3 +98,22 @@ ACTUALIZACIÓN 2.2
 - Las bobinas delanteras nuevas pueden tener longitudes diferentes y se introducen en orden, separadas por comas.
 - Las bobinas traseras nuevas se calculan siempre con 7.000 m.
 - Si las delanteras indicadas no alcanzan para completar el objetivo, SHIFT avisa y solicita otra longitud en vez de estimarla.
+
+ACTUALIZACIÓN 2.3
+- Nuevo historial de relevos con metros iniciales y sobrantes reales delante y detrás.
+- Guarda cambios de bobina, salidas terminadas, merma, máquina y notas de cada turno.
+- Permite reutilizar los sobrantes de un turno como datos iniciales del siguiente relevo.
+- Resumen mensual: horas previstas, trabajadas, extra y restantes del día 1 al último día.
+- Corregida la función mensual duplicada que podía sustituir el cálculo correcto.
+- Control económico ampliado con plus de encargado, otros pluses, deducciones, gastos y dinero libre.
+- Nuevos estilos Azul oscuro, Medianoche y Grafito, además del modo Inicio cómodo o compacto.
+- Se conserva la clave de almacenamiento anterior para mantener todos los datos guardados.
+
+ACTUALIZACIÓN 2.4
+- Inicio de sesión individual mediante Google.
+- Cada usuario tiene separados su calendario, horas, producción, gastos y ajustes.
+- Sincronización segura en la nube y funcionamiento local cuando ya se han cargado los datos.
+- La primera cuenta recibe automáticamente los datos guardados de la versión anterior.
+- Nuevo calendario personal para añadir días de trabajo y las horas de cada día.
+- Se mantiene la rotación automática como alternativa para quien la necesite.
+- Apple queda preparado para una futura activación cuando exista una cuenta Apple Developer.
