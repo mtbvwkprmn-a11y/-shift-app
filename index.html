@@ -97,8 +97,8 @@ button,input,select,textarea{font:inherit}
     <div class="field"><label>BOBINAS DE SALIDA</label><input id="targetRolls" type="number" value="1" min="1"></div>
     <div class="field"><label>QUEDAN DELANTE</label><input id="frontRemaining" type="number" value="2800"></div>
     <div class="field"><label>QUEDAN DETRÁS</label><input id="backRemaining" type="number" value="7000"></div>
-    <div class="field"><label>BOBINA NUEVA DELANTE</label><input id="frontNewLength" type="number" value="2800"></div>
-    <div class="field"><label>BOBINA NUEVA DETRÁS</label><input id="backNewLength" type="number" value="7000"></div>
+    <div class="field"><label>SIGUIENTES DELANTE (EN ORDEN)</label><input id="frontRollLengths" value="2800" placeholder="Ej.: 3200, 2750, 4100"><div class="desc">Separa los metros de cada bobina con comas.</div></div>
+    <div class="field"><label>CADA BOBINA NUEVA DETRÁS</label><input id="backNewLength" type="number" value="7000" readonly><div class="desc">Valor fijo: 7.000 m.</div></div>
     <div class="field"><label>METROS POR MINUTO</label><input id="speed" type="number" value="120"></div>
     <div class="field"><label>HORAS DISPONIBLES</label><input id="hoursAvailable" type="number" value="8" step=".5"></div>
     <div class="field"><label>CAMBIO MÍNIMO (MIN)</label><input id="changeMin" type="number" value="5"></div>
@@ -111,6 +111,8 @@ button,input,select,textarea{font:inherit}
    <div class="metric"><small>TIEMPO ESTIMADO</small><b id="prodTime">0</b></div>
    <div class="metric"><small>CAMBIOS DELANTE / DETRÁS</small><b id="inputChanges">0 / 0</b></div>
    <div class="metric"><small>CAMBIOS DE SALIDA</small><b id="outputChanges">0</b></div>
+   <div class="metric"><small>SOBRARÁ DELANTE</small><b id="frontLeft">0 m</b></div>
+   <div class="metric"><small>SOBRARÁ DETRÁS</small><b id="backLeft">0 m</b></div>
   </div>
   <div class="card"><div class="name">Resultado de la simulación</div><div class="resultNote" id="productionNote">Introduce las bobinas y pulsa Calcular.</div></div>
 
@@ -230,7 +232,7 @@ const shifts={
 };
 const order=["night","morning","afternoon"];
 const newDefaults={
- production:{targetRolls:1,completedRolls:0,wasteMeters:0,machine:"Laminadora 1",note:"",savedAt:null},
+ production:{outputMeters:1800,targetRolls:1,completedRolls:0,wasteMeters:0,machine:"Laminadora 1",note:"",frontRemaining:2800,backRemaining:7000,frontRollLengths:"2800",speed:120,hoursAvailable:8,savedAt:null},
  machineStatuses:{"Laminadora 1":"running","Laminadora 2":"running","Celdillas":"running","Cortadora":"running","Impresora":"running"},
  profile:{name:"Alejandro",initials:"AG",accent:"#59a8ff"},
  quickOrder:["production","incidents","money","expenses"]
@@ -603,21 +605,38 @@ function renderCalendar(){
 function calcProduction(){
  let out=Math.max(1,+outputMeters.value||1800),count=Math.max(1,Math.floor(+targetRolls.value||1));
  let front=Math.max(0,+frontRemaining.value||0),back=Math.max(0,+backRemaining.value||0);
- let frontNew=Math.max(1,+frontNewLength.value||front||1),backNew=Math.max(1,+backNewLength.value||back||1);
+ let frontRolls=frontRollLengths.value.split(/[,;\s]+/).map(Number).filter(n=>Number.isFinite(n)&&n>0),backNew=7000;
  let mpm=Math.max(1,+speed.value||1),minStop=Math.max(0,+changeMin.value||0),maxStop=Math.max(minStop,+changeMax.value||0);
- let total=out*count,events=new Set(),frontStops=[],backStops=[],outputStops=[];
+ let total=out*count,events=new Set(),outputStops=[];
  for(let p=out;p<total;p+=out){outputStops.push(p);events.add(Math.round(p*1000))}
- for(let p=front;p<total;p+=frontNew){if(p>=0){frontStops.push(p);events.add(Math.round(p*1000))}}
- for(let p=back;p<total;p+=backNew){if(p>=0){backStops.push(p);events.add(Math.round(p*1000))}}
+ let frontPlan=planInputRolls(total,front,frontRolls,null),backPlan=planInputRolls(total,back,[],backNew);
+ frontPlan.stops.forEach(p=>events.add(Math.round(p*1000)));backPlan.stops.forEach(p=>events.add(Math.round(p*1000)));
+ inputChanges.textContent=frontPlan.stops.length+" / "+backPlan.stops.length;
+ outputChanges.textContent=outputStops.length;
+ if(!frontPlan.complete){
+   prodMeters.textContent=Math.round(total).toLocaleString("es-ES")+" m";prodTime.textContent="Faltan datos";frontLeft.textContent="—";backLeft.textContent=Math.round(backPlan.remaining).toLocaleString("es-ES")+" m";
+   productionNote.textContent=`Las delanteras indicadas no alcanzan para completar el objetivo. Añade otra bobina delantera: todavía quedan ${Math.ceil(frontPlan.missingMeters).toLocaleString("es-ES")} m por cubrir.`;renderProductionProgress();return;
+ }
  let runMinutes=total/mpm,stops=events.size,minMinutes=runMinutes+stops*minStop,maxMinutes=runMinutes+stops*maxStop;
  let available=Math.max(0,+hoursAvailable.value||0)*60;
  prodMeters.textContent=Math.round(total).toLocaleString("es-ES")+" m";
  prodTime.textContent=formatDurationRange(minMinutes,maxMinutes);
- inputChanges.textContent=frontStops.length+" / "+backStops.length;
- outputChanges.textContent=outputStops.length;
+ let frontFinal=frontPlan.remaining,backFinal=backPlan.remaining;
+ frontLeft.textContent=Math.round(frontFinal).toLocaleString("es-ES")+" m";
+ backLeft.textContent=Math.round(backFinal).toLocaleString("es-ES")+" m";
  let fits=available>=maxMinutes?"Cabe incluso con cambios de 10 min.":available>=minMinutes?"Puede caber si las paradas son cortas.":"No cabe en las horas disponibles.";
- productionNote.textContent=`${count} salida${count===1?"":"s"} de ${out.toLocaleString("es-ES")} m. Tiempo de máquina: ${formatMinutes(runMinutes)}. Paradas reales: ${stops} (${outputStops.length} de salida, ${frontStops.length} delante y ${backStops.length} detrás; las coincidencias se cuentan una sola vez). ${fits}`;
+ productionNote.textContent=`${count} salida${count===1?"":"s"} de ${out.toLocaleString("es-ES")} m. Al terminar quedarán ${Math.round(frontFinal).toLocaleString("es-ES")} m delante y ${Math.round(backFinal).toLocaleString("es-ES")} m detrás. Tiempo de máquina: ${formatMinutes(runMinutes)}. Paradas reales: ${stops} (${outputStops.length} de salida, ${frontPlan.stops.length} delante y ${backPlan.stops.length} detrás; las coincidencias se cuentan una sola vez). ${fits}`;
  renderProductionProgress();
+}
+function planInputRolls(required,initialRemaining,replacements,fixedReplacement){
+ let boundary=Math.max(0,initialRemaining),stops=[],index=0;
+ while(boundary<required){
+   stops.push(boundary);
+   let length=index<replacements.length?replacements[index++]:fixedReplacement;
+   if(!(length>0))return{complete:false,remaining:null,stops,missingMeters:required-boundary};
+   boundary+=length;
+ }
+ return{complete:true,remaining:boundary-required,stops,missingMeters:0};
 }
 function formatMinutes(mins){let h=Math.floor(mins/60),m=Math.round(mins%60);if(m===60){h++;m=0}return h?`${h} h ${m} min`:`${m} min`}
 function formatDurationRange(a,b){return Math.round(a)===Math.round(b)?formatMinutes(a):`${formatMinutes(a)} – ${formatMinutes(b)}`}
@@ -626,11 +645,11 @@ function renderProductionProgress(){
  productionProgress.style.width=pct+"%";productionProgressMeta.textContent=`${done} de ${target} bobinas · ${pct.toFixed(0)}%`;
 }
 function saveProductionShift(){
- S.production={targetRolls:Math.max(1,Math.floor(+targetRolls.value||1)),completedRolls:Math.max(0,Math.floor(+completedRolls.value||0)),wasteMeters:Math.max(0,+wasteMeters.value||0),machine:productionMachine.value,note:productionNoteInput.value.trim(),savedAt:new Date().toISOString()};
+ S.production={outputMeters:Math.max(1,+outputMeters.value||1800),targetRolls:Math.max(1,Math.floor(+targetRolls.value||1)),completedRolls:Math.max(0,Math.floor(+completedRolls.value||0)),wasteMeters:Math.max(0,+wasteMeters.value||0),machine:productionMachine.value,note:productionNoteInput.value.trim(),frontRemaining:Math.max(0,+frontRemaining.value||0),backRemaining:Math.max(0,+backRemaining.value||0),frontRollLengths:frontRollLengths.value.trim(),speed:Math.max(1,+speed.value||120),hoursAvailable:Math.max(0,+hoursAvailable.value||8),savedAt:new Date().toISOString()};
  save();renderProductionProgress();toast("Turno de producción guardado");
 }
 function loadProductionShift(){
- targetRolls.value=S.production.targetRolls;completedRolls.value=S.production.completedRolls;wasteMeters.value=S.production.wasteMeters;productionMachine.value=S.production.machine;productionNoteInput.value=S.production.note;renderProductionProgress();
+ outputMeters.value=S.production.outputMeters;targetRolls.value=S.production.targetRolls;completedRolls.value=S.production.completedRolls;wasteMeters.value=S.production.wasteMeters;productionMachine.value=S.production.machine;productionNoteInput.value=S.production.note;frontRemaining.value=S.production.frontRemaining;backRemaining.value=S.production.backRemaining;frontRollLengths.value=S.production.frontRollLengths;speed.value=S.production.speed;hoursAvailable.value=S.production.hoursAvailable;renderProductionProgress();
 }
 const machineStatusInfo={running:{label:"Funcionando",cls:"status-running",next:"stopped"},stopped:{label:"Parada",cls:"status-stopped",next:"incident"},incident:{label:"Incidencia",cls:"status-incident",next:"running"}};
 function cycleMachine(name){let current=S.machineStatuses[name]||"running";S.machineStatuses[name]=machineStatusInfo[current].next;save();renderMachines()}
@@ -694,7 +713,7 @@ document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScre
 document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
 function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderExpenses();renderMoney();renderMachines();renderQuickOrder();calcProduction();calcSalary()}
 const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),monthSpent=document.getElementById("monthSpent"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),expenseList=document.getElementById("expenseList"),spentMonth=document.getElementById("spentMonth"),budgetMonth=document.getElementById("budgetMonth"),budgetProgress=document.getElementById("budgetProgress"),budgetMeta=document.getElementById("budgetMeta"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),expenseModal=document.getElementById("expenseModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
-const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontNewLength=document.getElementById("frontNewLength"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor");
+const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor");
 targetRolls.addEventListener("input",()=>{renderProductionProgress();calcProduction()});completedRolls.addEventListener("input",renderProductionProgress);
 renderAll();if(!S.refDate)setTimeout(openSetup,350);setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));

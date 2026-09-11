@@ -88,3 +88,13 @@ ACTUALIZACIÓN 2.0
 - Panel de estado para laminadoras, celdillas, cortadora e impresora.
 - Personalización de nombre, iniciales, color principal y orden de los accesos rápidos.
 - Conserva la rotación, gastos, incidencias y demás datos de versiones anteriores.
+
+ACTUALIZACIÓN 2.1
+- Permite introducir los metros exactos que quedan en las bobinas delantera y trasera al recibir el relevo.
+- Calcula y muestra los metros que sobrarán delante y detrás después de completar las salidas indicadas.
+- La bobina de salida siempre comienza nueva y mantiene el valor predeterminado de 1.800 m.
+
+ACTUALIZACIÓN 2.2
+- Las bobinas delanteras nuevas pueden tener longitudes diferentes y se introducen en orden, separadas por comas.
+- Las bobinas traseras nuevas se calculan siempre con 7.000 m.
+- Si las delanteras indicadas no alcanzan para completar el objetivo, SHIFT avisa y solicita otra longitud en vez de estimarla.
