@@ -40,6 +40,8 @@ button,input,select,textarea{font:inherit}
 .metricgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.metric{background:#101923;border:1px solid #26394f;border-radius:15px;padding:11px}.metric small{display:block;color:var(--muted);font-size:8px}.metric b{font-size:17px;display:block;margin-top:3px}
 .incident{border-left:3px solid var(--orange)}.expense{display:flex;justify-content:space-between;gap:12px;align-items:center}.expense .amount{font-weight:950}
 .progress{height:8px;background:#202b3c;border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:linear-gradient(90deg,#5aa8ff,#63df9f)}
+.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:#0c141f;border:1px solid #26394f;border-radius:14px;padding:10px}.machine button{width:100%;margin-top:8px}.status-running{color:var(--green)}.status-stopped{color:var(--yellow)}.status-incident{color:var(--red)}
+.resultNote{font-size:9px;color:var(--muted);line-height:1.45;margin-top:8px}.orderRow{display:flex;align-items:center;gap:7px;padding:8px 0;border-bottom:1px solid #23344a}.orderRow:last-child{border-bottom:0}.orderRow .name{flex:1}
 .bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(820px,100%);z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:#07101aec;backdrop-filter:blur(18px);border-top:1px solid #21334a;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
 .bottomnav button{border:0;background:transparent;color:#7f91aa;font-size:8px;font-weight:850}.bottomnav .bi{display:block;font-size:20px;margin-bottom:2px}.bottomnav button.active{color:white}
 .modal{position:fixed;inset:0;z-index:100;background:#02050ad8;backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modalbox{width:min(440px,100%);background:#0f1723;border:1px solid #304660;border-radius:23px;padding:17px}.modalbox h2{margin:0 0 5px}.modalbox p{color:#9eacc0;font-size:10px;line-height:1.4}.actions{display:flex;gap:7px;margin-top:12px}.actions .btn{flex:1}
@@ -68,11 +70,11 @@ button,input,select,textarea{font:inherit}
  <div class="sectionTitle">Hoy</div>
  <div class="card"><div class="row"><div class="ico">🕒</div><div class="grow"><div class="name" id="todaySummary">Sin turno configurado</div><div class="desc" id="todayDetail">Elige tu turno de referencia para generar todo el calendario.</div></div><button class="btn primary" onclick="openSetup()">Configurar</button></div></div>
  <div class="sectionTitle">Accesos rápidos</div>
- <div class="metricgrid">
-  <button class="card" onclick="showScreen('work')"><div style="font-size:23px">🏭</div><div class="name">Producción</div><div class="desc">Bobinas, pallets y objetivos</div></button>
-  <button class="card" onclick="showScreen('incidents')"><div style="font-size:23px">📝</div><div class="name">Incidencias</div><div class="desc">Registra fallos y soluciones</div></button>
-  <button class="card" onclick="showScreen('money')"><div style="font-size:23px">💰</div><div class="name">Nómina</div><div class="desc">Estimación del mes</div></button>
-  <button class="card" onclick="showScreen('expenses')"><div style="font-size:23px">💸</div><div class="name">Gastos</div><div class="desc">Control mensual rápido</div></button>
+ <div class="metricgrid" id="quickAccess">
+  <button class="card" data-quick="production" onclick="showScreen('work')"><div style="font-size:23px">🏭</div><div class="name">Producción</div><div class="desc">Bobinas, pallets y objetivos</div></button>
+  <button class="card" data-quick="incidents" onclick="showScreen('incidents')"><div style="font-size:23px">📝</div><div class="name">Incidencias</div><div class="desc">Registra fallos y soluciones</div></button>
+  <button class="card" data-quick="money" onclick="showScreen('money')"><div style="font-size:23px">💰</div><div class="name">Nómina</div><div class="desc">Estimación del mes</div></button>
+  <button class="card" data-quick="expenses" onclick="showScreen('expenses')"><div style="font-size:23px">💸</div><div class="name">Gastos</div><div class="desc">Control mensual rápido</div></button>
  </div>
 </section>
 
@@ -88,22 +90,44 @@ button,input,select,textarea{font:inherit}
   <button class="tab active" data-work="production">Producción</button><button class="tab" data-work="salary">Nómina</button>
  </div>
  <div id="production" class="panel active">
-  <div class="sectionTitle">Calculadora de producción</div>
+  <div class="sectionTitle">Calculadora real de laminación</div>
   <div class="card">
    <div class="formgrid">
-    <div class="field"><label>METROS POR BOBINA</label><input id="metersPerRoll" type="number" value="1500"></div>
-    <div class="field"><label>BOBINAS</label><input id="rolls" type="number" value="8"></div>
+    <div class="field"><label>METROS DE SALIDA</label><input id="outputMeters" type="number" value="1800"></div>
+    <div class="field"><label>BOBINAS DE SALIDA</label><input id="targetRolls" type="number" value="1" min="1"></div>
+    <div class="field"><label>QUEDAN DELANTE</label><input id="frontRemaining" type="number" value="2800"></div>
+    <div class="field"><label>QUEDAN DETRÁS</label><input id="backRemaining" type="number" value="7000"></div>
+    <div class="field"><label>BOBINA NUEVA DELANTE</label><input id="frontNewLength" type="number" value="2800"></div>
+    <div class="field"><label>BOBINA NUEVA DETRÁS</label><input id="backNewLength" type="number" value="7000"></div>
     <div class="field"><label>METROS POR MINUTO</label><input id="speed" type="number" value="120"></div>
     <div class="field"><label>HORAS DISPONIBLES</label><input id="hoursAvailable" type="number" value="8" step=".5"></div>
+    <div class="field"><label>CAMBIO MÍNIMO (MIN)</label><input id="changeMin" type="number" value="5"></div>
+    <div class="field"><label>CAMBIO MÁXIMO (MIN)</label><input id="changeMax" type="number" value="10"></div>
    </div>
    <button class="btn primary" style="width:100%;margin-top:10px" onclick="calcProduction()">Calcular</button>
   </div>
   <div class="metricgrid">
    <div class="metric"><small>METROS TOTALES</small><b id="prodMeters">0</b></div>
-   <div class="metric"><small>TIEMPO NECESARIO</small><b id="prodTime">0 h</b></div>
-   <div class="metric"><small>CAPACIDAD TURNO</small><b id="prodCapacity">0</b></div>
-   <div class="metric"><small>MARGEN</small><b id="prodMargin">0%</b></div>
+   <div class="metric"><small>TIEMPO ESTIMADO</small><b id="prodTime">0</b></div>
+   <div class="metric"><small>CAMBIOS DELANTE / DETRÁS</small><b id="inputChanges">0 / 0</b></div>
+   <div class="metric"><small>CAMBIOS DE SALIDA</small><b id="outputChanges">0</b></div>
   </div>
+  <div class="card"><div class="name">Resultado de la simulación</div><div class="resultNote" id="productionNote">Introduce las bobinas y pulsa Calcular.</div></div>
+
+  <div class="sectionTitle">Objetivo y registro del turno</div>
+  <div class="card">
+   <div class="formgrid">
+    <div class="field"><label>BOBINAS TERMINADAS</label><input id="completedRolls" type="number" value="0" min="0"></div>
+    <div class="field"><label>MERMA (METROS)</label><input id="wasteMeters" type="number" value="0" min="0"></div>
+    <div class="field"><label>MÁQUINA</label><select id="productionMachine"><option>Laminadora 1</option><option>Laminadora 2</option><option>Celdillas</option><option>Cortadora</option><option>Impresora</option></select></div>
+    <div class="field"><label>NOTA DEL TURNO</label><input id="productionNoteInput" placeholder="Pedido, material, observaciones..."></div>
+   </div>
+   <div class="progress"><div id="productionProgress" style="width:0%"></div></div><div class="meta" id="productionProgressMeta">0 de 1 bobinas · 0%</div>
+   <button class="btn green" style="width:100%;margin-top:10px" onclick="saveProductionShift()">Guardar turno</button>
+  </div>
+
+  <div class="sectionTitle">Estado de máquinas</div>
+  <div class="machinegrid" id="machineGrid"></div>
  </div>
  <div id="salary" class="panel">
   <div class="sectionTitle">Estimador de nómina</div>
@@ -161,6 +185,19 @@ button,input,select,textarea{font:inherit}
   <button class="btn dark" style="width:100%;margin-top:10px" onclick="saveBudget()">Guardar</button>
  </div>
  <div class="card">
+  <div class="sectionTitle" style="margin-top:0">Personalización</div>
+  <div class="formgrid">
+   <div class="field"><label>NOMBRE</label><input id="profileName" placeholder="Alejandro"></div>
+   <div class="field"><label>INICIALES</label><input id="profileInitials" maxlength="3" placeholder="AG"></div>
+   <div class="field"><label>COLOR PRINCIPAL</label><select id="accentColor"><option value="#59a8ff">Azul</option><option value="#64df9f">Verde</option><option value="#a878ff">Violeta</option><option value="#ff9f4b">Naranja</option><option value="#ff6878">Rojo</option></select></div>
+  </div>
+  <button class="btn violet" style="width:100%;margin-top:10px" onclick="savePersonalization()">Aplicar diseño</button>
+ </div>
+ <div class="card">
+  <div class="sectionTitle" style="margin-top:0">Orden de accesos rápidos</div>
+  <div id="quickOrderList"></div>
+ </div>
+ <div class="card">
   <div class="row"><div class="ico">💾</div><div class="grow"><div class="name">Copia de seguridad</div><div class="desc">Exporta todos tus datos en texto para no perderlos.</div></div><button class="btn dark" onclick="openBackup()">Abrir</button></div>
  </div>
 </section>
@@ -192,8 +229,18 @@ const shifts={
  afternoon:{name:"TARDE",time:"14:00 – 22:00",color:"afternoon"}
 };
 const order=["night","morning","afternoon"];
-let S={refDate:null,refShift:"night",budget:1200,incidents:[],expenses:[],created:Date.now()};
+const newDefaults={
+ production:{targetRolls:1,completedRolls:0,wasteMeters:0,machine:"Laminadora 1",note:"",savedAt:null},
+ machineStatuses:{"Laminadora 1":"running","Laminadora 2":"running","Celdillas":"running","Cortadora":"running","Impresora":"running"},
+ profile:{name:"Alejandro",initials:"AG",accent:"#59a8ff"},
+ quickOrder:["production","incidents","money","expenses"]
+};
+let S={refDate:null,refShift:"night",budget:1200,incidents:[],expenses:[],created:Date.now(),...newDefaults};
 try{let r=localStorage.getItem(KEY);if(r)S={...S,...JSON.parse(r)}}catch(e){}
+S.production={...newDefaults.production,...(S.production||{})};
+S.machineStatuses={...newDefaults.machineStatuses,...(S.machineStatuses||{})};
+S.profile={...newDefaults.profile,...(S.profile||{})};
+S.quickOrder=Array.isArray(S.quickOrder)&&S.quickOrder.length===4?S.quickOrder:newDefaults.quickOrder.slice();
 function save(){localStorage.setItem(KEY,JSON.stringify(S))}
 function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1500)}
 function mondayOf(d){let x=new Date(d);x.setHours(0,0,0,0);let day=x.getDay();let diff=(day===0?-6:1-day);x.setDate(x.getDate()+diff);return x}
@@ -554,8 +601,41 @@ function renderCalendar(){
  calendarGrid.innerHTML=out
 }
 function calcProduction(){
- let meters=+metersPerRoll.value*+rolls.value,mins=meters/Math.max(1,+speed.value),hours=mins/60,cap=+speed.value*60*+hoursAvailable.value,margin=(cap-meters)/Math.max(1,meters)*100;
- prodMeters.textContent=Math.round(meters).toLocaleString("es-ES")+" m";prodTime.textContent=hours.toFixed(2)+" h";prodCapacity.textContent=Math.round(cap).toLocaleString("es-ES")+" m";prodMargin.textContent=margin.toFixed(0)+"%"
+ let out=Math.max(1,+outputMeters.value||1800),count=Math.max(1,Math.floor(+targetRolls.value||1));
+ let front=Math.max(0,+frontRemaining.value||0),back=Math.max(0,+backRemaining.value||0);
+ let frontNew=Math.max(1,+frontNewLength.value||front||1),backNew=Math.max(1,+backNewLength.value||back||1);
+ let mpm=Math.max(1,+speed.value||1),minStop=Math.max(0,+changeMin.value||0),maxStop=Math.max(minStop,+changeMax.value||0);
+ let total=out*count,events=new Set(),frontStops=[],backStops=[],outputStops=[];
+ for(let p=out;p<total;p+=out){outputStops.push(p);events.add(Math.round(p*1000))}
+ for(let p=front;p<total;p+=frontNew){if(p>=0){frontStops.push(p);events.add(Math.round(p*1000))}}
+ for(let p=back;p<total;p+=backNew){if(p>=0){backStops.push(p);events.add(Math.round(p*1000))}}
+ let runMinutes=total/mpm,stops=events.size,minMinutes=runMinutes+stops*minStop,maxMinutes=runMinutes+stops*maxStop;
+ let available=Math.max(0,+hoursAvailable.value||0)*60;
+ prodMeters.textContent=Math.round(total).toLocaleString("es-ES")+" m";
+ prodTime.textContent=formatDurationRange(minMinutes,maxMinutes);
+ inputChanges.textContent=frontStops.length+" / "+backStops.length;
+ outputChanges.textContent=outputStops.length;
+ let fits=available>=maxMinutes?"Cabe incluso con cambios de 10 min.":available>=minMinutes?"Puede caber si las paradas son cortas.":"No cabe en las horas disponibles.";
+ productionNote.textContent=`${count} salida${count===1?"":"s"} de ${out.toLocaleString("es-ES")} m. Tiempo de máquina: ${formatMinutes(runMinutes)}. Paradas reales: ${stops} (${outputStops.length} de salida, ${frontStops.length} delante y ${backStops.length} detrás; las coincidencias se cuentan una sola vez). ${fits}`;
+ renderProductionProgress();
+}
+function formatMinutes(mins){let h=Math.floor(mins/60),m=Math.round(mins%60);if(m===60){h++;m=0}return h?`${h} h ${m} min`:`${m} min`}
+function formatDurationRange(a,b){return Math.round(a)===Math.round(b)?formatMinutes(a):`${formatMinutes(a)} – ${formatMinutes(b)}`}
+function renderProductionProgress(){
+ let target=Math.max(1,Math.floor(+targetRolls.value||1)),done=Math.max(0,Math.floor(+completedRolls.value||0)),pct=Math.min(100,done/target*100);
+ productionProgress.style.width=pct+"%";productionProgressMeta.textContent=`${done} de ${target} bobinas · ${pct.toFixed(0)}%`;
+}
+function saveProductionShift(){
+ S.production={targetRolls:Math.max(1,Math.floor(+targetRolls.value||1)),completedRolls:Math.max(0,Math.floor(+completedRolls.value||0)),wasteMeters:Math.max(0,+wasteMeters.value||0),machine:productionMachine.value,note:productionNoteInput.value.trim(),savedAt:new Date().toISOString()};
+ save();renderProductionProgress();toast("Turno de producción guardado");
+}
+function loadProductionShift(){
+ targetRolls.value=S.production.targetRolls;completedRolls.value=S.production.completedRolls;wasteMeters.value=S.production.wasteMeters;productionMachine.value=S.production.machine;productionNoteInput.value=S.production.note;renderProductionProgress();
+}
+const machineStatusInfo={running:{label:"Funcionando",cls:"status-running",next:"stopped"},stopped:{label:"Parada",cls:"status-stopped",next:"incident"},incident:{label:"Incidencia",cls:"status-incident",next:"running"}};
+function cycleMachine(name){let current=S.machineStatuses[name]||"running";S.machineStatuses[name]=machineStatusInfo[current].next;save();renderMachines()}
+function renderMachines(){
+ machineGrid.innerHTML=Object.keys(newDefaults.machineStatuses).map(name=>{let key=S.machineStatuses[name]||"running",st=machineStatusInfo[key];return `<div class="machine"><div class="name">${esc(name)}</div><div class="meta ${st.cls}">${st.label}</div><button class="btn dark" onclick="cycleMachine('${esc(name)}')">Cambiar estado</button></div>`}).join("");
 }
 function scheduledNightStartsThisMonth(){
  let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),count=0;
@@ -597,15 +677,25 @@ function renderMoney(){
  let st=monthStats(),night=st.nights*(+nightPremium.value||13),estimate=(+baseSalary.value||1850)+night;
  moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>SALARIO BASE ESTIMADO</small><b>${(+baseSalary.value||1850).toFixed(0)} €</b></div><div class="metric"><small>NOCTURNIDAD ESTIMADA</small><b>${night.toFixed(0)} €</b></div><div class="metric"><small>GASTOS DEL MES</small><b>${st.spent.toFixed(0)} €</b></div><div class="metric"><small>RESTANTE ESTIMADO</small><b>${(estimate-st.spent).toFixed(0)} €</b></div></div>`
 }
-function syncSettings(){refDate.value=S.refDate||"";refShift.value=S.refShift;budgetInput.value=S.budget}
+function applyPersonalization(){document.documentElement.style.setProperty("--blue",S.profile.accent);avatar.textContent=S.profile.initials||"AG";profileName.value=S.profile.name||"";profileInitials.value=S.profile.initials||"AG";accentColor.value=S.profile.accent}
+function savePersonalization(){S.profile={name:profileName.value.trim()||"Alejandro",initials:(profileInitials.value.trim()||"AG").toUpperCase().slice(0,3),accent:accentColor.value};save();applyPersonalization();toast("Diseño actualizado")}
+const quickLabels={production:"🏭 Producción",incidents:"📝 Incidencias",money:"💰 Nómina",expenses:"💸 Gastos"};
+function renderQuickOrder(){
+ let container=document.getElementById("quickAccess");S.quickOrder.forEach(key=>{let item=container.querySelector(`[data-quick="${key}"]`);if(item)container.appendChild(item)});
+ quickOrderList.innerHTML=S.quickOrder.map((key,i)=>`<div class="orderRow"><div class="name">${quickLabels[key]}</div><button class="btn dark" onclick="moveQuick('${key}',-1)" ${i===0?"disabled":""}>↑</button><button class="btn dark" onclick="moveQuick('${key}',1)" ${i===S.quickOrder.length-1?"disabled":""}>↓</button></div>`).join("");
+}
+function moveQuick(key,delta){let i=S.quickOrder.indexOf(key),j=i+delta;if(i<0||j<0||j>=S.quickOrder.length)return;[S.quickOrder[i],S.quickOrder[j]]=[S.quickOrder[j],S.quickOrder[i]];save();renderQuickOrder()}
+function syncSettings(){refDate.value=S.refDate||"";refShift.value=S.refShift;budgetInput.value=S.budget;applyPersonalization()}
 function openBackup(){backupText.value=btoa(unescape(encodeURIComponent(JSON.stringify(S))));backupModal.classList.add("show")}
 function importBackup(){try{S={...S,...JSON.parse(decodeURIComponent(escape(atob(backupText.value.trim()))))};save();backupModal.classList.remove("show");renderAll();toast("Copia restaurada")}catch(e){toast("Copia no válida")}}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="calendar")renderCalendar();if(id==="expenses")renderExpenses();if(id==="money")renderMoney();if(id==="incidents")renderIncidents();if(id==="work"){let info=shiftForDate(new Date());workShift.textContent=info?.working?shifts[info.shift].name:"LIBRE"}}
 document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
 document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
-function renderAll(){syncSettings();renderHome();updateCountdown();renderCalendar();renderIncidents();renderExpenses();renderMoney();calcProduction();calcSalary()}
-const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),monthSpent=document.getElementById("monthSpent"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),expenseList=document.getElementById("expenseList"),spentMonth=document.getElementById("spentMonth"),budgetMonth=document.getElementById("budgetMonth"),budgetProgress=document.getElementById("budgetProgress"),budgetMeta=document.getElementById("budgetMeta"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),expenseModal=document.getElementById("expenseModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText");
+function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderExpenses();renderMoney();renderMachines();renderQuickOrder();calcProduction();calcSalary()}
+const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),monthSpent=document.getElementById("monthSpent"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),expenseList=document.getElementById("expenseList"),spentMonth=document.getElementById("spentMonth"),budgetMonth=document.getElementById("budgetMonth"),budgetProgress=document.getElementById("budgetProgress"),budgetMeta=document.getElementById("budgetMeta"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),expenseModal=document.getElementById("expenseModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
+const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontNewLength=document.getElementById("frontNewLength"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor");
+targetRolls.addEventListener("input",()=>{renderProductionProgress();calcProduction()});completedRolls.addEventListener("input",renderProductionProgress);
 renderAll();if(!S.refDate)setTimeout(openSetup,350);setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>

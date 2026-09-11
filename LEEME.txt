@@ -79,3 +79,12 @@ ACTUALIZACIÓN 1.8
 - Los turnos nocturnos que cruzan de mes solo aportan al mes las horas que realmente caen dentro de él.
 - Septiembre de 2026 suma 178 horas reales dentro del mes con la rotación configurada.
 - Se conserva la misma clave de almacenamiento local y todos los datos guardados.
+
+ACTUALIZACIÓN 2.0
+- Nueva calculadora real de laminación con dos bobinas de entrada y bobinas de salida de 1.800 m.
+- Resta automáticamente los metros consumidos delante y detrás y calcula cuándo toca cambiar cada entrada.
+- Añade paradas de 5 a 10 minutos por cambios; las coincidencias se cuentan como una sola parada.
+- Registro y progreso del objetivo del turno con bobinas terminadas, merma, máquina y notas.
+- Panel de estado para laminadoras, celdillas, cortadora e impresora.
+- Personalización de nombre, iniciales, color principal y orden de los accesos rápidos.
+- Conserva la rotación, gastos, incidencias y demás datos de versiones anteriores.
