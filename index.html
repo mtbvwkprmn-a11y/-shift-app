@@ -28,7 +28,7 @@ button,input,select,textarea{font:inherit}
 .hero:after{content:"";position:absolute;inset:-25%;background:radial-gradient(circle at 20% 10%,#59a8ff20,transparent 30%),radial-gradient(circle at 90% 30%,#a878ff1c,transparent 28%);pointer-events:none}
 .heroTop{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}.eyebrow{font-size:9px;color:var(--muted);font-weight:900;letter-spacing:1.2px}.shiftName{font-size:33px;font-weight:950;letter-spacing:-1.4px;margin-top:3px}.shiftTime{color:#d5deec;font-size:13px;margin-top:2px}.shiftBadge{font-size:10px;border-radius:999px;padding:7px 9px;background:#101a28;border:1px solid #2b4262;height:max-content}
 .countdown{position:relative;z-index:1;margin-top:18px;padding:13px;background:#0a1019;border:1px solid #22334a;border-radius:16px}.countdown small{display:block;color:var(--muted);font-size:9px}.countdown b{font-size:26px;letter-spacing:-1px}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.q{background:#0c131d;border:1px solid #23344a;border-radius:14px;padding:9px;text-align:center}.q small{display:block;color:var(--muted);font-size:8px}.q b{font-size:13px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.q{background:#0c131d;border:1px solid #23344a;border-radius:14px;padding:9px;text-align:center}.q small{display:block;color:var(--muted);font-size:8px}.q b{font-size:13px}
 .sectionTitle{font-size:15px;font-weight:950;margin:14px 3px 8px}
 .card{background:linear-gradient(145deg,#101822,#0c121a);border:1px solid #26374d;border-radius:18px;padding:13px;margin:8px 0}
 .row{display:flex;align-items:center;gap:10px}.ico{width:44px;height:44px;border-radius:13px;background:#182538;display:grid;place-items:center;font-size:22px;flex:0 0 auto}.grow{flex:1;min-width:0}.name{font-weight:900;font-size:12px}.desc{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.35}.meta{font-size:9px;color:#c4cfdd;margin-top:4px}
@@ -42,7 +42,7 @@ button,input,select,textarea{font:inherit}
 .progress{height:8px;background:#202b3c;border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:linear-gradient(90deg,#5aa8ff,#63df9f)}
 .machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:#0c141f;border:1px solid #26394f;border-radius:14px;padding:10px}.machine button{width:100%;margin-top:8px}.status-running{color:var(--green)}.status-stopped{color:var(--yellow)}.status-incident{color:var(--red)}
 .resultNote{font-size:9px;color:var(--muted);line-height:1.45;margin-top:8px}.orderRow{display:flex;align-items:center;gap:7px;padding:8px 0;border-bottom:1px solid #23344a}.orderRow:last-child{border-bottom:0}.orderRow .name{flex:1}
-.bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(820px,100%);z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:#07101aec;backdrop-filter:blur(18px);border-top:1px solid #21334a;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
+.bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(820px,100%);z-index:40;display:grid;grid-template-columns:repeat(4,1fr);background:#07101aec;backdrop-filter:blur(18px);border-top:1px solid #21334a;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
 .bottomnav button{border:0;background:transparent;color:#7f91aa;font-size:8px;font-weight:850}.bottomnav .bi{display:block;font-size:20px;margin-bottom:2px}.bottomnav button.active{color:white}
 .modal{position:fixed;inset:0;z-index:100;background:#02050ad8;backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modalbox{width:min(440px,100%);background:#0f1723;border:1px solid #304660;border-radius:23px;padding:17px}.modalbox h2{margin:0 0 5px}.modalbox p{color:#9eacc0;font-size:10px;line-height:1.4}.actions{display:flex;gap:7px;margin-top:12px}.actions .btn{flex:1}
 .toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(12px);opacity:0;transition:.2s;z-index:120;background:white;color:#101721;padding:9px 12px;border-radius:999px;font-size:9px;font-weight:900}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -55,7 +55,7 @@ button,input,select,textarea{font:inherit}
 :root[data-theme="graphite"] .hero,:root[data-theme="graphite"] .card{background:linear-gradient(145deg,#202327,#111315);border-color:#3b4147}
 :root[data-layout="compact"] #home .hero{padding:13px;border-radius:20px}:root[data-layout="compact"] #home .card{padding:10px;margin:6px 0}:root[data-layout="compact"] #home .sectionTitle{margin-top:10px}
 .summary4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.summary4 .metric{padding:9px}.summary4 .metric b{font-size:14px}.historyItem{border-left:3px solid var(--blue)}.historyTop{display:flex;justify-content:space-between;gap:8px}.historyFlow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:7px;margin-top:9px}.historyFlow>div{background:#09111b;border:1px solid #233850;border-radius:11px;padding:8px}.historyFlow>span{color:var(--blue);font-weight:950}.historyFlow small{display:block;color:var(--muted);font-size:8px}.historyFlow b{display:block;font-size:11px;margin-top:3px}.themeHint{display:flex;gap:6px;margin-top:8px}.themeDot{height:22px;flex:1;border-radius:7px;border:1px solid #ffffff20}.themeDot:nth-child(1){background:linear-gradient(90deg,#070b11,#59a8ff)}.themeDot:nth-child(2){background:linear-gradient(90deg,#050718,#8d8cff)}.themeDot:nth-child(3){background:linear-gradient(90deg,#0b0c0e,#777f88)}
-.authGate{position:fixed;inset:0;z-index:300;background:radial-gradient(circle at 50% 5%,#20385d,#080d15 48%,#030507);display:none;align-items:center;justify-content:center;padding:24px}.auth-pending .authGate,.auth-required .authGate{display:flex}.authBox{width:min(420px,100%);text-align:center;background:#0e1723;border:1px solid #2d4260;border-radius:28px;padding:28px 22px;box-shadow:0 25px 80px #0008}.authLogo{font-size:48px;margin-bottom:8px}.authTitle{font-size:34px;font-weight:950;letter-spacing:-1.5px}.authTitle span{color:var(--blue)}.googleBtn{width:100%;margin-top:20px;background:white;color:#17202b;border:0;border-radius:14px;padding:13px;font-weight:900}.authStatus{font-size:10px;color:var(--muted);margin-top:10px}.manualDay{background:#10251d!important;border-color:#2b7052!important}.manualList{display:flex;flex-direction:column;gap:6px;margin-top:9px}.manualRow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#09111b;border:1px solid #243a50;border-radius:11px;padding:8px}.accountPhoto{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#182538}
+.authGate{position:fixed;inset:0;z-index:300;background:radial-gradient(circle at 50% 5%,#20385d,#080d15 48%,#030507);display:none;align-items:center;justify-content:center;padding:24px}.auth-pending .authGate,.auth-required .authGate{display:flex}.authBox{width:min(420px,100%);text-align:center;background:#0e1723;border:1px solid #2d4260;border-radius:28px;padding:28px 22px;box-shadow:0 25px 80px #0008}.authLogo{font-size:48px;margin-bottom:8px}.authTitle{font-size:34px;font-weight:950;letter-spacing:-1.5px}.authTitle span{color:var(--blue)}.googleBtn{width:100%;margin-top:20px;background:white;color:#17202b;border:0;border-radius:14px;padding:13px;font-weight:900}.authStatus{font-size:10px;color:var(--muted);margin-top:10px}.manualDay,.extraDay{background:#10251d!important;border-color:#2b7052!important}.extraDay{box-shadow:inset 0 0 0 1px #64df9f55}.manualList{display:flex;flex-direction:column;gap:6px;margin-top:9px}.manualRow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#09111b;border:1px solid #243a50;border-radius:11px;padding:8px}.accountPhoto{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#182538}
 @media(max-width:430px){.summary4{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -74,7 +74,6 @@ button,input,select,textarea{font:inherit}
   <div class="quick">
    <div class="q"><small>HORAS TRABAJADAS</small><b id="monthHours">0 h</b><div class="meta" id="monthHoursPlanned">Quedan: 0 h</div></div>
    <div class="q"><small>NOCHES SEMANA</small><b id="monthNights">0/5</b></div>
-   <div class="q"><small>GASTADO</small><b id="monthSpent">0 €</b></div>
    <div class="q"><small>INCIDENCIAS</small><b id="incidentCount">0</b></div>
   </div>
  </div>
@@ -92,7 +91,6 @@ button,input,select,textarea{font:inherit}
   <button class="card" data-quick="production" onclick="showScreen('work')"><div style="font-size:23px">🏭</div><div class="name">Producción</div><div class="desc">Bobinas, pallets y objetivos</div></button>
   <button class="card" data-quick="incidents" onclick="showScreen('incidents')"><div style="font-size:23px">📝</div><div class="name">Incidencias</div><div class="desc">Registra fallos y soluciones</div></button>
   <button class="card" data-quick="money" onclick="showScreen('money')"><div style="font-size:23px">💰</div><div class="name">Nómina</div><div class="desc">Estimación del mes</div></button>
-  <button class="card" data-quick="expenses" onclick="showScreen('expenses')"><div style="font-size:23px">💸</div><div class="name">Gastos</div><div class="desc">Control mensual rápido</div></button>
  </div>
 </section>
 
@@ -104,6 +102,18 @@ button,input,select,textarea{font:inherit}
    <div class="formgrid"><div class="field"><label>DÍA DE TRABAJO</label><input id="manualDate" type="date"></div><div class="field"><label>HORAS DE ESE DÍA</label><input id="manualHours" type="number" value="8" min="0.5" max="24" step="0.5"></div></div>
    <button class="btn green" style="width:100%;margin-top:9px" onclick="saveManualDay()">Guardar día y horas</button>
    <div class="manualList" id="manualDayList"></div>
+  </div>
+  <div id="extraDayEditor" style="display:none;margin-top:10px">
+   <div class="sectionTitle" style="margin:8px 0">Trabajar en un día libre</div>
+   <div class="desc" style="margin-bottom:9px">Pulsa un día libre del calendario o elige la fecha. Las horas se suman como extra, sin aumentar tus horas previstas.</div>
+   <div class="formgrid">
+    <div class="field"><label>DÍA LIBRE</label><input id="extraDate" type="date" onchange="suggestExtraPay()"></div>
+    <div class="field"><label>HORAS QUE TRABAJARÁS</label><input id="extraHours" type="number" value="8" min="0.5" max="24" step="0.5"></div>
+    <div class="field"><label>TURNO</label><select id="extraShift"><option value="morning">Mañana</option><option value="afternoon">Tarde</option><option value="night">Noche</option></select></div>
+    <div class="field"><label>PAGO BRUTO (SÁBADO FIJO: 112 €)</label><input id="extraPay" type="number" value="0" min="0" step=".01"></div>
+   </div>
+   <button class="btn green" style="width:100%;margin-top:9px" onclick="saveExtraDay()">Guardar trabajo extra</button>
+   <div class="manualList" id="extraDayList"></div>
   </div>
  </div>
  <div class="card"><div class="row"><button class="btn dark" onclick="changeMonth(-1)">‹</button><div class="grow" style="text-align:center"><div class="name" id="calendarTitle"></div></div><button class="btn dark" onclick="changeMonth(1)">›</button></div></div>
@@ -161,42 +171,47 @@ button,input,select,textarea{font:inherit}
   <div class="machinegrid" id="machineGrid"></div>
  </div>
  <div id="salary" class="panel">
-  <div class="sectionTitle">Estimador de nómina</div>
+  <div class="sectionTitle">Estimador de nómina neta</div>
   <div class="card">
+   <div class="desc" style="margin-bottom:10px">Configurado con los importes y porcentajes de tu nómina de agosto de 2026. Puedes cambiar cualquier dato si una nómina futura varía.</div>
    <div class="formgrid">
-    <div class="field"><label>SALARIO NETO HABITUAL</label><input id="baseSalary" type="number" value="1850"></div>
+    <div class="field"><label>SALARIO BASE BRUTO</label><input id="grossBase" type="number" value="1885.38" step=".01"></div>
+    <div class="field"><label>ANTIGÜEDAD</label><input id="seniorityPay" type="number" value="26.19" step=".01"></div>
+    <div class="field"><label>PLUS CONVENIO</label><input id="agreementBonus" type="number" value="216.90" step=".01"></div>
+    <div class="field"><label>PLUS TRANSPORTE</label><input id="transportBonus" type="number" value="125" step=".01"></div>
+    <div class="field"><label>COMPLEMENTO DE PUESTO</label><input id="positionBonus" type="number" value="125" step=".01"></div>
+    <div class="field"><label>PAGA DE BENEFICIOS</label><input id="benefitsPay" type="number" value="88.69" step=".01"></div>
     <div class="field"><label>NOCTURNIDAD POR NOCHE</label><input id="nightPremium" type="number" value="13" step=".01"></div>
+    <div class="field"><label>NOCHES (SOLO CALENDARIO MANUAL)</label><input id="nightCountOverride" type="number" min="0" step="1" placeholder="Automático en rotación"></div>
     <div class="field"><label>HORAS EXTRA</label><input id="overtimeHours" type="number" value="0" step=".5"></div>
     <div class="field"><label>PRECIO HORA EXTRA</label><input id="overtimeRate" type="number" value="12" step=".01"></div>
-    <div class="field"><label>PLUS DE ENCARGADO</label><input id="leaderBonus" type="number" value="100" step=".01"></div>
     <div class="field"><label>OTROS PLUSES</label><input id="otherExtras" type="number" value="0" step=".01"></div>
-    <div class="field"><label>OTRAS DEDUCCIONES</label><input id="payrollDeductions" type="number" value="0" step=".01"></div>
+    <div class="field"><label>PRORRATA PARA COTIZACIÓN</label><input id="contributionProrata" type="number" value="326.29" step=".01"></div>
+    <div class="field"><label>IRPF (%)</label><input id="irpfRate" type="number" value="18.53" step=".01"></div>
+    <div class="field"><label>CONTINGENCIAS COMUNES (%)</label><input id="commonRate" type="number" value="4.70" step=".01"></div>
+    <div class="field"><label>DESEMPLEO (%)</label><input id="unemploymentRate" type="number" value="1.55" step=".01"></div>
+    <div class="field"><label>FORMACIÓN (%)</label><input id="trainingRate" type="number" value="0.10" step=".01"></div>
+    <div class="field"><label>MEI (%)</label><input id="meiRate" type="number" value="0.15" step=".01"></div>
+    <div class="field"><label>OTRAS DEDUCCIONES</label><input id="otherDeductions" type="number" value="0" step=".01"></div>
    </div>
    <button class="btn green" style="width:100%;margin-top:10px" onclick="calcSalary(true)">Guardar y calcular</button>
   </div>
   <div class="metricgrid">
    <div class="metric"><small>NOCHES DEL MES</small><b id="salaryNights">0</b></div>
-   <div class="metric"><small>EXTRA NOCTURNIDAD</small><b id="salaryNightExtra">0 €</b></div>
-   <div class="metric"><small>HORAS EXTRA</small><b id="salaryOvertime">0 €</b></div>
-   <div class="metric"><small>OTROS PLUSES</small><b id="salaryOtherExtras">0 €</b></div>
-   <div class="metric"><small>ESTIMACIÓN TOTAL</small><b id="salaryTotal">0 €</b></div>
+   <div class="metric"><small>DÍAS LIBRES TRABAJADOS</small><b id="salaryExtraDays">0 €</b></div>
+   <div class="metric"><small>BRUTO TOTAL</small><b id="salaryGross">0 €</b></div>
+   <div class="metric"><small>IRPF</small><b id="salaryIrpf">0 €</b></div>
+   <div class="metric"><small>SEGURIDAD SOCIAL</small><b id="salarySocialSecurity">0 €</b></div>
+   <div class="metric"><small>DEDUCCIONES TOTALES</small><b id="salaryDeductions">0 €</b></div>
+   <div class="metric"><small>NETO ESTIMADO</small><b id="salaryTotal" style="color:var(--green)">0 €</b></div>
   </div>
+  <div class="resultNote">La cifra es una estimación. SHIFT aplica el IRPF al bruto y calcula por separado las cuatro cotizaciones de Seguridad Social, igual que en tu nómina.</div>
  </div>
 </section>
 
 <section id="incidents" class="screen">
  <div class="header"><div class="brand">📝 Incidencias</div><button class="btn primary" onclick="openIncident()">+ Nueva</button></div>
  <div id="incidentList"></div>
-</section>
-
-<section id="expenses" class="screen">
- <div class="header"><div class="brand">💸 Gastos</div><button class="btn primary" onclick="openExpense()">+ Añadir</button></div>
- <div class="metricgrid">
-  <div class="metric"><small>GASTADO ESTE MES</small><b id="spentMonth">0 €</b></div>
-  <div class="metric"><small>PRESUPUESTO</small><b id="budgetMonth">1.200 €</b></div>
- </div>
- <div class="card"><div class="name">Presupuesto mensual</div><div class="progress"><div id="budgetProgress" style="width:0%"></div></div><div class="meta" id="budgetMeta">0 € de 1.200 €</div></div>
- <div id="expenseList"></div>
 </section>
 
 <section id="money" class="screen">
@@ -214,11 +229,6 @@ button,input,select,textarea{font:inherit}
    <div class="field"><label>TURNO ESA SEMANA</label><select id="refShift"><option value="night">Noche</option><option value="morning">Mañana</option><option value="afternoon">Tarde</option></select></div>
   </div>
   <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveRotation()">Guardar rotación</button>
- </div>
- <div class="card">
-  <div class="sectionTitle" style="margin-top:0">Presupuesto</div>
-  <div class="field"><label>PRESUPUESTO MENSUAL</label><input id="budgetInput" type="number" value="1200"></div>
-  <button class="btn dark" style="width:100%;margin-top:10px" onclick="saveBudget()">Guardar</button>
  </div>
  <div class="card">
   <div class="sectionTitle" style="margin-top:0">Personalización</div>
@@ -245,7 +255,6 @@ button,input,select,textarea{font:inherit}
  <button class="active" data-screen="home"><span class="bi">🏠</span>Inicio</button>
  <button data-screen="calendar"><span class="bi">📅</span>Calendario</button>
  <button data-screen="work"><span class="bi">🏭</span>Trabajo</button>
- <button data-screen="expenses"><span class="bi">💸</span>Gastos</button>
  <button data-screen="settings"><span class="bi">⚙️</span>Ajustes</button>
 </nav>
 </div>
@@ -253,8 +262,6 @@ button,input,select,textarea{font:inherit}
 <div class="modal" id="setupModal"><div class="modalbox"><h2>Configura tu rotación</h2><p>Elige una fecha de esta semana y el turno que te toca. SHIFT calculará automáticamente las semanas siguientes en orden noche → mañana → tarde.</p><div class="formgrid"><div class="field"><label>FECHA DE REFERENCIA</label><input id="setupDate" type="date"></div><div class="field"><label>TURNO</label><select id="setupShift"><option value="night">Noche</option><option value="morning">Mañana</option><option value="afternoon">Tarde</option></select></div></div><div class="actions"><button class="btn dark" onclick="closeSetup()">Cancelar</button><button class="btn primary" onclick="saveSetup()">Guardar</button></div></div></div>
 
 <div class="modal" id="incidentModal"><div class="modalbox"><h2>Nueva incidencia</h2><div class="formgrid"><div class="field"><label>MÁQUINA / ÁREA</label><input id="incMachine" placeholder="Laminadora, celdillas..."></div><div class="field"><label>GRAVEDAD</label><select id="incSeverity"><option>Leve</option><option>Media</option><option>Alta</option></select></div></div><div class="field" style="margin-top:8px"><label>DESCRIPCIÓN</label><textarea id="incText" placeholder="Qué pasó y cómo se resolvió"></textarea></div><div class="actions"><button class="btn dark" onclick="incidentModal.classList.remove('show')">Cancelar</button><button class="btn yellow" onclick="saveIncident()">Guardar</button></div></div></div>
-
-<div class="modal" id="expenseModal"><div class="modalbox"><h2>Nuevo gasto</h2><div class="formgrid"><div class="field"><label>CONCEPTO</label><input id="expName" placeholder="Supermercado, gasolina..."></div><div class="field"><label>IMPORTE</label><input id="expAmount" type="number" step=".01"></div></div><div class="actions"><button class="btn dark" onclick="expenseModal.classList.remove('show')">Cancelar</button><button class="btn green" onclick="saveExpense()">Guardar</button></div></div></div>
 
 <div class="modal" id="backupModal"><div class="modalbox"><h2>💾 Copia de seguridad</h2><p>Copia este texto y guárdalo donde quieras. Para restaurar una copia, pégala aquí y pulsa Importar.</p><textarea id="backupText" style="width:100%;min-height:150px;background:#08111b;color:white;border:1px solid #29405f;border-radius:12px;padding:10px"></textarea><div class="actions"><button class="btn dark" onclick="backupModal.classList.remove('show')">Cerrar</button><button class="btn primary" onclick="importBackup()">Importar</button></div></div></div>
 
@@ -274,23 +281,26 @@ const order=["night","morning","afternoon"];
 const newDefaults={
  scheduleMode:"rotation",
  workDays:{},
+ extraWorkDays:{},
  production:{outputMeters:1800,targetRolls:1,completedRolls:0,wasteMeters:0,machine:"Laminadora 1",note:"",frontRemaining:2800,backRemaining:7000,frontRollLengths:"2800",speed:120,hoursAvailable:8,changeMin:5,changeMax:10,savedAt:null},
  productionHistory:[],
- payroll:{baseSalary:1850,nightPremium:13,overtimeHours:0,overtimeRate:12,leaderBonus:100,otherExtras:0,deductions:0},
+ payroll:{modelVersion:2,grossBase:1885.38,seniority:26.19,agreementBonus:216.90,transportBonus:125,positionBonus:125,benefitsPay:88.69,nightPremium:13,nightCountOverride:null,overtimeHours:0,overtimeRate:12,otherExtras:0,contributionProrata:326.29,irpfRate:18.53,commonRate:4.70,unemploymentRate:1.55,trainingRate:0.10,meiRate:0.15,otherDeductions:0},
  machineStatuses:{"Laminadora 1":"running","Laminadora 2":"running","Celdillas":"running","Cortadora":"running","Impresora":"running"},
  profile:{name:"Alejandro",initials:"AG",accent:"#59a8ff",theme:"default",layout:"comfortable"},
- quickOrder:["production","incidents","money","expenses"]
+ quickOrder:["production","incidents","money"]
 };
 function normalizeState(raw={}){
  let state={refDate:null,refShift:"night",budget:1200,incidents:[],expenses:[],created:Date.now(),...newDefaults,...raw};
  state.workDays=state.workDays&&typeof state.workDays==="object"&&!Array.isArray(state.workDays)?state.workDays:{};
+ state.extraWorkDays=state.extraWorkDays&&typeof state.extraWorkDays==="object"&&!Array.isArray(state.extraWorkDays)?state.extraWorkDays:{};
  state.production={...newDefaults.production,...(state.production||{})};
  state.productionHistory=Array.isArray(state.productionHistory)?state.productionHistory:[];
  state.payroll={...newDefaults.payroll,...(state.payroll||{})};
  state.machineStatuses={...newDefaults.machineStatuses,...(state.machineStatuses||{})};
  state.profile={...newDefaults.profile,...(state.profile||{})};
  state.incidents=Array.isArray(state.incidents)?state.incidents:[];state.expenses=Array.isArray(state.expenses)?state.expenses:[];
- state.quickOrder=Array.isArray(state.quickOrder)&&state.quickOrder.length===4?state.quickOrder:newDefaults.quickOrder.slice();
+ state.quickOrder=Array.isArray(state.quickOrder)?state.quickOrder.filter(x=>newDefaults.quickOrder.includes(x)):newDefaults.quickOrder.slice();
+ if(state.quickOrder.length!==newDefaults.quickOrder.length)state.quickOrder=newDefaults.quickOrder.slice();
  return state;
 }
 let legacyState={};try{let r=localStorage.getItem(KEY);if(r)legacyState=JSON.parse(r)}catch(e){}
@@ -420,22 +430,33 @@ function nextWorkStart(){
 
 function dateKey(d){let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`}
 function manualMonthEntries(y,m){return Object.entries(S.workDays).filter(([key,h])=>{let d=new Date(key+"T12:00:00");return d.getFullYear()===y&&d.getMonth()===m&&+h>0})}
+function extraMonthEntries(y,m){return Object.entries(S.extraWorkDays).filter(([key,e])=>{let d=new Date(key+"T12:00:00");return d.getFullYear()===y&&d.getMonth()===m&&e&&+e.hours>0})}
+function extraEntryWindow(key,e){
+ let start=new Date(key+"T12:00:00"),hour=e.shift==="night"?22:e.shift==="afternoon"?14:6;start.setHours(hour,0,0,0);
+ let end=new Date(start.getTime()+Math.max(.5,+e.hours||8)*3600000);return{start,end}
+}
+function extraHoursScheduledThisMonth(){if(S.scheduleMode!=="rotation")return 0;let n=new Date();return extraMonthEntries(n.getFullYear(),n.getMonth()).reduce((sum,[,e])=>sum+(+e.hours||0),0)}
+function extraPayThisMonth(){if(S.scheduleMode!=="rotation")return 0;let n=new Date();return extraMonthEntries(n.getFullYear(),n.getMonth()).reduce((sum,[,e])=>sum+(+e.pay||0),0)}
+function extraHoursWorkedThisMonth(){
+ if(S.scheduleMode!=="rotation")return 0;
+ let now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1),monthEnd=new Date(now.getFullYear(),now.getMonth()+1,1),total=0;
+ Object.entries(S.extraWorkDays).forEach(([key,e])=>{if(!e||!(+e.hours>0))return;let {start,end}=extraEntryWindow(key,e),from=new Date(Math.max(start,monthStart)),to=new Date(Math.min(end,now,monthEnd));if(to>from)total+=(to-from)/3600000});
+ return total
+}
 function monthStats(){
  let n=new Date(),y=n.getFullYear(),m=n.getMonth();
  if(S.scheduleMode==="manual"){
    let plannedHours=manualMonthEntries(y,m).reduce((sum,[,h])=>sum+(+h||0),0);
-   let spent=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m}).reduce((a,b)=>a+b.amount,0);
-   return{plannedHours,hours:plannedHours,nights:0,spent};
+   return{plannedHours,hours:plannedHours,nights:0};
  }
  // Trabajadas + restantes divide exactamente el mismo mes natural en el
  // momento actual. Así las noches que cruzan de mes solo aportan las horas
  // comprendidas entre el día 1 a las 00:00 y el mes siguiente a las 00:00.
- let plannedHours=Math.round((workedHoursThisMonth()+remainingWorkHoursThisMonth())*60)/60;
- let spent=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m}).reduce((a,b)=>a+b.amount,0);
- return{plannedHours,hours:plannedHours,nights:scheduledNightStartsThisMonth(),spent}
+ let plannedHours=Math.round((regularWorkedHoursThisMonth()+remainingWorkHoursThisMonth())*60)/60;
+ return{plannedHours,hours:plannedHours,nights:scheduledNightStartsThisMonth()}
 }
 
-function workedHoursThisMonth(){
+function regularWorkedHoursThisMonth(){
  if(S.scheduleMode==="manual"){
    let now=new Date(),today=dateKey(now),y=now.getFullYear(),m=now.getMonth();
    return manualMonthEntries(y,m).filter(([key])=>key<today).reduce((sum,[,h])=>sum+(+h||0),0);
@@ -500,6 +521,8 @@ function workedHoursThisMonth(){
 
  return totalMs/3600000;
 }
+
+function workedHoursThisMonth(){return regularWorkedHoursThisMonth()+extraHoursWorkedThisMonth()}
 
 
 function remainingWorkHoursThisMonth(){
@@ -606,17 +629,11 @@ function currentNightWeekProgress(){
 }
 
 function fmtCountdown(ms){if(ms<0)ms=0;let s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`}
-function deprecatedMonthStats(){
- let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),hours=0,nights=0;
- for(let d=1;d<=days;d++){let x=new Date(y,m,d,12),i=shiftForDate(x);if(i?.working){hours+=8;if(i.shift==="night"&&x.getDay()===0)nights+=1}}
- let spent=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m}).reduce((a,b)=>a+b.amount,0);
- return{hours,nights,spent}
-}
 function renderHome(){
  let now=new Date(),info=shiftForDate(now),stats=monthStats();
  let worked=workedHoursThisMonth();monthHours.textContent=formatWorkedHours(worked);let remaining=remainingWorkHoursThisMonth();
-monthHoursPlanned.textContent="Quedan: "+formatRemainingHours(remaining);monthNights.textContent=S.scheduleMode==="manual"?"Personal":currentNightWeekProgress()+"/5";monthSpent.textContent=stats.spent.toFixed(0)+" €";incidentCount.textContent=S.incidents.length;
- summaryPlanned.textContent=formatRemainingHours(stats.plannedHours);summaryWorked.textContent=formatWorkedHours(worked);summaryOvertime.textContent=formatRemainingHours(S.payroll.overtimeHours||0);summaryRemaining.textContent=formatRemainingHours(remaining);
+monthHoursPlanned.textContent="Quedan: "+formatRemainingHours(remaining);monthNights.textContent=S.scheduleMode==="manual"?"Personal":currentNightWeekProgress()+"/5";incidentCount.textContent=S.incidents.length;
+ summaryPlanned.textContent=formatRemainingHours(stats.plannedHours);summaryWorked.textContent=formatWorkedHours(worked);summaryOvertime.textContent=formatRemainingHours(extraHoursScheduledThisMonth()+(+S.payroll.overtimeHours||0));summaryRemaining.textContent=formatRemainingHours(remaining);
  if(S.scheduleMode==="manual"){
    let hours=+S.workDays[dateKey(now)]||0;shiftName.textContent=hours?"TRABAJO":"LIBRE";shiftTime.textContent=hours?`${hours} horas configuradas para hoy`:"Sin horas configuradas para hoy";shiftBadge.textContent="Calendario personal";
    todaySummary.textContent=hours?`Hoy tienes ${hours} h de trabajo`:"Hoy libras";todayDetail.textContent=hours?"Horario añadido por ti":"Puedes añadir días desde Calendario";return;
@@ -635,8 +652,9 @@ monthHoursPlanned.textContent="Quedan: "+formatRemainingHours(remaining);monthNi
    todaySummary.textContent="Semana de noche terminada";
    todayDetail.textContent="Has terminado hoy a las 06:00";
  } else {
-   todaySummary.textContent="Hoy libras";
-   todayDetail.textContent="No tienes turno programado hoy";
+   let extra=S.extraWorkDays[dateKey(now)];
+   if(extra){todaySummary.textContent="Hoy trabajas horas extra";todayDetail.textContent=`${extra.hours} h · turno de ${shifts[extra.shift].name.toLowerCase()}${now.getDay()===6?" · sábado +112 €":""}`}
+   else{todaySummary.textContent="Hoy libras";todayDetail.textContent="No tienes turno programado hoy"}
  }
 }
 function updateCountdown(){
@@ -651,23 +669,38 @@ function changeMonth(delta){if(delta===0)calDate=new Date();else calDate.setMont
 function renderCalendar(){
  let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),today=new Date();
  calendarTitle.textContent=new Intl.DateTimeFormat("es-ES",{month:"long",year:"numeric"}).format(first);
- calendarMode.value=S.scheduleMode||"rotation";manualDayEditor.style.display=S.scheduleMode==="manual"?"block":"none";
+ calendarMode.value=S.scheduleMode||"rotation";manualDayEditor.style.display=S.scheduleMode==="manual"?"block":"none";extraDayEditor.style.display=S.scheduleMode==="rotation"?"block":"none";
  let out=["L","M","X","J","V","S","D"].map(d=>`<div class="dow">${d}</div>`).join("");
  let pad=(first.getDay()+6)%7;for(let i=0;i<pad;i++)out+="<div></div>";
  for(let d=1;d<=last.getDate();d++){
-  let x=new Date(y,m,d,12),key=dateKey(x),manualHours=+S.workDays[key]||0,i=S.scheduleMode==="manual"?null:shiftForDate(x);
-  let cls=S.scheduleMode==="manual"?(manualHours?"manualDay":"off"):(i?.working?i.shift:"off");
-  let label=S.scheduleMode==="manual"?(manualHours?manualHours+" H":"LIBRE"):(i?.label||(i?.working?shifts[i.shift].name:"LIBRE"));
+  let x=new Date(y,m,d,12),key=dateKey(x),manualHours=+S.workDays[key]||0,i=S.scheduleMode==="manual"?null:shiftForDate(x),extra=S.extraWorkDays[key];
+  let cls=S.scheduleMode==="manual"?(manualHours?"manualDay":"off"):(extra?"extraDay":i?.working?i.shift:"off");
+  let label=S.scheduleMode==="manual"?(manualHours?manualHours+" H":"LIBRE"):(extra?`${extra.hours} H EXTRA · ${shifts[extra.shift].name}`:(i?.label||(i?.working?shifts[i.shift].name:"LIBRE")));
   let isToday=x.toDateString()===today.toDateString();
-  out+=`<div class="day ${cls} ${isToday?"today":""}" ${S.scheduleMode==="manual"?`onclick="editManualDay('${key}')"`:""}><div class="n">${d}</div><div class="s">${label}</div></div>`
+  let action=S.scheduleMode==="manual"?`onclick="editManualDay('${key}')"`:(!i?.working?`onclick="editExtraDay('${key}')"`:"");
+  out+=`<div class="day ${cls} ${isToday?"today":""}" ${action}><div class="n">${d}</div><div class="s">${label}</div></div>`
  }
- calendarGrid.innerHTML=out;renderManualDays();
+ calendarGrid.innerHTML=out;renderManualDays();renderExtraDays();
 }
 function saveScheduleMode(){S.scheduleMode=calendarMode.value;save();renderAll();if(S.scheduleMode==="rotation"&&!S.refDate)setTimeout(openSetup,200)}
 function saveManualDay(){let key=manualDate.value,h=Math.max(.5,Math.min(24,+manualHours.value||8));if(!key)return toast("Elige un día");S.workDays[key]=h;save();calDate=new Date(key+"T12:00:00");renderAll();toast("Día y horas guardados")}
 function editManualDay(key){manualDate.value=key;manualHours.value=S.workDays[key]||8;manualDate.scrollIntoView({behavior:"smooth",block:"center"})}
 function deleteManualDay(key){delete S.workDays[key];save();renderAll();toast("Día eliminado")}
 function renderManualDays(){if(!manualDayList)return;let entries=manualMonthEntries(calDate.getFullYear(),calDate.getMonth()).sort((a,b)=>a[0].localeCompare(b[0]));manualDayList.innerHTML=S.scheduleMode==="manual"?(entries.length?entries.map(([key,h])=>`<div class="manualRow"><div><div class="name">${new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"}).format(new Date(key+"T12:00:00"))}</div><div class="desc">${h} horas</div></div><button class="btn red" onclick="deleteManualDay('${key}')">Borrar</button></div>`).join(""):`<div class="desc">Todavía no has añadido días este mes.</div>`):""}
+function suggestExtraPay(){if(!extraDate.value)return;let d=new Date(extraDate.value+"T12:00:00"),saturday=d.getDay()===6;extraPay.value=saturday?112:0;extraPay.readOnly=saturday}
+function editExtraDay(key){
+ let info=shiftForDate(new Date(key+"T12:00:00"));if(info?.working)return;
+ let e=S.extraWorkDays[key],saturday=new Date(key+"T12:00:00").getDay()===6;extraDate.value=key;extraHours.value=e?.hours||8;extraShift.value=e?.shift||"morning";extraPay.value=saturday?112:(e?.pay??0);extraPay.readOnly=saturday;extraDate.scrollIntoView({behavior:"smooth",block:"center"})
+}
+function saveExtraDay(){
+ let key=extraDate.value;if(!key)return toast("Elige un día libre");let d=new Date(key+"T12:00:00"),info=shiftForDate(d);if(info?.working)return toast("Ese día ya tiene turno automático");
+ let hours=Math.max(.5,Math.min(24,+extraHours.value||8)),shift=extraShift.value,pay=d.getDay()===6?112:Math.max(0,+extraPay.value||0);S.extraWorkDays[key]={hours,shift,pay};save();calDate=d;renderAll();toast(d.getDay()===6?"Sábado extra guardado: +112 €":"Trabajo extra guardado")
+}
+function deleteExtraDay(key){delete S.extraWorkDays[key];save();renderAll();toast("Trabajo extra eliminado")}
+function renderExtraDays(){
+ if(!extraDayList)return;let entries=extraMonthEntries(calDate.getFullYear(),calDate.getMonth()).sort((a,b)=>a[0].localeCompare(b[0]));
+ extraDayList.innerHTML=S.scheduleMode==="rotation"?(entries.length?entries.map(([key,e])=>`<div class="manualRow"><div><div class="name">${new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"}).format(new Date(key+"T12:00:00"))} · ${shifts[e.shift].name}</div><div class="desc">${e.hours} horas extra · ${(+e.pay||0).toFixed(2)} € brutos${e.shift==="night"?" + 13 € de nocturnidad":""}</div></div><button class="btn red" onclick="deleteExtraDay('${key}')">Borrar</button></div>`).join(""):`<div class="desc">Todavía no has añadido trabajos en días libres este mes.</div>`):""
+}
 let lastProductionResult=null;
 function calcProduction(){
  let out=Math.max(1,+outputMeters.value||1800),count=Math.max(1,Math.floor(+targetRolls.value||1));
@@ -747,60 +780,66 @@ function scheduledNightStartsThisMonth(){
      count++;
    }
  }
+ count+=extraMonthEntries(y,m).filter(([,e])=>e.shift==="night").length;
  return count;
 }
 
-function payrollValues(){let p={baseSalary:Math.max(0,+baseSalary.value||0),nightPremium:Math.max(0,+nightPremium.value||0),overtimeHours:Math.max(0,+overtimeHours.value||0),overtimeRate:Math.max(0,+overtimeRate.value||0),leaderBonus:Math.max(0,+leaderBonus.value||0),otherExtras:Math.max(0,+otherExtras.value||0),deductions:Math.max(0,+payrollDeductions.value||0)},nightCount=scheduledNightStartsThisMonth(),nightExtra=nightCount*p.nightPremium,overtime=p.overtimeHours*p.overtimeRate,extras=p.leaderBonus+p.otherExtras,total=p.baseSalary+nightExtra+overtime+extras-p.deductions;return{p,nightCount,nightExtra,overtime,extras,total}}
+function moneyRound(v){return Math.round((v+Number.EPSILON)*100)/100}
+function payrollValues(fromForm=true){
+ let source=fromForm?{
+  grossBase:grossBase.value,seniority:seniorityPay.value,agreementBonus:agreementBonus.value,transportBonus:transportBonus.value,positionBonus:positionBonus.value,benefitsPay:benefitsPay.value,nightPremium:nightPremium.value,nightCountOverride:nightCountOverride.value,overtimeHours:overtimeHours.value,overtimeRate:overtimeRate.value,otherExtras:otherExtras.value,contributionProrata:contributionProrata.value,irpfRate:irpfRate.value,commonRate:commonRate.value,unemploymentRate:unemploymentRate.value,trainingRate:trainingRate.value,meiRate:meiRate.value,otherDeductions:otherDeductions.value
+ }:S.payroll;
+ let p={...S.payroll,modelVersion:2};
+ ["grossBase","seniority","agreementBonus","transportBonus","positionBonus","benefitsPay","nightPremium","overtimeHours","overtimeRate","otherExtras","contributionProrata","irpfRate","commonRate","unemploymentRate","trainingRate","meiRate","otherDeductions"].forEach(k=>p[k]=Math.max(0,+source[k]||0));
+ p.nightCountOverride=source.nightCountOverride===""||source.nightCountOverride==null?null:Math.max(0,Math.round(+source.nightCountOverride||0));
+ let nightCount=S.scheduleMode==="rotation"?scheduledNightStartsThisMonth():(p.nightCountOverride??0),nightExtra=moneyRound(nightCount*p.nightPremium),overtime=moneyRound(p.overtimeHours*p.overtimeRate),calendarExtraPay=moneyRound(extraPayThisMonth()),calendarExtraHours=extraHoursScheduledThisMonth();
+ let fixedGross=moneyRound(p.grossBase+p.seniority+p.agreementBonus+p.transportBonus+p.positionBonus+p.benefitsPay),gross=moneyRound(fixedGross+nightExtra+overtime+calendarExtraPay+p.otherExtras);
+ let contributionBase=moneyRound(gross+p.contributionProrata),irpf=moneyRound(gross*p.irpfRate/100);
+ let common=moneyRound(contributionBase*p.commonRate/100),unemployment=moneyRound(contributionBase*p.unemploymentRate/100),training=moneyRound(contributionBase*p.trainingRate/100),mei=moneyRound(contributionBase*p.meiRate/100);
+ let socialSecurity=moneyRound(common+unemployment+training+mei),deductions=moneyRound(irpf+socialSecurity+p.otherDeductions),total=moneyRound(gross-deductions);
+ return{p,nightCount,nightExtra,overtime,calendarExtraPay,calendarExtraHours,fixedGross,gross,contributionBase,irpf,socialSecurity,deductions,total}
+}
 function calcSalary(persist=false){
- let v=payrollValues();salaryNights.textContent=v.nightCount;salaryNightExtra.textContent=v.nightExtra.toFixed(2)+" €";salaryOvertime.textContent=v.overtime.toFixed(2)+" €";salaryOtherExtras.textContent=v.extras.toFixed(2)+" €";salaryTotal.textContent=v.total.toFixed(2)+" €";
+ let v=payrollValues(true);salaryNights.textContent=v.nightCount;salaryExtraDays.textContent=v.calendarExtraPay.toFixed(2)+" €";salaryGross.textContent=v.gross.toFixed(2)+" €";salaryIrpf.textContent="−"+v.irpf.toFixed(2)+" €";salarySocialSecurity.textContent="−"+v.socialSecurity.toFixed(2)+" €";salaryDeductions.textContent="−"+v.deductions.toFixed(2)+" €";salaryTotal.textContent=v.total.toFixed(2)+" €";
  if(persist){S.payroll=v.p;save();renderHome();renderMoney();toast("Nómina guardada")}
 }
 function openSetup(){setupDate.value=S.refDate||new Date().toISOString().slice(0,10);setupShift.value=S.refShift;setupModal.classList.add("show")}
 function closeSetup(){setupModal.classList.remove("show")}
 function saveSetup(){S.refDate=setupDate.value;S.refShift=setupShift.value;S.scheduleMode="rotation";save();closeSetup();syncSettings();renderAll();toast("Rotación guardada")}
 function saveRotation(){S.refDate=refDate.value;S.refShift=refShift.value;S.scheduleMode="rotation";save();renderAll();toast("Rotación actualizada")}
-function saveBudget(){S.budget=+budgetInput.value||1200;save();renderExpenses();toast("Presupuesto guardado")}
 function openIncident(){incMachine.value="";incText.value="";incSeverity.value="Leve";incidentModal.classList.add("show")}
 function saveIncident(){if(!incMachine.value.trim()&&!incText.value.trim())return;S.incidents.unshift({id:Date.now(),machine:incMachine.value.trim(),text:incText.value.trim(),severity:incSeverity.value,date:new Date().toISOString()});save();incidentModal.classList.remove("show");renderIncidents();renderHome();toast("Incidencia guardada")}
 function deleteIncident(id){S.incidents=S.incidents.filter(x=>x.id!==id);save();renderIncidents();renderHome()}
 function renderIncidents(){
  incidentList.innerHTML=S.incidents.length?S.incidents.map(i=>`<div class="card incident"><div class="row"><div class="ico">⚠️</div><div class="grow"><div class="name">${esc(i.machine||"Incidencia")}</div><div class="desc">${esc(i.text)}</div><div class="meta">${new Intl.DateTimeFormat("es-ES",{dateStyle:"medium",timeStyle:"short"}).format(new Date(i.date))} · ${esc(i.severity)}</div></div><button class="btn red" onclick="deleteIncident(${i.id})">Borrar</button></div></div>`).join(""):`<div class="card"><div class="desc">Todavía no has registrado incidencias.</div></div>`
 }
-function openExpense(){expName.value="";expAmount.value="";expenseModal.classList.add("show")}
-function saveExpense(){let a=+expAmount.value;if(!a)return;S.expenses.unshift({id:Date.now(),name:expName.value.trim()||"Gasto",amount:a,date:new Date().toISOString()});save();expenseModal.classList.remove("show");renderExpenses();renderHome();toast("Gasto añadido")}
-function deleteExpense(id){S.expenses=S.expenses.filter(x=>x.id!==id);save();renderExpenses();renderHome()}
-function renderExpenses(){
- let st=monthStats(),pct=Math.min(100,st.spent/Math.max(1,S.budget)*100);spentMonth.textContent=st.spent.toFixed(2)+" €";budgetMonth.textContent=S.budget.toFixed(0)+" €";budgetProgress.style.width=pct+"%";budgetMeta.textContent=st.spent.toFixed(2)+" € de "+S.budget.toFixed(0)+" €";
- let n=new Date(),y=n.getFullYear(),m=n.getMonth(),list=S.expenses.filter(e=>{let x=new Date(e.date);return x.getFullYear()===y&&x.getMonth()===m});
- expenseList.innerHTML=list.length?list.map(e=>`<div class="card expense"><div><div class="name">${esc(e.name)}</div><div class="desc">${new Intl.DateTimeFormat("es-ES",{dateStyle:"medium"}).format(new Date(e.date))}</div></div><div><span class="amount">${e.amount.toFixed(2)} €</span> <button class="btn red" onclick="deleteExpense(${e.id})">×</button></div></div>`).join(""):`<div class="card"><div class="desc">No hay gastos registrados este mes.</div></div>`
-}
 function renderMoney(){
- let st=monthStats(),p=S.payroll,night=scheduledNightStartsThisMonth()*p.nightPremium,overtime=p.overtimeHours*p.overtimeRate,pluses=p.leaderBonus+p.otherExtras,total=p.baseSalary+night+overtime+pluses-p.deductions,free=total-st.spent;
- moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>NÓMINA BASE</small><b>${p.baseSalary.toFixed(0)} €</b></div><div class="metric"><small>NOCTURNIDAD</small><b>${night.toFixed(0)} €</b></div><div class="metric"><small>HORAS EXTRA</small><b>${overtime.toFixed(0)} €</b></div><div class="metric"><small>OTROS PLUSES</small><b>${pluses.toFixed(0)} €</b></div><div class="metric"><small>NÓMINA ESTIMADA</small><b>${total.toFixed(0)} €</b></div><div class="metric"><small>GASTOS DEL MES</small><b>${st.spent.toFixed(0)} €</b></div><div class="metric"><small>DINERO LIBRE</small><b style="color:${free>=0?'var(--green)':'var(--red)'}">${free.toFixed(0)} €</b></div><div class="metric"><small>PRESUPUESTO RESTANTE</small><b>${(S.budget-st.spent).toFixed(0)} €</b></div></div>`
+ let v=payrollValues(false);
+ moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>BRUTO FIJO</small><b>${v.fixedGross.toFixed(2)} €</b></div><div class="metric"><small>NOCTURNIDAD</small><b>${v.nightExtra.toFixed(2)} €</b></div><div class="metric"><small>DÍAS LIBRES</small><b>${v.calendarExtraPay.toFixed(2)} €</b><div class="meta">${formatRemainingHours(v.calendarExtraHours)} extra</div></div><div class="metric"><small>OTRAS HORAS EXTRA</small><b>${v.overtime.toFixed(2)} €</b></div><div class="metric"><small>BRUTO TOTAL</small><b>${v.gross.toFixed(2)} €</b></div><div class="metric"><small>IRPF + SEG. SOCIAL</small><b style="color:var(--red)">−${v.deductions.toFixed(2)} €</b></div><div class="metric"><small>NETO ESTIMADO</small><b style="color:var(--green)">${v.total.toFixed(2)} €</b></div></div>`
 }
 function applyPersonalization(){document.documentElement.style.setProperty("--blue",S.profile.accent);document.documentElement.dataset.theme=S.profile.theme||"default";document.documentElement.dataset.layout=S.profile.layout||"comfortable";avatar.textContent=S.profile.initials||"AG";profileName.value=S.profile.name||"";profileInitials.value=S.profile.initials||"AG";accentColor.value=S.profile.accent;themeStyle.value=S.profile.theme||"default";homeLayout.value=S.profile.layout||"comfortable"}
 function savePersonalization(){S.profile={name:profileName.value.trim()||"Alejandro",initials:(profileInitials.value.trim()||"AG").toUpperCase().slice(0,3),accent:accentColor.value,theme:themeStyle.value,layout:homeLayout.value};save();applyPersonalization();toast("Diseño actualizado")}
-const quickLabels={production:"🏭 Producción",incidents:"📝 Incidencias",money:"💰 Nómina",expenses:"💸 Gastos"};
+const quickLabels={production:"🏭 Producción",incidents:"📝 Incidencias",money:"💰 Nómina"};
 function renderQuickOrder(){
  let container=document.getElementById("quickAccess");S.quickOrder.forEach(key=>{let item=container.querySelector(`[data-quick="${key}"]`);if(item)container.appendChild(item)});
  quickOrderList.innerHTML=S.quickOrder.map((key,i)=>`<div class="orderRow"><div class="name">${quickLabels[key]}</div><button class="btn dark" onclick="moveQuick('${key}',-1)" ${i===0?"disabled":""}>↑</button><button class="btn dark" onclick="moveQuick('${key}',1)" ${i===S.quickOrder.length-1?"disabled":""}>↓</button></div>`).join("");
 }
 function moveQuick(key,delta){let i=S.quickOrder.indexOf(key),j=i+delta;if(i<0||j<0||j>=S.quickOrder.length)return;[S.quickOrder[i],S.quickOrder[j]]=[S.quickOrder[j],S.quickOrder[i]];save();renderQuickOrder()}
-function syncSettings(){refDate.value=S.refDate||"";refShift.value=S.refShift;budgetInput.value=S.budget;baseSalary.value=S.payroll.baseSalary;nightPremium.value=S.payroll.nightPremium;overtimeHours.value=S.payroll.overtimeHours;overtimeRate.value=S.payroll.overtimeRate;leaderBonus.value=S.payroll.leaderBonus;otherExtras.value=S.payroll.otherExtras;payrollDeductions.value=S.payroll.deductions;applyPersonalization()}
+function syncSettings(){refDate.value=S.refDate||"";refShift.value=S.refShift;grossBase.value=S.payroll.grossBase;seniorityPay.value=S.payroll.seniority;agreementBonus.value=S.payroll.agreementBonus;transportBonus.value=S.payroll.transportBonus;positionBonus.value=S.payroll.positionBonus;benefitsPay.value=S.payroll.benefitsPay;nightPremium.value=S.payroll.nightPremium;nightCountOverride.value=S.payroll.nightCountOverride??"";overtimeHours.value=S.payroll.overtimeHours;overtimeRate.value=S.payroll.overtimeRate;otherExtras.value=S.payroll.otherExtras;contributionProrata.value=S.payroll.contributionProrata;irpfRate.value=S.payroll.irpfRate;commonRate.value=S.payroll.commonRate;unemploymentRate.value=S.payroll.unemploymentRate;trainingRate.value=S.payroll.trainingRate;meiRate.value=S.payroll.meiRate;otherDeductions.value=S.payroll.otherDeductions;applyPersonalization()}
 function openBackup(){backupText.value=btoa(unescape(encodeURIComponent(JSON.stringify(S))));backupModal.classList.add("show")}
 function importBackup(){try{let restored=JSON.parse(decodeURIComponent(escape(atob(backupText.value.trim()))));S=normalizeState({...S,...restored});save();backupModal.classList.remove("show");renderAll();toast("Copia restaurada")}catch(e){toast("Copia no válida")}}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="calendar")renderCalendar();if(id==="expenses")renderExpenses();if(id==="money")renderMoney();if(id==="incidents")renderIncidents();if(id==="work"){let info=shiftForDate(new Date()),h=+S.workDays[dateKey(new Date())]||0;workShift.textContent=S.scheduleMode==="manual"?(h?h+" H":"LIBRE"):(info?.working?shifts[info.shift].name:"LIBRE")}}
+function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="calendar")renderCalendar();if(id==="money")renderMoney();if(id==="incidents")renderIncidents();if(id==="work"){let now=new Date(),info=shiftForDate(now),extra=S.extraWorkDays[dateKey(now)],h=+S.workDays[dateKey(now)]||0;workShift.textContent=S.scheduleMode==="manual"?(h?h+" H":"LIBRE"):(extra?shifts[extra.shift].name+" EXTRA":info?.working?shifts[info.shift].name:"LIBRE")}}
 document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
 document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
-function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderExpenses();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
-const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),monthSpent=document.getElementById("monthSpent"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),expenseList=document.getElementById("expenseList"),spentMonth=document.getElementById("spentMonth"),budgetMonth=document.getElementById("budgetMonth"),budgetProgress=document.getElementById("budgetProgress"),budgetMeta=document.getElementById("budgetMeta"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),expenseModal=document.getElementById("expenseModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
-const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),productionHistory=document.getElementById("productionHistory"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor"),themeStyle=document.getElementById("themeStyle"),homeLayout=document.getElementById("homeLayout"),leaderBonus=document.getElementById("leaderBonus"),otherExtras=document.getElementById("otherExtras"),payrollDeductions=document.getElementById("payrollDeductions"),salaryOtherExtras=document.getElementById("salaryOtherExtras"),summaryPlanned=document.getElementById("summaryPlanned"),summaryWorked=document.getElementById("summaryWorked"),summaryOvertime=document.getElementById("summaryOvertime"),summaryRemaining=document.getElementById("summaryRemaining");
-const calendarMode=document.getElementById("calendarMode"),manualDayEditor=document.getElementById("manualDayEditor"),manualDate=document.getElementById("manualDate"),manualHours=document.getElementById("manualHours"),manualDayList=document.getElementById("manualDayList"),authName=document.getElementById("authName"),authEmail=document.getElementById("authEmail"),authPhoto=document.getElementById("authPhoto"),authLoginButton=document.getElementById("authLoginButton"),authStatus=document.getElementById("authStatus");
+function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
+const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
+const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),productionHistory=document.getElementById("productionHistory"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor"),themeStyle=document.getElementById("themeStyle"),homeLayout=document.getElementById("homeLayout"),grossBase=document.getElementById("grossBase"),seniorityPay=document.getElementById("seniorityPay"),agreementBonus=document.getElementById("agreementBonus"),transportBonus=document.getElementById("transportBonus"),positionBonus=document.getElementById("positionBonus"),benefitsPay=document.getElementById("benefitsPay"),nightPremium=document.getElementById("nightPremium"),nightCountOverride=document.getElementById("nightCountOverride"),overtimeHours=document.getElementById("overtimeHours"),overtimeRate=document.getElementById("overtimeRate"),otherExtras=document.getElementById("otherExtras"),contributionProrata=document.getElementById("contributionProrata"),irpfRate=document.getElementById("irpfRate"),commonRate=document.getElementById("commonRate"),unemploymentRate=document.getElementById("unemploymentRate"),trainingRate=document.getElementById("trainingRate"),meiRate=document.getElementById("meiRate"),otherDeductions=document.getElementById("otherDeductions"),salaryNights=document.getElementById("salaryNights"),salaryExtraDays=document.getElementById("salaryExtraDays"),salaryGross=document.getElementById("salaryGross"),salaryIrpf=document.getElementById("salaryIrpf"),salarySocialSecurity=document.getElementById("salarySocialSecurity"),salaryDeductions=document.getElementById("salaryDeductions"),salaryTotal=document.getElementById("salaryTotal"),summaryPlanned=document.getElementById("summaryPlanned"),summaryWorked=document.getElementById("summaryWorked"),summaryOvertime=document.getElementById("summaryOvertime"),summaryRemaining=document.getElementById("summaryRemaining");
+const calendarMode=document.getElementById("calendarMode"),manualDayEditor=document.getElementById("manualDayEditor"),manualDate=document.getElementById("manualDate"),manualHours=document.getElementById("manualHours"),manualDayList=document.getElementById("manualDayList"),extraDayEditor=document.getElementById("extraDayEditor"),extraDate=document.getElementById("extraDate"),extraHours=document.getElementById("extraHours"),extraShift=document.getElementById("extraShift"),extraPay=document.getElementById("extraPay"),extraDayList=document.getElementById("extraDayList"),authName=document.getElementById("authName"),authEmail=document.getElementById("authEmail"),authPhoto=document.getElementById("authPhoto"),authLoginButton=document.getElementById("authLoginButton"),authStatus=document.getElementById("authStatus");
 window.getShiftState=()=>JSON.parse(JSON.stringify(S));
 window.activateShiftUser=(uid,state,user)=>{ACTIVE_KEY=KEY+"_"+uid;S=normalizeState(state||{scheduleMode:"manual",profile:{...newDefaults.profile,name:user?.displayName||"Usuario",initials:(user?.displayName||"U").split(/\s+/).map(x=>x[0]).join("").slice(0,3).toUpperCase()}});authName.textContent=user?.displayName||"Usuario";authEmail.textContent=user?.email||"Cuenta de Google";authPhoto.src=user?.photoURL||"icon-192.png";renderAll();if(S.scheduleMode==="rotation"&&!S.refDate)setTimeout(openSetup,350)};
 targetRolls.addEventListener("input",()=>{renderProductionProgress();calcProduction()});completedRolls.addEventListener("input",renderProductionProgress);
-manualDate.value=new Date().toISOString().slice(0,10);renderAll();setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
+manualDate.value=new Date().toISOString().slice(0,10);extraDate.value=manualDate.value;suggestExtraPay();renderAll();setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 <script src="firebase-sync.js"></script>

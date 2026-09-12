@@ -117,3 +117,19 @@ ACTUALIZACIÓN 2.4
 - Nuevo calendario personal para añadir días de trabajo y las horas de cada día.
 - Se mantiene la rotación automática como alternativa para quien la necesite.
 - Apple queda preparado para una futura activación cuando exista una cuenta Apple Developer.
+
+ACTUALIZACIÓN 2.5
+- Cálculo de nómina corregido: ahora parte del salario bruto y resta IRPF y Seguridad Social.
+- Datos iniciales calibrados con la nómina de agosto de 2026: 2.532,16 € brutos, 655,02 € de descuentos y 1.877,14 € netos con 5 noches.
+- Desglose editable de salario base, antigüedad, plus convenio, transporte, puesto, beneficios y nocturnidad.
+- Cotizaciones calculadas por separado: contingencias comunes, desempleo, formación y MEI.
+- Mantiene los datos anteriores y conserva la misma clave de almacenamiento y sincronización individual.
+
+ACTUALIZACIÓN 2.6
+- En la rotación automática puedes pulsar cualquier día libre y añadir un trabajo extra.
+- Cada trabajo extra guarda fecha, horas, turno y pago bruto del día.
+- Los sábados aplican automáticamente 112 € brutos. En otros días libres el importe puede indicarse manualmente.
+- Un turno extra de noche suma también los 13 € de nocturnidad.
+- Las horas de días libres se añaden a las trabajadas y aparecen separadas como horas extra, sin aumentar las horas previstas normales.
+- El pago extra se incorpora al bruto y se descuentan IRPF y Seguridad Social para estimar el neto.
+- Se han retirado de la interfaz Gastos, presupuesto y dinero libre. Los registros antiguos se conservan internamente para no perder datos.
