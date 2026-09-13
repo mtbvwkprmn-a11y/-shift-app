@@ -109,6 +109,12 @@ ACTUALIZACIÓN 2.3
 - Nuevos estilos Azul oscuro, Medianoche y Grafito, además del modo Inicio cómodo o compacto.
 - Se conserva la clave de almacenamiento anterior para mantener todos los datos guardados.
 
+ACTUALIZACIÓN 2.7
+- Las horas añadidas como trabajo extra en días libres aparecen automáticamente en la casilla "Horas extra del calendario" de Nómina.
+- Los sábados mantienen su pago fijo de 112 € y no se vuelven a multiplicar por el precio de otras horas extra.
+- La casilla "Otras horas extra" sigue disponible para horas adicionales que no se hayan añadido desde el calendario.
+- Se conservan todos los datos locales y sincronizados de versiones anteriores.
+
 ACTUALIZACIÓN 2.4
 - Inicio de sesión individual mediante Google.
 - Cada usuario tiene separados su calendario, horas, producción, gastos y ajustes.
