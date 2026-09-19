@@ -141,12 +141,13 @@ ACTUALIZACIÓN 2.6
 - Se han retirado de la interfaz Gastos, presupuesto y dinero libre. Los registros antiguos se conservan internamente para no perder datos.
 
 
-ACTUALIZACIÓN 4.0
-- Reconstrucción visual completa: nueva jerarquía, tarjetas, formularios, navegación y diseño móvil.
-- Nuevo panel Tu jornada con progreso mensual, horas realizadas, pendientes y extras.
-- Nueva vista Próximos 7 días en Inicio.
-- Nuevo bloque de Acciones rápidas para Calendario, Producción, Nómina e Incidencias.
-- Nuevo sistema de Avisos inteligentes basado en horas restantes, extras, noches e incidencias.
-- Interfaz más clara y legible, manteniendo las funciones y datos de SHIFT 2.7.
-- Se mantienen rotación, calendario manual, días extra, nómina, producción, relevos, máquinas, incidencias, personalización, backup y Firebase.
-- Se conserva el almacenamiento existente para evitar pérdida de datos.
+ACTUALIZACIÓN 5.0 · LIFE HUB
+- Nueva sección “Mi día”, independiente del trabajo.
+- Lista de tareas personales con completado y borrado.
+- Seguimiento rápido de hábitos diarios: agua, entrenamiento y orden.
+- Registro de estado de ánimo.
+- Temporizador Focus de 25 minutos.
+- Objetivo de ahorro con progreso visual.
+- Bloc de nota rápida.
+- Resumen personal de tareas, hábitos, ánimo y ahorro.
+- Todo lo anterior de SHIFT se mantiene intacto.
