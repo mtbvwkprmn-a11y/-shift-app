@@ -57,6 +57,36 @@ button,input,select,textarea{font:inherit}
 .summary4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.summary4 .metric{padding:9px}.summary4 .metric b{font-size:14px}.historyItem{border-left:3px solid var(--blue)}.historyTop{display:flex;justify-content:space-between;gap:8px}.historyFlow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:7px;margin-top:9px}.historyFlow>div{background:#09111b;border:1px solid #233850;border-radius:11px;padding:8px}.historyFlow>span{color:var(--blue);font-weight:950}.historyFlow small{display:block;color:var(--muted);font-size:8px}.historyFlow b{display:block;font-size:11px;margin-top:3px}.themeHint{display:flex;gap:6px;margin-top:8px}.themeDot{height:22px;flex:1;border-radius:7px;border:1px solid #ffffff20}.themeDot:nth-child(1){background:linear-gradient(90deg,#070b11,#59a8ff)}.themeDot:nth-child(2){background:linear-gradient(90deg,#050718,#8d8cff)}.themeDot:nth-child(3){background:linear-gradient(90deg,#0b0c0e,#777f88)}
 .authGate{position:fixed;inset:0;z-index:300;background:radial-gradient(circle at 50% 5%,#20385d,#080d15 48%,#030507);display:none;align-items:center;justify-content:center;padding:24px}.auth-pending .authGate,.auth-required .authGate{display:flex}.authBox{width:min(420px,100%);text-align:center;background:#0e1723;border:1px solid #2d4260;border-radius:28px;padding:28px 22px;box-shadow:0 25px 80px #0008}.authLogo{font-size:48px;margin-bottom:8px}.authTitle{font-size:34px;font-weight:950;letter-spacing:-1.5px}.authTitle span{color:var(--blue)}.googleBtn{width:100%;margin-top:20px;background:white;color:#17202b;border:0;border-radius:14px;padding:13px;font-weight:900}.authStatus{font-size:10px;color:var(--muted);margin-top:10px}.manualDay,.extraDay{background:#10251d!important;border-color:#2b7052!important}.extraDay{box-shadow:inset 0 0 0 1px #64df9f55}.manualList{display:flex;flex-direction:column;gap:6px;margin-top:9px}.manualRow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#09111b;border:1px solid #243a50;border-radius:11px;padding:8px}.accountPhoto{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#182538}
 @media(max-width:430px){.summary4{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== SHIFT 3.0 · REDESIGN ===== */
+body{background:
+ radial-gradient(circle at 12% -4%,rgba(89,168,255,.20),transparent 31%),
+ radial-gradient(circle at 94% 8%,rgba(168,120,255,.14),transparent 28%),
+ linear-gradient(180deg,#07111d 0%,#05080e 62%,#030509 100%);background-attachment:fixed}
+.app{max-width:900px}.screen{padding:12px 13px 112px}
+.header{padding:7px 3px 3px;margin-bottom:12px}.brand{font-size:25px;letter-spacing:-1.2px}
+.avatar{border-radius:50%;border:1px solid #ffffff24;box-shadow:0 9px 32px #0008,0 0 0 4px #ffffff08}
+.hero{padding:22px;border-radius:30px;background:linear-gradient(145deg,rgba(25,39,60,.95),rgba(7,13,22,.96));border:1px solid #ffffff17;box-shadow:0 24px 70px #0009,inset 0 1px #ffffff12}
+.hero:before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;right:-85px;top:-100px;background:var(--blue);filter:blur(82px);opacity:.2}
+.shiftName{font-size:38px}.countdown{background:#050a12b8;border-color:#ffffff12;backdrop-filter:blur(16px);padding:15px;border-radius:19px}
+.quick{gap:9px}.q{background:#ffffff08;border:1px solid #ffffff12;border-radius:17px;padding:11px}
+.card,.metric{background:linear-gradient(145deg,rgba(18,29,44,.88),rgba(7,13,22,.92));border:1px solid #ffffff12;box-shadow:inset 0 1px #ffffff08}
+.card{border-radius:22px}.metric{border-radius:18px}.sectionTitle{font-size:16px;letter-spacing:-.25px;margin-top:18px}
+.btn{transition:.18s transform,.18s filter}.btn:active{transform:scale(.96);filter:brightness(.9)}
+.bottomnav{bottom:10px;width:min(600px,calc(100% - 20px));border:1px solid #ffffff16;border-radius:25px;padding:8px 7px calc(8px + env(safe-area-inset-bottom));background:rgba(7,14,24,.86);box-shadow:0 18px 55px #000b;backdrop-filter:blur(25px)}
+.bottomnav button{border-radius:16px;padding:5px}.bottomnav button.active{background:#ffffff0d;color:white}
+.v3bar{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 11px}
+.v3pill{font-size:8px;font-weight:950;letter-spacing:.9px;padding:6px 9px;border:1px solid #ffffff16;border-radius:999px;background:#ffffff08;color:#bfd0e5}
+.pulseDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green);margin-right:5px}
+.commandGrid{display:grid;grid-template-columns:1.35fr .65fr .65fr;gap:9px;margin:9px 0}
+.commandCard{position:relative;overflow:hidden;background:linear-gradient(145deg,#17283c,#09111d);border:1px solid #ffffff14;border-radius:22px;padding:15px;min-height:112px;box-shadow:0 14px 34px #0005}
+.commandCard:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;right:-40px;bottom:-50px;background:var(--blue);filter:blur(45px);opacity:.17}
+.commandCard small{font-size:8px;color:var(--muted);font-weight:900;letter-spacing:.7px}.commandBig{font-size:25px;font-weight:950;letter-spacing:-1px;margin-top:5px}.commandSub{font-size:9px;color:#a9b9cd;margin-top:5px;line-height:1.35}
+.insightStrip{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:1px 0 3px}.insightChip{flex:0 0 auto;max-width:260px;background:#ffffff07;border:1px solid #ffffff10;border-radius:15px;padding:10px 12px;font-size:9px;color:#c8d4e4;line-height:1.35}
+.summary4 .metric{position:relative;overflow:hidden}.summary4 .metric:after{content:"";position:absolute;inset:auto -25px -35px auto;width:70px;height:70px;border-radius:50%;background:var(--blue);filter:blur(32px);opacity:.11}
+@media(max-width:600px){.commandGrid{grid-template-columns:1fr 1fr}.commandCard:first-child{grid-column:1/-1}}
+@media(max-width:430px){.shiftName{font-size:34px}}
+
 </style>
 </head>
 <body class="auth-pending">
@@ -64,6 +94,7 @@ button,input,select,textarea{font:inherit}
 <div class="app">
 
 <section id="home" class="screen active">
+ <div class="v3bar"><div class="v3pill"><span class="pulseDot"></span>SHIFT 3.0 · LIVE</div><div class="v3pill" id="v3Date">—</div></div>
  <div class="header"><div class="brand">SHI<span>FT</span></div><div class="avatar">AG</div></div>
  <div class="hero">
   <div class="heroTop">
@@ -77,6 +108,14 @@ button,input,select,textarea{font:inherit}
    <div class="q"><small>INCIDENCIAS</small><b id="incidentCount">0</b></div>
   </div>
  </div>
+ <div class="sectionTitle">Centro de control</div>
+ <div class="commandGrid">
+  <div class="commandCard"><small>PROGRESO DEL MES</small><div class="commandBig" id="v3MonthStatus">—</div><div class="commandSub" id="v3MonthDetail">Calculando tu mes…</div></div>
+  <div class="commandCard"><small>EXTRAS</small><div class="commandBig" id="v3Extra">0 h</div><div class="commandSub">Registradas este mes</div></div>
+  <div class="commandCard"><small>PRÓXIMO TURNO</small><div class="commandBig" id="v3NextShift">—</div><div class="commandSub" id="v3NextShiftDetail">Buscando…</div></div>
+ </div>
+ <div class="insightStrip" id="v3Insights"></div>
+
  <div class="sectionTitle">Resumen del mes</div>
  <div class="summary4">
   <div class="metric"><small>PREVISTAS</small><b id="summaryPlanned">0 h</b></div>
@@ -834,14 +873,43 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&l
 function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="calendar")renderCalendar();if(id==="money")renderMoney();if(id==="incidents")renderIncidents();if(id==="work"){let now=new Date(),info=shiftForDate(now),extra=S.extraWorkDays[dateKey(now)],h=+S.workDays[dateKey(now)]||0;workShift.textContent=S.scheduleMode==="manual"?(h?h+" H":"LIBRE"):(extra?shifts[extra.shift].name+" EXTRA":info?.working?shifts[info.shift].name:"LIBRE")}}
 document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
 document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
-function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
+
+/* ===== SHIFT 3.0 · COMMAND CENTER ===== */
+function renderV3CommandCenter(){
+ try{
+  let now=new Date(),fmt=new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"});
+  let dateEl=document.getElementById("v3Date");if(dateEl)dateEl.textContent=fmt.format(now).toUpperCase();
+  let stats=monthStats(),worked=workedHoursThisMonth(),remaining=remainingWorkHoursThisMonth();
+  let planned=+stats.plannedHours||0,extra=extraHoursScheduledThisMonth()+(+S.payroll.overtimeHours||0);
+  let pct=planned?Math.min(100,Math.max(0,Math.round(worked/planned*100))):0;
+  let a=document.getElementById("v3MonthStatus"),b=document.getElementById("v3MonthDetail"),e=document.getElementById("v3Extra");
+  if(a)a.textContent=planned?pct+"%":"En marcha";
+  if(b)b.textContent=planned?formatWorkedHours(worked)+" realizadas · "+formatRemainingHours(remaining)+" pendientes":"Añade horas para ver el progreso";
+  if(e)e.textContent=formatRemainingHours(extra);
+  let next=null;
+  if(S.scheduleMode==="rotation"&&S.refDate&&typeof nextWorkStart==="function")next=nextWorkStart();
+  let ns=document.getElementById("v3NextShift"),nd=document.getElementById("v3NextShiftDetail");
+  if(next){if(ns)ns.textContent=shifts[next.shift]?.name||"Turno";if(nd)nd.textContent=fmt.format(next.start)}
+  else if(S.scheduleMode==="manual"){if(ns)ns.textContent="Personal";if(nd)nd.textContent="Según tu calendario"}
+  else{if(ns)ns.textContent="—";if(nd)nd.textContent="Configura tu rotación"}
+  let tips=[];
+  if(remaining>0)tips.push("⏱️ Te quedan "+formatRemainingHours(remaining)+" de trabajo previsto este mes");
+  if(extra>0)tips.push("⚡ Tienes "+formatRemainingHours(extra)+" en horas extra");
+  if(S.incidents.length)tips.push("⚠️ "+S.incidents.length+" incidencia"+(S.incidents.length===1?"":"s")+" registrada"+(S.incidents.length===1?"":"s"));
+  let nights=scheduledNightStartsThisMonth();if(nights)tips.push("🌙 "+nights+" noches programadas este mes");
+  if(!tips.length)tips.push("✓ Todo al día. No hay avisos pendientes.");
+  let box=document.getElementById("v3Insights");if(box)box.innerHTML=tips.slice(0,4).map(t=>'<div class="insightChip">'+t+"</div>").join("");
+ }catch(err){}
+}
+
+function renderAll(){syncSettings();renderV3CommandCenter();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
 const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
 const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),productionHistory=document.getElementById("productionHistory"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor"),themeStyle=document.getElementById("themeStyle"),homeLayout=document.getElementById("homeLayout"),grossBase=document.getElementById("grossBase"),seniorityPay=document.getElementById("seniorityPay"),agreementBonus=document.getElementById("agreementBonus"),transportBonus=document.getElementById("transportBonus"),positionBonus=document.getElementById("positionBonus"),benefitsPay=document.getElementById("benefitsPay"),nightPremium=document.getElementById("nightPremium"),nightCountOverride=document.getElementById("nightCountOverride"),calendarOvertimeHours=document.getElementById("calendarOvertimeHours"),overtimeHours=document.getElementById("overtimeHours"),overtimeRate=document.getElementById("overtimeRate"),otherExtras=document.getElementById("otherExtras"),contributionProrata=document.getElementById("contributionProrata"),irpfRate=document.getElementById("irpfRate"),commonRate=document.getElementById("commonRate"),unemploymentRate=document.getElementById("unemploymentRate"),trainingRate=document.getElementById("trainingRate"),meiRate=document.getElementById("meiRate"),otherDeductions=document.getElementById("otherDeductions"),salaryNights=document.getElementById("salaryNights"),salaryExtraDays=document.getElementById("salaryExtraDays"),salaryGross=document.getElementById("salaryGross"),salaryIrpf=document.getElementById("salaryIrpf"),salarySocialSecurity=document.getElementById("salarySocialSecurity"),salaryDeductions=document.getElementById("salaryDeductions"),salaryTotal=document.getElementById("salaryTotal"),summaryPlanned=document.getElementById("summaryPlanned"),summaryWorked=document.getElementById("summaryWorked"),summaryOvertime=document.getElementById("summaryOvertime"),summaryRemaining=document.getElementById("summaryRemaining");
 const calendarMode=document.getElementById("calendarMode"),manualDayEditor=document.getElementById("manualDayEditor"),manualDate=document.getElementById("manualDate"),manualHours=document.getElementById("manualHours"),manualDayList=document.getElementById("manualDayList"),extraDayEditor=document.getElementById("extraDayEditor"),extraDate=document.getElementById("extraDate"),extraHours=document.getElementById("extraHours"),extraShift=document.getElementById("extraShift"),extraPay=document.getElementById("extraPay"),extraDayList=document.getElementById("extraDayList"),authName=document.getElementById("authName"),authEmail=document.getElementById("authEmail"),authPhoto=document.getElementById("authPhoto"),authLoginButton=document.getElementById("authLoginButton"),authStatus=document.getElementById("authStatus");
 window.getShiftState=()=>JSON.parse(JSON.stringify(S));
 window.activateShiftUser=(uid,state,user)=>{ACTIVE_KEY=KEY+"_"+uid;S=normalizeState(state||{scheduleMode:"manual",profile:{...newDefaults.profile,name:user?.displayName||"Usuario",initials:(user?.displayName||"U").split(/\s+/).map(x=>x[0]).join("").slice(0,3).toUpperCase()}});authName.textContent=user?.displayName||"Usuario";authEmail.textContent=user?.email||"Cuenta de Google";authPhoto.src=user?.photoURL||"icon-192.png";renderAll();if(S.scheduleMode==="rotation"&&!S.refDate)setTimeout(openSetup,350)};
 targetRolls.addEventListener("input",()=>{renderProductionProgress();calcProduction()});completedRolls.addEventListener("input",renderProductionProgress);
-manualDate.value=new Date().toISOString().slice(0,10);extraDate.value=manualDate.value;suggestExtraPay();renderAll();setInterval(()=>{updateCountdown();renderHome()},1000);setInterval(save,10000);
+manualDate.value=new Date().toISOString().slice(0,10);extraDate.value=manualDate.value;suggestExtraPay();renderAll();setInterval(()=>{updateCountdown();renderHome();renderV3CommandCenter()},1000);setInterval(save,10000);
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 <script src="firebase-sync.js"></script>

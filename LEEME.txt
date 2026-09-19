@@ -139,3 +139,14 @@ ACTUALIZACIÓN 2.6
 - Las horas de días libres se añaden a las trabajadas y aparecen separadas como horas extra, sin aumentar las horas previstas normales.
 - El pago extra se incorpora al bruto y se descuentan IRPF y Seguridad Social para estimar el neto.
 - Se han retirado de la interfaz Gastos, presupuesto y dinero libre. Los registros antiguos se conservan internamente para no perder datos.
+
+
+ACTUALIZACIÓN 3.0
+- Rediseño visual completo manteniendo la estructura y funcionamiento de SHIFT 2.7.
+- Nuevo Centro de control en Inicio con progreso mensual, horas extra y próximo turno.
+- Nuevas tarjetas inteligentes con horas pendientes, incidencias y noches programadas.
+- Nueva navegación flotante con efecto cristal y diseño optimizado para iPhone.
+- Tarjetas, paneles, cabecera y turno actual renovados con mayor profundidad y legibilidad.
+- Se mantienen calendario, rotación, días extra, nómina, producción, incidencias, máquinas, Google/Firebase y copias de seguridad.
+- Se conserva la misma clave de almacenamiento para no perder los datos existentes.
+- Caché PWA actualizada a SHIFT 3.0.
