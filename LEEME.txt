@@ -141,12 +141,12 @@ ACTUALIZACIÓN 2.6
 - Se han retirado de la interfaz Gastos, presupuesto y dinero libre. Los registros antiguos se conservan internamente para no perder datos.
 
 
-ACTUALIZACIÓN 3.0
-- Rediseño visual completo manteniendo la estructura y funcionamiento de SHIFT 2.7.
-- Nuevo Centro de control en Inicio con progreso mensual, horas extra y próximo turno.
-- Nuevas tarjetas inteligentes con horas pendientes, incidencias y noches programadas.
-- Nueva navegación flotante con efecto cristal y diseño optimizado para iPhone.
-- Tarjetas, paneles, cabecera y turno actual renovados con mayor profundidad y legibilidad.
-- Se mantienen calendario, rotación, días extra, nómina, producción, incidencias, máquinas, Google/Firebase y copias de seguridad.
-- Se conserva la misma clave de almacenamiento para no perder los datos existentes.
-- Caché PWA actualizada a SHIFT 3.0.
+ACTUALIZACIÓN 4.0
+- Reconstrucción visual completa: nueva jerarquía, tarjetas, formularios, navegación y diseño móvil.
+- Nuevo panel Tu jornada con progreso mensual, horas realizadas, pendientes y extras.
+- Nueva vista Próximos 7 días en Inicio.
+- Nuevo bloque de Acciones rápidas para Calendario, Producción, Nómina e Incidencias.
+- Nuevo sistema de Avisos inteligentes basado en horas restantes, extras, noches e incidencias.
+- Interfaz más clara y legible, manteniendo las funciones y datos de SHIFT 2.7.
+- Se mantienen rotación, calendario manual, días extra, nómina, producción, relevos, máquinas, incidencias, personalización, backup y Firebase.
+- Se conserva el almacenamiento existente para evitar pérdida de datos.

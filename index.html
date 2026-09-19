@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="SHIFT">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>SHIFT</title>
+<title>SHIFT 4.0</title>
 <style>
 :root{
   --bg:#070b11;--panel:#0e151f;--panel2:#131d2a;--line:#25364c;--text:#f6f8ff;--muted:#93a4bb;
@@ -58,34 +58,44 @@ button,input,select,textarea{font:inherit}
 .authGate{position:fixed;inset:0;z-index:300;background:radial-gradient(circle at 50% 5%,#20385d,#080d15 48%,#030507);display:none;align-items:center;justify-content:center;padding:24px}.auth-pending .authGate,.auth-required .authGate{display:flex}.authBox{width:min(420px,100%);text-align:center;background:#0e1723;border:1px solid #2d4260;border-radius:28px;padding:28px 22px;box-shadow:0 25px 80px #0008}.authLogo{font-size:48px;margin-bottom:8px}.authTitle{font-size:34px;font-weight:950;letter-spacing:-1.5px}.authTitle span{color:var(--blue)}.googleBtn{width:100%;margin-top:20px;background:white;color:#17202b;border:0;border-radius:14px;padding:13px;font-weight:900}.authStatus{font-size:10px;color:var(--muted);margin-top:10px}.manualDay,.extraDay{background:#10251d!important;border-color:#2b7052!important}.extraDay{box-shadow:inset 0 0 0 1px #64df9f55}.manualList{display:flex;flex-direction:column;gap:6px;margin-top:9px}.manualRow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#09111b;border:1px solid #243a50;border-radius:11px;padding:8px}.accountPhoto{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#182538}
 @media(max-width:430px){.summary4{grid-template-columns:repeat(2,1fr)}}
 
-/* ===== SHIFT 3.0 · REDESIGN ===== */
+/* =========================================================
+   SHIFT 4.0 — COMPLETE VISUAL SYSTEM
+   ========================================================= */
+:root{
+ --s4-surface:#101723;--s4-surface2:#151f2e;--s4-stroke:rgba(255,255,255,.085);
+ --s4-shadow:0 18px 50px rgba(0,0,0,.32);--s4-radius:24px
+}
+html,body{background:#070b12}
 body{background:
- radial-gradient(circle at 12% -4%,rgba(89,168,255,.20),transparent 31%),
- radial-gradient(circle at 94% 8%,rgba(168,120,255,.14),transparent 28%),
- linear-gradient(180deg,#07111d 0%,#05080e 62%,#030509 100%);background-attachment:fixed}
-.app{max-width:900px}.screen{padding:12px 13px 112px}
-.header{padding:7px 3px 3px;margin-bottom:12px}.brand{font-size:25px;letter-spacing:-1.2px}
-.avatar{border-radius:50%;border:1px solid #ffffff24;box-shadow:0 9px 32px #0008,0 0 0 4px #ffffff08}
-.hero{padding:22px;border-radius:30px;background:linear-gradient(145deg,rgba(25,39,60,.95),rgba(7,13,22,.96));border:1px solid #ffffff17;box-shadow:0 24px 70px #0009,inset 0 1px #ffffff12}
-.hero:before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;right:-85px;top:-100px;background:var(--blue);filter:blur(82px);opacity:.2}
-.shiftName{font-size:38px}.countdown{background:#050a12b8;border-color:#ffffff12;backdrop-filter:blur(16px);padding:15px;border-radius:19px}
-.quick{gap:9px}.q{background:#ffffff08;border:1px solid #ffffff12;border-radius:17px;padding:11px}
-.card,.metric{background:linear-gradient(145deg,rgba(18,29,44,.88),rgba(7,13,22,.92));border:1px solid #ffffff12;box-shadow:inset 0 1px #ffffff08}
-.card{border-radius:22px}.metric{border-radius:18px}.sectionTitle{font-size:16px;letter-spacing:-.25px;margin-top:18px}
-.btn{transition:.18s transform,.18s filter}.btn:active{transform:scale(.96);filter:brightness(.9)}
-.bottomnav{bottom:10px;width:min(600px,calc(100% - 20px));border:1px solid #ffffff16;border-radius:25px;padding:8px 7px calc(8px + env(safe-area-inset-bottom));background:rgba(7,14,24,.86);box-shadow:0 18px 55px #000b;backdrop-filter:blur(25px)}
-.bottomnav button{border-radius:16px;padding:5px}.bottomnav button.active{background:#ffffff0d;color:white}
-.v3bar{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 11px}
-.v3pill{font-size:8px;font-weight:950;letter-spacing:.9px;padding:6px 9px;border:1px solid #ffffff16;border-radius:999px;background:#ffffff08;color:#bfd0e5}
-.pulseDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green);margin-right:5px}
-.commandGrid{display:grid;grid-template-columns:1.35fr .65fr .65fr;gap:9px;margin:9px 0}
-.commandCard{position:relative;overflow:hidden;background:linear-gradient(145deg,#17283c,#09111d);border:1px solid #ffffff14;border-radius:22px;padding:15px;min-height:112px;box-shadow:0 14px 34px #0005}
-.commandCard:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;right:-40px;bottom:-50px;background:var(--blue);filter:blur(45px);opacity:.17}
-.commandCard small{font-size:8px;color:var(--muted);font-weight:900;letter-spacing:.7px}.commandBig{font-size:25px;font-weight:950;letter-spacing:-1px;margin-top:5px}.commandSub{font-size:9px;color:#a9b9cd;margin-top:5px;line-height:1.35}
-.insightStrip{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:1px 0 3px}.insightChip{flex:0 0 auto;max-width:260px;background:#ffffff07;border:1px solid #ffffff10;border-radius:15px;padding:10px 12px;font-size:9px;color:#c8d4e4;line-height:1.35}
-.summary4 .metric{position:relative;overflow:hidden}.summary4 .metric:after{content:"";position:absolute;inset:auto -25px -35px auto;width:70px;height:70px;border-radius:50%;background:var(--blue);filter:blur(32px);opacity:.11}
-@media(max-width:600px){.commandGrid{grid-template-columns:1fr 1fr}.commandCard:first-child{grid-column:1/-1}}
-@media(max-width:430px){.shiftName{font-size:34px}}
+ radial-gradient(900px 440px at 50% -180px,color-mix(in srgb,var(--blue) 22%,transparent),transparent 70%),
+ linear-gradient(180deg,#0b111b 0,#070b12 55%,#05070b 100%);background-attachment:fixed}
+.app{max-width:940px;padding-bottom:112px}
+.screen{padding:16px 14px 30px}
+.header{margin:0 0 18px;padding:3px 2px}.brand{font-size:27px;letter-spacing:-1.4px}.avatar{width:42px;height:42px;border-radius:50%;background:#151e2c;border:1px solid var(--s4-stroke);box-shadow:var(--s4-shadow)}
+.hero{border-radius:30px;padding:22px;background:linear-gradient(145deg,#182538,#0b111a 72%);border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 65px rgba(0,0,0,.42)}
+.hero:after{inset:-35%;background:radial-gradient(circle at 20% 5%,color-mix(in srgb,var(--blue) 30%,transparent),transparent 28%),radial-gradient(circle at 92% 25%,rgba(168,120,255,.18),transparent 25%)}
+.eyebrow{font-size:10px;letter-spacing:1.35px}.shiftName{font-size:40px;line-height:1.02;margin-top:6px}.shiftTime{font-size:14px;margin-top:5px}.shiftBadge{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055)}
+.countdown{margin-top:20px;padding:16px;border-radius:19px;background:rgba(4,8,14,.54);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}
+.countdown b{font-size:29px}.quick{gap:9px;margin-top:11px}.q{padding:12px 8px;border-radius:17px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.075)}
+.q small{font-size:9px}.q b{font-size:14px}
+.sectionTitle{font-size:18px;letter-spacing:-.45px;margin:23px 2px 11px;font-weight:900}
+.card,.metric{background:linear-gradient(145deg,rgba(19,29,43,.94),rgba(10,15,24,.96));border:1px solid var(--s4-stroke);box-shadow:0 10px 35px rgba(0,0,0,.18)}
+.card{border-radius:24px;padding:17px}.metric{border-radius:20px;padding:15px}
+input,select,textarea{background:#0a1019!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:15px!important;min-height:44px}
+textarea{min-height:92px}.btn{border-radius:15px!important;min-height:43px;font-weight:850;transition:.15s}.btn:active{transform:scale(.975)}
+.bottomnav{left:50%;bottom:10px;transform:translateX(-50%);width:min(620px,calc(100% - 20px));border:1px solid rgba(255,255,255,.11);border-radius:26px;padding:8px 7px calc(8px + env(safe-area-inset-bottom));background:rgba(8,13,21,.88);backdrop-filter:blur(26px);box-shadow:0 20px 55px rgba(0,0,0,.55)}
+.bottomnav button{border-radius:17px;padding:7px 4px}.bottomnav button.active{background:rgba(255,255,255,.08)}
+.s4Top{display:flex;align-items:center;justify-content:space-between;margin:0 2px 11px}.s4Live,.s4Date{font-size:9px;font-weight:900;letter-spacing:.7px;color:#b8c5d8}.s4Live{padding:7px 10px;border-radius:999px;background:rgba(100,223,159,.08);border:1px solid rgba(100,223,159,.18);color:#82e8b2}.s4Live:before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#64df9f;box-shadow:0 0 13px #64df9f}
+.s4Control{display:grid;grid-template-columns:1.25fr .75fr .75fr;gap:10px}.s4Tile{min-height:122px;border-radius:24px;padding:16px;position:relative;overflow:hidden;background:linear-gradient(145deg,#17263a,#0a111c);border:1px solid rgba(255,255,255,.09);box-shadow:0 14px 36px rgba(0,0,0,.23)}
+.s4Tile:after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-45px;bottom:-55px;background:var(--blue);filter:blur(48px);opacity:.14}.s4Tile small{font-size:9px;font-weight:900;letter-spacing:.8px;color:#91a1b8}.s4Value{font-size:29px;font-weight:950;letter-spacing:-1.1px;margin:7px 0 4px}.s4Sub{font-size:10px;color:#aab8cb;line-height:1.4}
+.s4Progress{height:7px;border-radius:99px;background:#ffffff0b;margin-top:12px;overflow:hidden}.s4Progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0}
+.s4Alerts{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:1px 0 4px}.s4Alert{flex:0 0 auto;max-width:270px;padding:11px 13px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);font-size:10px;color:#cbd5e3}
+.s4Tools{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.s4Tool{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#121d2b,#0a1019);border-radius:20px;padding:15px 10px;text-align:left;color:white}.s4ToolIcon{font-size:20px}.s4Tool b{display:block;font-size:11px;margin-top:8px}.s4Tool span{display:block;color:#8fa0b7;font-size:9px;margin-top:3px}
+.s4Week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.s4Day{padding:10px 4px;border-radius:17px;text-align:center;background:#ffffff05;border:1px solid #ffffff09}.s4Day.today{outline:1px solid var(--blue);background:color-mix(in srgb,var(--blue) 12%,transparent)}.s4Day small{display:block;font-size:8px;color:#8fa0b7}.s4Day b{display:block;font-size:13px;margin:4px 0}.s4Day em{font-style:normal;font-size:8px;color:#c6d1df}
+.s4Chart{height:86px;display:flex;align-items:end;gap:7px;padding-top:10px}.s4Bar{flex:1;min-width:8px;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,var(--blue),color-mix(in srgb,var(--blue) 45%,#101723));opacity:.9}
+.s4SectionLead{color:#8fa0b7;font-size:10px;margin:-6px 2px 11px}
+@media(max-width:620px){.s4Control{grid-template-columns:1fr 1fr}.s4Tile:first-child{grid-column:1/-1}.s4Tools{grid-template-columns:1fr 1fr}.shiftName{font-size:37px}}
+@media(max-width:390px){.screen{padding-left:10px;padding-right:10px}.s4Week{gap:4px}.s4Day{padding:9px 2px}.s4Value{font-size:25px}}
 
 </style>
 </head>
@@ -94,7 +104,9 @@ body{background:
 <div class="app">
 
 <section id="home" class="screen active">
- <div class="v3bar"><div class="v3pill"><span class="pulseDot"></span>SHIFT 3.0 · LIVE</div><div class="v3pill" id="v3Date">—</div></div>
+ 
+<div class="s4Top"><div class="s4Live">SISTEMA ACTIVO</div><div class="s4Date" id="s4Date">—</div></div>
+
  <div class="header"><div class="brand">SHI<span>FT</span></div><div class="avatar">AG</div></div>
  <div class="hero">
   <div class="heroTop">
@@ -108,15 +120,27 @@ body{background:
    <div class="q"><small>INCIDENCIAS</small><b id="incidentCount">0</b></div>
   </div>
  </div>
- <div class="sectionTitle">Centro de control</div>
- <div class="commandGrid">
-  <div class="commandCard"><small>PROGRESO DEL MES</small><div class="commandBig" id="v3MonthStatus">—</div><div class="commandSub" id="v3MonthDetail">Calculando tu mes…</div></div>
-  <div class="commandCard"><small>EXTRAS</small><div class="commandBig" id="v3Extra">0 h</div><div class="commandSub">Registradas este mes</div></div>
-  <div class="commandCard"><small>PRÓXIMO TURNO</small><div class="commandBig" id="v3NextShift">—</div><div class="commandSub" id="v3NextShiftDetail">Buscando…</div></div>
- </div>
- <div class="insightStrip" id="v3Insights"></div>
+ 
+<div class="sectionTitle">Tu jornada</div>
+<div class="s4SectionLead">Lo importante de este mes, de un vistazo.</div>
+<div class="s4Control">
+ <div class="s4Tile"><small>PROGRESO DEL MES</small><div class="s4Value" id="s4ProgressValue">—</div><div class="s4Sub" id="s4ProgressText">Calculando horas…</div><div class="s4Progress"><i id="s4ProgressBar"></i></div></div>
+ <div class="s4Tile"><small>HORAS EXTRA</small><div class="s4Value" id="s4Extra">0 h</div><div class="s4Sub">Calendario + otras extras</div></div>
+ <div class="s4Tile"><small>PRÓXIMO TURNO</small><div class="s4Value" id="s4Next">—</div><div class="s4Sub" id="s4NextSub">Buscando…</div></div>
+</div>
+<div class="sectionTitle">Próximos 7 días</div>
+<div class="card"><div class="s4Week" id="s4Week"></div></div>
+<div class="sectionTitle">Acciones rápidas</div>
+<div class="s4Tools">
+ <button class="s4Tool" onclick="showScreen('calendar')"><span class="s4ToolIcon">◫</span><b>Calendario</b><span>Turnos y extras</span></button>
+ <button class="s4Tool" onclick="showScreen('work')"><span class="s4ToolIcon">↗</span><b>Producción</b><span>Laminación y relevos</span></button>
+ <button class="s4Tool" onclick="showScreen('money')"><span class="s4ToolIcon">€</span><b>Nómina</b><span>Estimación mensual</span></button>
+ <button class="s4Tool" onclick="showScreen('incidents')"><span class="s4ToolIcon">!</span><b>Incidencias</b><span>Registrar y revisar</span></button>
+</div>
+<div class="sectionTitle">Avisos inteligentes</div>
+<div class="s4Alerts" id="s4Alerts"></div>
 
- <div class="sectionTitle">Resumen del mes</div>
+<div class="sectionTitle">Resumen detallado</div>
  <div class="summary4">
   <div class="metric"><small>PREVISTAS</small><b id="summaryPlanned">0 h</b></div>
   <div class="metric"><small>TRABAJADAS</small><b id="summaryWorked">0 h</b></div>
@@ -874,42 +898,47 @@ function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classL
 document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
 document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-work]").forEach(x=>x.classList.remove("active"));b.classList.add("active");["production","salary"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(b.dataset.work).classList.add("active")});
 
-/* ===== SHIFT 3.0 · COMMAND CENTER ===== */
-function renderV3CommandCenter(){
+/* ===== SHIFT 4.0 DASHBOARD ===== */
+function renderShift4(){
  try{
-  let now=new Date(),fmt=new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"});
-  let dateEl=document.getElementById("v3Date");if(dateEl)dateEl.textContent=fmt.format(now).toUpperCase();
-  let stats=monthStats(),worked=workedHoursThisMonth(),remaining=remainingWorkHoursThisMonth();
-  let planned=+stats.plannedHours||0,extra=extraHoursScheduledThisMonth()+(+S.payroll.overtimeHours||0);
-  let pct=planned?Math.min(100,Math.max(0,Math.round(worked/planned*100))):0;
-  let a=document.getElementById("v3MonthStatus"),b=document.getElementById("v3MonthDetail"),e=document.getElementById("v3Extra");
-  if(a)a.textContent=planned?pct+"%":"En marcha";
-  if(b)b.textContent=planned?formatWorkedHours(worked)+" realizadas · "+formatRemainingHours(remaining)+" pendientes":"Añade horas para ver el progreso";
-  if(e)e.textContent=formatRemainingHours(extra);
-  let next=null;
-  if(S.scheduleMode==="rotation"&&S.refDate&&typeof nextWorkStart==="function")next=nextWorkStart();
-  let ns=document.getElementById("v3NextShift"),nd=document.getElementById("v3NextShiftDetail");
-  if(next){if(ns)ns.textContent=shifts[next.shift]?.name||"Turno";if(nd)nd.textContent=fmt.format(next.start)}
-  else if(S.scheduleMode==="manual"){if(ns)ns.textContent="Personal";if(nd)nd.textContent="Según tu calendario"}
-  else{if(ns)ns.textContent="—";if(nd)nd.textContent="Configura tu rotación"}
-  let tips=[];
-  if(remaining>0)tips.push("⏱️ Te quedan "+formatRemainingHours(remaining)+" de trabajo previsto este mes");
-  if(extra>0)tips.push("⚡ Tienes "+formatRemainingHours(extra)+" en horas extra");
-  if(S.incidents.length)tips.push("⚠️ "+S.incidents.length+" incidencia"+(S.incidents.length===1?"":"s")+" registrada"+(S.incidents.length===1?"":"s"));
-  let nights=scheduledNightStartsThisMonth();if(nights)tips.push("🌙 "+nights+" noches programadas este mes");
-  if(!tips.length)tips.push("✓ Todo al día. No hay avisos pendientes.");
-  let box=document.getElementById("v3Insights");if(box)box.innerHTML=tips.slice(0,4).map(t=>'<div class="insightChip">'+t+"</div>").join("");
- }catch(err){}
+  const now=new Date(),fmt=new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"});
+  const de=document.getElementById("s4Date");if(de)de.textContent=fmt.format(now).toUpperCase();
+  const ms=monthStats(),worked=workedHoursThisMonth(),remaining=remainingWorkHoursThisMonth(),planned=+ms.plannedHours||0;
+  const calendarExtra=extraHoursScheduledThisMonth(),otherExtra=+(S.payroll?.overtimeHours||0),extra=calendarExtra+otherExtra;
+  const pct=planned?Math.min(100,Math.max(0,Math.round(worked/planned*100))):0;
+  const pv=document.getElementById("s4ProgressValue"),pt=document.getElementById("s4ProgressText"),pb=document.getElementById("s4ProgressBar");
+  if(pv)pv.textContent=planned?pct+"%":"—";if(pt)pt.textContent=formatWorkedHours(worked)+" realizadas · "+formatRemainingHours(remaining)+" pendientes";if(pb)pb.style.width=pct+"%";
+  const ee=document.getElementById("s4Extra");if(ee)ee.textContent=formatRemainingHours(extra);
+  let next=null;if(S.scheduleMode==="rotation"&&S.refDate&&typeof nextWorkStart==="function")next=nextWorkStart();
+  const ne=document.getElementById("s4Next"),ns=document.getElementById("s4NextSub");
+  if(next){if(ne)ne.textContent=shifts[next.shift]?.name||"Turno";if(ns)ns.textContent=fmt.format(next.start)}
+  else if(S.scheduleMode==="manual"){if(ne)ne.textContent="Personal";if(ns)ns.textContent="Según tu calendario"}
+  else{if(ne)ne.textContent="—";if(ns)ns.textContent="Configura tu rotación"}
+  const week=document.getElementById("s4Week");if(week){
+   let out="";
+   for(let i=0;i<7;i++){let d=new Date(now);d.setHours(12,0,0,0);d.setDate(now.getDate()+i);let inf=shiftForDate(d),label="Libre";
+    if(inf&&inf.working)label=shifts[inf.shift]?.name||inf.shift||"Trabajo";
+    if(S.scheduleMode==="manual"){let key=localDateKey(d),h=+(S.workDays?.[key]||0);label=h?h+" h":"Libre"}
+    out+='<div class="s4Day '+(i===0?'today':'')+'"><small>'+new Intl.DateTimeFormat("es-ES",{weekday:"narrow"}).format(d).toUpperCase()+'</small><b>'+d.getDate()+'</b><em>'+label+'</em></div>';
+   }week.innerHTML=out;
+  }
+  let tips=[];if(remaining>0)tips.push("Te quedan "+formatRemainingHours(remaining)+" previstas este mes.");
+  if(calendarExtra>0)tips.push("Tienes "+formatRemainingHours(calendarExtra)+" añadidas desde el calendario.");
+  const nights=scheduledNightStartsThisMonth();if(nights)tips.push(nights+" noches programadas este mes.");
+  if(S.incidents?.length)tips.push(S.incidents.length+" incidencias guardadas en tu historial.");
+  if(!tips.length)tips.push("Todo al día. No hay avisos pendientes.");
+  const al=document.getElementById("s4Alerts");if(al)al.innerHTML=tips.slice(0,5).map(x=>'<div class="s4Alert">'+x+"</div>").join("");
+ }catch(e){}
 }
 
-function renderAll(){syncSettings();renderV3CommandCenter();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
+function renderAll(){syncSettings();renderShift4();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
 const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
 const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),productionHistory=document.getElementById("productionHistory"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor"),themeStyle=document.getElementById("themeStyle"),homeLayout=document.getElementById("homeLayout"),grossBase=document.getElementById("grossBase"),seniorityPay=document.getElementById("seniorityPay"),agreementBonus=document.getElementById("agreementBonus"),transportBonus=document.getElementById("transportBonus"),positionBonus=document.getElementById("positionBonus"),benefitsPay=document.getElementById("benefitsPay"),nightPremium=document.getElementById("nightPremium"),nightCountOverride=document.getElementById("nightCountOverride"),calendarOvertimeHours=document.getElementById("calendarOvertimeHours"),overtimeHours=document.getElementById("overtimeHours"),overtimeRate=document.getElementById("overtimeRate"),otherExtras=document.getElementById("otherExtras"),contributionProrata=document.getElementById("contributionProrata"),irpfRate=document.getElementById("irpfRate"),commonRate=document.getElementById("commonRate"),unemploymentRate=document.getElementById("unemploymentRate"),trainingRate=document.getElementById("trainingRate"),meiRate=document.getElementById("meiRate"),otherDeductions=document.getElementById("otherDeductions"),salaryNights=document.getElementById("salaryNights"),salaryExtraDays=document.getElementById("salaryExtraDays"),salaryGross=document.getElementById("salaryGross"),salaryIrpf=document.getElementById("salaryIrpf"),salarySocialSecurity=document.getElementById("salarySocialSecurity"),salaryDeductions=document.getElementById("salaryDeductions"),salaryTotal=document.getElementById("salaryTotal"),summaryPlanned=document.getElementById("summaryPlanned"),summaryWorked=document.getElementById("summaryWorked"),summaryOvertime=document.getElementById("summaryOvertime"),summaryRemaining=document.getElementById("summaryRemaining");
 const calendarMode=document.getElementById("calendarMode"),manualDayEditor=document.getElementById("manualDayEditor"),manualDate=document.getElementById("manualDate"),manualHours=document.getElementById("manualHours"),manualDayList=document.getElementById("manualDayList"),extraDayEditor=document.getElementById("extraDayEditor"),extraDate=document.getElementById("extraDate"),extraHours=document.getElementById("extraHours"),extraShift=document.getElementById("extraShift"),extraPay=document.getElementById("extraPay"),extraDayList=document.getElementById("extraDayList"),authName=document.getElementById("authName"),authEmail=document.getElementById("authEmail"),authPhoto=document.getElementById("authPhoto"),authLoginButton=document.getElementById("authLoginButton"),authStatus=document.getElementById("authStatus");
 window.getShiftState=()=>JSON.parse(JSON.stringify(S));
 window.activateShiftUser=(uid,state,user)=>{ACTIVE_KEY=KEY+"_"+uid;S=normalizeState(state||{scheduleMode:"manual",profile:{...newDefaults.profile,name:user?.displayName||"Usuario",initials:(user?.displayName||"U").split(/\s+/).map(x=>x[0]).join("").slice(0,3).toUpperCase()}});authName.textContent=user?.displayName||"Usuario";authEmail.textContent=user?.email||"Cuenta de Google";authPhoto.src=user?.photoURL||"icon-192.png";renderAll();if(S.scheduleMode==="rotation"&&!S.refDate)setTimeout(openSetup,350)};
 targetRolls.addEventListener("input",()=>{renderProductionProgress();calcProduction()});completedRolls.addEventListener("input",renderProductionProgress);
-manualDate.value=new Date().toISOString().slice(0,10);extraDate.value=manualDate.value;suggestExtraPay();renderAll();setInterval(()=>{updateCountdown();renderHome();renderV3CommandCenter()},1000);setInterval(save,10000);
+manualDate.value=new Date().toISOString().slice(0,10);extraDate.value=manualDate.value;suggestExtraPay();renderAll();setInterval(()=>{updateCountdown();renderHome();renderShift4()},1000);setInterval(save,10000);
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 <script src="firebase-sync.js"></script>
