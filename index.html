@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="SHIFT">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>SHIFT 5.1</title>
+<title>SHIFT 5.2</title>
 <style>
 :root{
   --bg:#070b11;--panel:#0e151f;--panel2:#131d2a;--line:#25364c;--text:#f6f8ff;--muted:#93a4bb;
@@ -307,11 +307,14 @@ button,input,select,textarea{font:inherit}
 
 <div class="modal" id="backupModal"><div class="modalbox"><h2>💾 Copia de seguridad</h2><p>Copia este texto y guárdalo donde quieras. Para restaurar una copia, pégala aquí y pulsa Importar.</p><textarea id="backupText" style="width:100%;min-height:150px;background:#08111b;color:white;border:1px solid #29405f;border-radius:12px;padding:10px"></textarea><div class="actions"><button class="btn dark" onclick="backupModal.classList.remove('show')">Cerrar</button><button class="btn primary" onclick="importBackup()">Importar</button></div></div></div>
 
+<div class="modal" id="payrollDetailModal"><div class="modalbox" style="max-width:760px"><div class="row"><div class="grow"><h2 id="payrollDetailTitle" style="margin:0">Nómina</h2><div class="desc">Detalle calculado por SHIFT</div></div><button class="btn dark" onclick="closePayrollDetail()">×</button></div><div id="payrollDetailBody" style="margin-top:14px"></div><div class="actions"><button class="btn dark" onclick="closePayrollDetail()">Cerrar</button><button class="btn primary" onclick="downloadPayrollPDF()">Descargar PDF</button></div></div></div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script>
 const KEY="shift_personal_save";
 const shifts={
@@ -326,6 +329,7 @@ const newDefaults={
  extraWorkDays:{},
  production:{outputMeters:1800,targetRolls:1,completedRolls:0,wasteMeters:0,machine:"Laminadora 1",note:"",frontRemaining:2800,backRemaining:7000,frontRollLengths:"2800",speed:120,hoursAvailable:8,changeMin:5,changeMax:10,savedAt:null},
  productionHistory:[],
+ payrollByMonth:{},
  payroll:{modelVersion:2,grossBase:1885.38,seniority:26.19,agreementBonus:216.90,transportBonus:125,positionBonus:125,benefitsPay:88.69,nightPremium:13,nightCountOverride:null,overtimeHours:0,overtimeRate:12,otherExtras:0,contributionProrata:326.29,irpfRate:18.53,commonRate:4.70,unemploymentRate:1.55,trainingRate:0.10,meiRate:0.15,otherDeductions:0},
  machineStatuses:{"Laminadora 1":"running","Laminadora 2":"running","Celdillas":"running","Cortadora":"running","Impresora":"running"},
  profile:{name:"Alejandro",initials:"AG",accent:"#59a8ff",theme:"default",layout:"comfortable"},
@@ -338,6 +342,7 @@ function normalizeState(raw={}){
  state.production={...newDefaults.production,...(state.production||{})};
  state.productionHistory=Array.isArray(state.productionHistory)?state.productionHistory:[];
  state.payroll={...newDefaults.payroll,...(state.payroll||{})};
+ state.payrollByMonth=state.payrollByMonth&&typeof state.payrollByMonth==="object"&&!Array.isArray(state.payrollByMonth)?state.payrollByMonth:{};
  state.machineStatuses={...newDefaults.machineStatuses,...(state.machineStatuses||{})};
  state.profile={...newDefaults.profile,...(state.profile||{})};
  state.incidents=Array.isArray(state.incidents)?state.incidents:[];state.expenses=Array.isArray(state.expenses)?state.expenses:[];
@@ -752,11 +757,13 @@ function scheduledNightStartsForMonth(y,m){
 function scheduledNightStartsThisMonth(){let n=new Date();return scheduledNightStartsForMonth(n.getFullYear(),n.getMonth())}
 
 function moneyRound(v){return Math.round((v+Number.EPSILON)*100)/100}
+function payrollMonthKey(y,m){return `${y}-${String(m+1).padStart(2,"0")}`}
+function payrollSourceForMonth(y,m){return {...S.payroll,...(S.payrollByMonth?.[payrollMonthKey(y,m)]||{})}}
 function payrollValuesForMonth(y,m,fromForm=false){
  let source=fromForm?{
   grossBase:grossBase.value,seniority:seniorityPay.value,agreementBonus:agreementBonus.value,transportBonus:transportBonus.value,positionBonus:positionBonus.value,benefitsPay:benefitsPay.value,nightPremium:nightPremium.value,nightCountOverride:nightCountOverride.value,overtimeHours:overtimeHours.value,overtimeRate:overtimeRate.value,otherExtras:otherExtras.value,contributionProrata:contributionProrata.value,irpfRate:irpfRate.value,commonRate:commonRate.value,unemploymentRate:unemploymentRate.value,trainingRate:trainingRate.value,meiRate:meiRate.value,otherDeductions:otherDeductions.value
- }:S.payroll;
- let p={...S.payroll,modelVersion:2};
+ }:payrollSourceForMonth(y,m);
+ let p={...payrollSourceForMonth(y,m),modelVersion:3};
  ["grossBase","seniority","agreementBonus","transportBonus","positionBonus","benefitsPay","nightPremium","overtimeHours","overtimeRate","otherExtras","contributionProrata","irpfRate","commonRate","unemploymentRate","trainingRate","meiRate","otherDeductions"].forEach(k=>p[k]=Math.max(0,+source[k]||0));
  p.nightCountOverride=source.nightCountOverride===""||source.nightCountOverride==null?null:Math.max(0,Math.round(+source.nightCountOverride||0));
  let nightCount=S.scheduleMode==="rotation"?scheduledNightStartsForMonth(y,m):(p.nightCountOverride??0);
@@ -775,7 +782,7 @@ function payrollValues(fromForm=true){let n=new Date();return payrollValuesForMo
 function calcSalary(persist=false){
  let v=payrollValues(true);salaryNights.textContent=v.nightCount;salaryExtraDays.textContent=v.calendarExtraPay.toFixed(2)+" €";salaryGross.textContent=v.gross.toFixed(2)+" €";salaryIrpf.textContent="−"+v.irpf.toFixed(2)+" €";salarySocialSecurity.textContent="−"+v.socialSecurity.toFixed(2)+" €";salaryDeductions.textContent="−"+v.deductions.toFixed(2)+" €";salaryTotal.textContent=v.total.toFixed(2)+" €";
  calendarOvertimeHours.value=v.calendarExtraHours;
- if(persist){S.payroll=v.p;save();renderHome();renderMoney();toast("Nómina guardada")}
+ if(persist){let n=new Date(),k=payrollMonthKey(n.getFullYear(),n.getMonth());S.payrollByMonth[k]=v.p;save();renderHome();renderMoney();toast("Nómina del mes guardada")}
 }
 function openSetup(){setupDate.value=S.refDate||new Date().toISOString().slice(0,10);setupShift.value=S.refShift;setupModal.classList.add("show")}
 function closeSetup(){setupModal.classList.remove("show")}
@@ -804,10 +811,44 @@ function renderMoney(){
    for(let mm=0;mm<12;mm++){
      let pv=payrollValuesForMonth(y,mm,false);
      let label=new Intl.DateTimeFormat("es-ES",{month:"long"}).format(new Date(y,mm,1));
-     rows.push(`<button class="card" style="width:100%;text-align:left;margin-bottom:7px" onclick="payrollDate=new Date(${y},${mm},1);renderMoney()"><div class="row"><div class="grow"><div class="name">${label.charAt(0).toUpperCase()+label.slice(1)} ${y}</div><div class="desc">${pv.nightCount} noches · ${formatRemainingHours(pv.calendarExtraHours)} extra</div></div><b>${pv.total.toFixed(2)} €</b></div></button>`);
+     rows.push(`<button class="card" style="width:100%;text-align:left;margin-bottom:7px" onclick="openPayrollDetail(${y},${mm})"><div class="row"><div class="grow"><div class="name">${label.charAt(0).toUpperCase()+label.slice(1)} ${y}</div><div class="desc">${pv.nightCount} noches · ${formatRemainingHours(pv.calendarExtraHours)} extra</div></div><b>${pv.total.toFixed(2)} €</b></div></button>`);
    }
    hist.innerHTML=rows.join("");
  }
+}
+let payrollDetailDate=null;
+function euro(v){return Number(v||0).toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"}
+function payrollBreakdown(y,m){
+ let v=payrollValuesForMonth(y,m,false),p=v.p;
+ let common=moneyRound(v.contributionBase*p.commonRate/100),unemployment=moneyRound(v.contributionBase*p.unemploymentRate/100),training=moneyRound(v.contributionBase*p.trainingRate/100),mei=moneyRound(v.contributionBase*p.meiRate/100);
+ let concepts=[
+  ["Salario Base",p.grossBase,0],["Antigüedad",p.seniority,0],["Plus Convenio",p.agreementBonus,0],["Plus Transporte",p.transportBonus,0],
+  ["Plus Nocturno",v.nightExtra,0],["Complemento de Puesto",p.positionBonus,0],["Paga de Beneficios",p.benefitsPay,0],
+  ...(v.calendarExtraPay?[["Días libres trabajados",v.calendarExtraPay,0]]:[]),...(v.overtime?[["Horas extra",v.overtime,0]]:[]),...(p.otherExtras?[["Otros pluses",p.otherExtras,0]]:[]),
+  ["Rendimientos del trabajo · IRPF",0,v.irpf],["Contingencias Comunes",0,common],["Desempleo",0,unemployment],["Formación Profesional",0,training],["Mecanismo de equidad intergeneracional",0,mei],...(p.otherDeductions?[["Otras deducciones",0,p.otherDeductions]]:[])
+ ];
+ return {v,p,common,unemployment,training,mei,concepts};
+}
+function openPayrollDetail(y,m){
+ payrollDetailDate=new Date(y,m,1);let {v,p,concepts}=payrollBreakdown(y,m),last=new Date(y,m+1,0).getDate(),month=new Intl.DateTimeFormat("es-ES",{month:"long",year:"numeric"}).format(new Date(y,m,1));
+ payrollDetailTitle.textContent=`Nómina · ${month.charAt(0).toUpperCase()+month.slice(1)}`;
+ let rows=concepts.map(c=>`<tr><td style="padding:7px 5px;border-bottom:1px solid #26384e">${esc(c[0])}</td><td style="text-align:right;border-bottom:1px solid #26384e">${c[1]?euro(c[1]):""}</td><td style="text-align:right;border-bottom:1px solid #26384e">${c[2]?euro(c[2]):""}</td></tr>`).join("");
+ payrollDetailBody.innerHTML=`<div class="card"><div class="row"><div class="grow"><div class="name">PROTEKU EUROPA, S.L.U.</div><div class="desc">GOMEZ SALAS, ALEJANDRO · Grupo 4 - Jefe de Turno</div></div></div><div class="meta" style="margin-top:8px">Periodo: 01/${String(m+1).padStart(2,"0")}/${y} – ${last}/${String(m+1).padStart(2,"0")}/${y}</div></div><div class="card" style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left;padding:7px 5px">Concepto</th><th style="text-align:right">Devengos</th><th style="text-align:right">Descuentos</th></tr></thead><tbody>${rows}</tbody></table></div><div class="metricgrid"><div class="metric"><small>BASE COTIZACIÓN</small><b>${euro(v.contributionBase)}</b></div><div class="metric"><small>TOTAL DEVENGOS</small><b>${euro(v.gross)}</b></div><div class="metric"><small>TOTAL DESCUENTOS</small><b>${euro(v.deductions)}</b></div><div class="metric"><small>LÍQUIDO A PERCIBIR</small><b style="color:var(--green)">${euro(v.total)}</b></div></div><div class="resultNote">${v.nightCount} noches · ${euro(v.nightExtra)} de nocturnidad · ${formatRemainingHours(v.calendarExtraHours)} extra del calendario.</div>`;
+ payrollDetailModal.classList.add("show");
+}
+function closePayrollDetail(){payrollDetailModal.classList.remove("show")}
+function downloadPayrollPDF(){
+ if(!payrollDetailDate)return;let y=payrollDetailDate.getFullYear(),m=payrollDetailDate.getMonth(),d=payrollBreakdown(y,m),v=d.v,p=d.p;
+ if(!window.jspdf?.jsPDF){toast("No se pudo cargar el generador PDF. Revisa la conexión.");return}
+ const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),L=14,R=196,W=182;
+ doc.setTextColor(0);doc.setDrawColor(30);doc.setLineWidth(.25);doc.setFont("helvetica","normal");
+ const box=(x,y,w,h)=>doc.roundedRect(x,y,w,h,2,2);
+ box(L,12,86,35);box(110,12,86,35);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("Empresa:  PROTEKU EUROPA, S.L.U.",18,19);doc.text("Trabajador:  GOMEZ SALAS, ALEJANDRO",114,19);doc.setFont("helvetica","normal");doc.setFontSize(8);doc.text("NIF/CIF: B54710835",18,26);doc.text("Nº Seguridad Social: 03131194554",18,32);doc.text("Domicilio: C/ E esquina F · Polígono Industrial Maigmó",18,38);doc.text("Población: TIBI",18,44);doc.text("Grupo cotización: 06",114,26);doc.text("Contrato: 100",114,32);
+ doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("Fecha Antigüedad:",18,58);doc.text("Categoría:",76,58);doc.text("Periodo de Liquidación:",142,58);doc.setFont("helvetica","normal");doc.text("12/02/2017",20,65);doc.text("Grupo 4 - Jefe de Turno",76,65);let last=new Date(y,m+1,0).getDate();doc.text(`Del 01/${String(m+1).padStart(2,"0")}/${y} al ${last}/${String(m+1).padStart(2,"0")}/${y}`,142,65);
+ let top=72;box(L,top,W,118);doc.line(140,top,140,190);doc.line(168,top,168,190);doc.setFont("helvetica","bold");doc.text("Concepto",76,79);doc.text("Devengos",144,79);doc.text("Descuentos",171,79);doc.line(L,83,R,83);doc.setFont("helvetica","normal");doc.setFontSize(8);let yy=89;
+ d.concepts.forEach(c=>{doc.text(String(c[0]).slice(0,47),20,yy);if(c[1])doc.text(euro(c[1]).replace(" €",""),164,yy,{align:"right"});if(c[2])doc.text(euro(c[2]).replace(" €",""),192,yy,{align:"right"});yy+=7});
+ box(L,196,124,42);box(143,196,53,42);doc.setFont("helvetica","bold");doc.setFontSize(8);doc.text("Determinación de las Bases de Cotización a la Seguridad Social",18,203);doc.line(L,207,138,207);doc.setFont("helvetica","normal");doc.text("Remuneración total",18,214);doc.text(euro(v.gross).replace(" €",""),72,214,{align:"right"});doc.text("Prorratas pagas extra",18,222);doc.text(euro(p.contributionProrata).replace(" €",""),72,222,{align:"right"});doc.setFont("helvetica","bold");doc.text("Base total de cotización",18,231);doc.text(euro(v.contributionBase).replace(" €",""),72,231,{align:"right"});doc.text("Total Devengos",148,205);doc.text(euro(v.gross).replace(" €",""),190,212,{align:"right"});doc.text("Total Descuentos",148,220);doc.text(euro(v.deductions).replace(" €",""),190,227,{align:"right"});doc.setFontSize(10);doc.text("Líquido Total a Percibir",143,247);doc.setFontSize(13);doc.text(euro(v.total),196,256,{align:"right"});doc.setFontSize(7);doc.setFont("helvetica","normal");doc.text("Documento generado por SHIFT a partir de los datos configurados en la app. Estimación no emitida por la empresa.",L,282);
+ doc.save(`Nomina_SHIFT_${y}-${String(m+1).padStart(2,"0")}.pdf`);
 }
 function applyPersonalization(){document.documentElement.style.setProperty("--blue",S.profile.accent);document.documentElement.dataset.theme=S.profile.theme||"default";document.documentElement.dataset.layout=S.profile.layout||"comfortable";avatar.textContent=S.profile.initials||"AG";profileName.value=S.profile.name||"";profileInitials.value=S.profile.initials||"AG";accentColor.value=S.profile.accent;themeStyle.value=S.profile.theme||"default";homeLayout.value=S.profile.layout||"comfortable"}
 function savePersonalization(){S.profile={name:profileName.value.trim()||"Alejandro",initials:(profileInitials.value.trim()||"AG").toUpperCase().slice(0,3),accent:accentColor.value,theme:themeStyle.value,layout:homeLayout.value};save();applyPersonalization();toast("Diseño actualizado")}
@@ -827,6 +868,7 @@ document.querySelectorAll("[data-work]").forEach(b=>b.onclick=()=>{document.quer
 function renderAll(){syncSettings();loadProductionShift();renderHome();updateCountdown();renderCalendar();renderIncidents();renderMoney();renderMachines();renderQuickOrder();renderProductionHistory();calcProduction();calcSalary()}
 const shiftName=document.getElementById("shiftName"),shiftTime=document.getElementById("shiftTime"),shiftBadge=document.getElementById("shiftBadge"),countLabel=document.getElementById("countLabel"),countdown=document.getElementById("countdown"),monthHours=document.getElementById("monthHours"),monthHoursPlanned=document.getElementById("monthHoursPlanned"),monthNights=document.getElementById("monthNights"),incidentCount=document.getElementById("incidentCount"),todaySummary=document.getElementById("todaySummary"),todayDetail=document.getElementById("todayDetail"),calendarTitle=document.getElementById("calendarTitle"),calendarGrid=document.getElementById("calendarGrid"),workShift=document.getElementById("workShift"),moneySummary=document.getElementById("moneySummary"),incidentList=document.getElementById("incidentList"),setupModal=document.getElementById("setupModal"),incidentModal=document.getElementById("incidentModal"),backupModal=document.getElementById("backupModal"),backupText=document.getElementById("backupText"),avatar=document.querySelector(".avatar"),quickOrderList=document.getElementById("quickOrderList"),machineGrid=document.getElementById("machineGrid"),productionProgress=document.getElementById("productionProgress"),productionProgressMeta=document.getElementById("productionProgressMeta");
 const outputMeters=document.getElementById("outputMeters"),targetRolls=document.getElementById("targetRolls"),frontRemaining=document.getElementById("frontRemaining"),backRemaining=document.getElementById("backRemaining"),frontRollLengths=document.getElementById("frontRollLengths"),backNewLength=document.getElementById("backNewLength"),speed=document.getElementById("speed"),hoursAvailable=document.getElementById("hoursAvailable"),changeMin=document.getElementById("changeMin"),changeMax=document.getElementById("changeMax"),prodMeters=document.getElementById("prodMeters"),prodTime=document.getElementById("prodTime"),inputChanges=document.getElementById("inputChanges"),outputChanges=document.getElementById("outputChanges"),frontLeft=document.getElementById("frontLeft"),backLeft=document.getElementById("backLeft"),productionNote=document.getElementById("productionNote"),completedRolls=document.getElementById("completedRolls"),wasteMeters=document.getElementById("wasteMeters"),productionMachine=document.getElementById("productionMachine"),productionNoteInput=document.getElementById("productionNoteInput"),productionHistory=document.getElementById("productionHistory"),profileName=document.getElementById("profileName"),profileInitials=document.getElementById("profileInitials"),accentColor=document.getElementById("accentColor"),themeStyle=document.getElementById("themeStyle"),homeLayout=document.getElementById("homeLayout"),grossBase=document.getElementById("grossBase"),seniorityPay=document.getElementById("seniorityPay"),agreementBonus=document.getElementById("agreementBonus"),transportBonus=document.getElementById("transportBonus"),positionBonus=document.getElementById("positionBonus"),benefitsPay=document.getElementById("benefitsPay"),nightPremium=document.getElementById("nightPremium"),nightCountOverride=document.getElementById("nightCountOverride"),calendarOvertimeHours=document.getElementById("calendarOvertimeHours"),overtimeHours=document.getElementById("overtimeHours"),overtimeRate=document.getElementById("overtimeRate"),otherExtras=document.getElementById("otherExtras"),contributionProrata=document.getElementById("contributionProrata"),irpfRate=document.getElementById("irpfRate"),commonRate=document.getElementById("commonRate"),unemploymentRate=document.getElementById("unemploymentRate"),trainingRate=document.getElementById("trainingRate"),meiRate=document.getElementById("meiRate"),otherDeductions=document.getElementById("otherDeductions"),salaryNights=document.getElementById("salaryNights"),salaryExtraDays=document.getElementById("salaryExtraDays"),salaryGross=document.getElementById("salaryGross"),salaryIrpf=document.getElementById("salaryIrpf"),salarySocialSecurity=document.getElementById("salarySocialSecurity"),salaryDeductions=document.getElementById("salaryDeductions"),salaryTotal=document.getElementById("salaryTotal"),summaryPlanned=document.getElementById("summaryPlanned"),summaryWorked=document.getElementById("summaryWorked"),summaryOvertime=document.getElementById("summaryOvertime"),summaryRemaining=document.getElementById("summaryRemaining");
+const payrollDetailModal=document.getElementById("payrollDetailModal"),payrollDetailTitle=document.getElementById("payrollDetailTitle"),payrollDetailBody=document.getElementById("payrollDetailBody");
 const calendarMode=document.getElementById("calendarMode"),manualDayEditor=document.getElementById("manualDayEditor"),manualDate=document.getElementById("manualDate"),manualHours=document.getElementById("manualHours"),manualDayList=document.getElementById("manualDayList"),extraDayEditor=document.getElementById("extraDayEditor"),extraDate=document.getElementById("extraDate"),extraHours=document.getElementById("extraHours"),extraShift=document.getElementById("extraShift"),extraPay=document.getElementById("extraPay"),extraDayList=document.getElementById("extraDayList"),authName=document.getElementById("authName"),authEmail=document.getElementById("authEmail"),authPhoto=document.getElementById("authPhoto"),authLoginButton=document.getElementById("authLoginButton"),authStatus=document.getElementById("authStatus");
 window.getShiftState=()=>JSON.parse(JSON.stringify(S));
 window.activateShiftUser=(uid,state,user)=>{ACTIVE_KEY=KEY+"_"+uid;S=normalizeState(state||{scheduleMode:"manual",profile:{...newDefaults.profile,name:user?.displayName||"Usuario",initials:(user?.displayName||"U").split(/\s+/).map(x=>x[0]).join("").slice(0,3).toUpperCase()}});authName.textContent=user?.displayName||"Usuario";authEmail.textContent=user?.email||"Cuenta de Google";authPhoto.src=user?.photoURL||"icon-192.png";renderAll();if(S.scheduleMode==="rotation"&&!S.refDate)setTimeout(openSetup,350)};

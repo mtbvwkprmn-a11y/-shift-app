@@ -161,3 +161,11 @@ ACTUALIZACIÓN 5.1 · NÓMINAS POR MES
 - Al añadir, cambiar o borrar un trabajo extra, la estimación del mes correspondiente se actualiza.
 - Se mantienen las fórmulas salariales existentes y los datos guardados.
 - Caché PWA actualizada a SHIFT 5.1.
+
+
+ACTUALIZACIÓN 5.2 · NÓMINAS DETALLADAS
+- Cada mes del histórico abre una ficha de nómina detallada.
+- PDF descargable con estructura inspirada en la nómina real de PROTEKU EUROPA.
+- Los valores manuales de nómina se guardan por mes (payrollByMonth), manteniendo compatibilidad con datos anteriores.
+- Calendario, nocturnidad y extras siguen calculándose por el mes correspondiente.
+- El PDF indica que es una estimación generada por SHIFT y no un documento emitido por la empresa.
