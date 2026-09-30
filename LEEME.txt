@@ -151,3 +151,13 @@ ACTUALIZACIÓN 5.0 · LIFE HUB
 - Bloc de nota rápida.
 - Resumen personal de tareas, hábitos, ánimo y ahorro.
 - Todo lo anterior de SHIFT se mantiene intacto.
+
+ACTUALIZACIÓN 5.1 · NÓMINAS POR MES
+- Corregido el cambio de mes: un turno nocturno 22:00–06:00 pertenece completo al día/mes en que empieza.
+- El último turno nocturno del mes aporta 8 horas al mes de inicio, aunque termine el día 1 del mes siguiente.
+- Nueva pantalla Nóminas con navegación por meses y resumen de los 12 meses del año.
+- Las noches se calculan para cada mes según la rotación.
+- Los trabajos extra añadidos al calendario se asignan automáticamente a la nómina del mes de su fecha.
+- Al añadir, cambiar o borrar un trabajo extra, la estimación del mes correspondiente se actualiza.
+- Se mantienen las fórmulas salariales existentes y los datos guardados.
+- Caché PWA actualizada a SHIFT 5.1.

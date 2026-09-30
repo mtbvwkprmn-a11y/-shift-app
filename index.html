@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="SHIFT">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>SHIFT 5.0</title>
+<title>SHIFT 5.1</title>
 <style>
 :root{
   --bg:#070b11;--panel:#0e151f;--panel2:#131d2a;--line:#25364c;--text:#f6f8ff;--muted:#93a4bb;
@@ -230,8 +230,11 @@ button,input,select,textarea{font:inherit}
 </section>
 
 <section id="money" class="screen">
- <div class="header"><div class="brand">💰 Resumen</div><div class="shiftBadge">Mensual</div></div>
+ <div class="header"><div class="brand">💰 Nóminas</div><div class="shiftBadge">Por mes</div></div>
+ <div class="card"><div class="row"><button class="btn dark" onclick="changePayrollMonth(-1)">‹</button><div class="grow" style="text-align:center"><div class="name" id="payrollMonthTitle">Mes actual</div><div class="desc">Estimación conectada con tu calendario</div></div><button class="btn dark" onclick="changePayrollMonth(1)">›</button></div></div>
  <div id="moneySummary"></div>
+ <div class="sectionTitle">Nóminas del año</div>
+ <div id="payrollHistory"></div>
 </section>
 
 <section id="settings" class="screen">
@@ -474,8 +477,10 @@ function extraEntryWindow(key,e){
  let start=new Date(key+"T12:00:00"),hour=e.shift==="night"?22:e.shift==="afternoon"?14:6;start.setHours(hour,0,0,0);
  let end=new Date(start.getTime()+Math.max(.5,+e.hours||8)*3600000);return{start,end}
 }
-function extraHoursScheduledThisMonth(){if(S.scheduleMode!=="rotation")return 0;let n=new Date();return extraMonthEntries(n.getFullYear(),n.getMonth()).reduce((sum,[,e])=>sum+(+e.hours||0),0)}
-function extraPayThisMonth(){if(S.scheduleMode!=="rotation")return 0;let n=new Date();return extraMonthEntries(n.getFullYear(),n.getMonth()).reduce((sum,[,e])=>sum+(+e.pay||0),0)}
+function extraHoursScheduledForMonth(y,m){if(S.scheduleMode!=="rotation")return 0;return extraMonthEntries(y,m).reduce((sum,[,e])=>sum+(+e.hours||0),0)}
+function extraPayForMonth(y,m){if(S.scheduleMode!=="rotation")return 0;return extraMonthEntries(y,m).reduce((sum,[,e])=>sum+(+e.pay||0),0)}
+function extraHoursScheduledThisMonth(){let n=new Date();return extraHoursScheduledForMonth(n.getFullYear(),n.getMonth())}
+function extraPayThisMonth(){let n=new Date();return extraPayForMonth(n.getFullYear(),n.getMonth())}
 function extraHoursWorkedThisMonth(){
  if(S.scheduleMode!=="rotation")return 0;
  let now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1),monthEnd=new Date(now.getFullYear(),now.getMonth()+1,1),total=0;
@@ -495,130 +500,52 @@ function monthStats(){
  return{plannedHours,hours:plannedHours,nights:scheduledNightStartsThisMonth()}
 }
 
+function regularShiftWindowsForMonth(y,m){
+ if(!S.refDate)return[];
+ let days=new Date(y,m+1,0).getDate(),out=[];
+ for(let d=1;d<=days;d++){
+   let date=new Date(y,m,d,12),day=date.getDay(),shift=null;
+   if(day===0&&nextMondayShiftForSunday(date)==="night")shift="night";
+   else{
+     let ws=weekShiftFor(date);
+     if(ws==="morning"&&day>=1&&day<=5)shift="morning";
+     else if(ws==="afternoon"&&day>=1&&day<=5)shift="afternoon";
+     else if(ws==="night"&&day>=1&&day<=4)shift="night";
+   }
+   if(!shift)continue;
+   let start=new Date(y,m,d,shift==="night"?22:shift==="afternoon"?14:6,0,0,0);
+   let end=new Date(start.getTime()+8*3600000);
+   out.push({start,end,shift,dateKey:dateKey(date)});
+ }
+ return out;
+}
 function regularWorkedHoursThisMonth(){
  if(S.scheduleMode==="manual"){
    let now=new Date(),today=dateKey(now),y=now.getFullYear(),m=now.getMonth();
    return manualMonthEntries(y,m).filter(([key])=>key<today).reduce((sum,[,h])=>sum+(+h||0),0);
  }
  if(!S.refDate)return 0;
-
- let now=new Date(),y=now.getFullYear(),m=now.getMonth();
- let monthStart=new Date(y,m,1,0,0,0,0);
- let totalMs=0;
-
- // Empezamos el día anterior para incluir, si corresponde, la parte de un
- // turno nocturno que comenzó el mes anterior y termina dentro de este mes.
- let cursor=new Date(monthStart);
- cursor.setDate(cursor.getDate()-1);
-
- while(cursor<=now){
-   let day=cursor.getDay();
-
-   // Domingo anterior a semana nocturna: turno 22:00 -> lunes 06:00.
-   if(day===0 && nextMondayShiftForSunday(cursor)==="night"){
-     let start=new Date(cursor);start.setHours(22,0,0,0);
-     let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
-
-     // Solo cuenta la parte del turno que cae dentro de este mes y ya ha ocurrido.
-     let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
-     let to=new Date(Math.min(end.getTime(),now.getTime()));
-     if(to>from) totalMs+=to-from;
-   }
-
-   if(day>=1&&day<=5){
-     let shift=weekShiftFor(cursor);
-
-     if(shift==="morning"){
-       let start=new Date(cursor);start.setHours(6,0,0,0);
-       let end=new Date(cursor);end.setHours(14,0,0,0);
-       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
-       let to=new Date(Math.min(end.getTime(),now.getTime()));
-       if(to>from) totalMs+=to-from;
-     }
-
-     if(shift==="afternoon"){
-       let start=new Date(cursor);start.setHours(14,0,0,0);
-       let end=new Date(cursor);end.setHours(22,0,0,0);
-       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
-       let to=new Date(Math.min(end.getTime(),now.getTime()));
-       if(to>from) totalMs+=to-from;
-     }
-
-     // En semana nocturna, lunes-jueves empiezan turno a las 22:00.
-     if(shift==="night" && day>=1&&day<=4){
-       let start=new Date(cursor);start.setHours(22,0,0,0);
-       let end=new Date(start);end.setDate(end.getDate()+1);end.setHours(6,0,0,0);
-       let from=new Date(Math.max(start.getTime(),monthStart.getTime()));
-       let to=new Date(Math.min(end.getTime(),now.getTime()));
-       if(to>from) totalMs+=to-from;
-     }
-   }
-
-   cursor.setDate(cursor.getDate()+1);
-   cursor.setHours(0,0,0,0);
- }
-
- return totalMs/3600000;
+ let now=new Date(),windows=regularShiftWindowsForMonth(now.getFullYear(),now.getMonth()),total=0;
+ windows.forEach(w=>{
+   if(now<=w.start)return;
+   if(now>=w.end)total+=8;
+   else total+=(now-w.start)/3600000;
+ });
+ return total;
 }
-
 function workedHoursThisMonth(){return regularWorkedHoursThisMonth()+extraHoursWorkedThisMonth()}
-
-
 function remainingWorkHoursThisMonth(){
  if(S.scheduleMode==="manual"){
    let now=new Date(),today=dateKey(now),y=now.getFullYear(),m=now.getMonth();
    return manualMonthEntries(y,m).filter(([key])=>key>=today).reduce((sum,[,h])=>sum+(+h||0),0);
  }
  if(!S.refDate)return 0;
-
- let now=new Date();
- let y=now.getFullYear(), m=now.getMonth();
- let monthEnd=new Date(y,m+1,1,0,0,0,0);
- let totalMs=0;
-
- // Genera turnos reales que se solapan con el mes natural.
- // Mañana: 06-14, tarde: 14-22.
- // Noche: domingo anterior + lunes-jueves, 22-06.
- // Si un turno ya está empezado, solo suma la parte que queda.
- let monthStart=new Date(y,m,1,0,0,0,0);
- let cursor=new Date(monthStart);
- // Empezamos el día anterior para incluir la madrugada del día 1 si el
- // turno comenzó a las 22:00 del último día del mes anterior.
- cursor.setDate(cursor.getDate()-1);
- while(cursor<monthEnd){
-   let day=cursor.getDay();
-   let start=null,end=null;
-
-   if(day===0 && nextMondayShiftForSunday(cursor)==="night"){
-     start=new Date(cursor); start.setHours(22,0,0,0);
-     end=new Date(start); end.setDate(end.getDate()+1); end.setHours(6,0,0,0);
-   } else {
-     let shift=weekShiftFor(cursor);
-
-     if(shift==="morning" && day>=1&&day<=5){
-       start=new Date(cursor); start.setHours(6,0,0,0);
-       end=new Date(cursor); end.setHours(14,0,0,0);
-     } else if(shift==="afternoon" && day>=1&&day<=5){
-       start=new Date(cursor); start.setHours(14,0,0,0);
-       end=new Date(cursor); end.setHours(22,0,0,0);
-     } else if(shift==="night" && day>=1&&day<=4){
-       start=new Date(cursor); start.setHours(22,0,0,0);
-       end=new Date(start); end.setDate(end.getDate()+1); end.setHours(6,0,0,0);
-     }
-   }
-
-   if(start && end){
-     // Cuenta únicamente el tiempo que cae dentro del mes natural.
-     let from=new Date(Math.max(start.getTime(),now.getTime(),monthStart.getTime()));
-     let to=new Date(Math.min(end.getTime(),monthEnd.getTime()));
-     if(to>from) totalMs += (to-from);
-   }
-
-   cursor.setDate(cursor.getDate()+1);
-   cursor.setHours(0,0,0,0);
- }
-
- return totalMs/3600000;
+ let now=new Date(),windows=regularShiftWindowsForMonth(now.getFullYear(),now.getMonth()),total=0;
+ windows.forEach(w=>{
+   if(now<=w.start)total+=8;
+   else if(now<w.end)total+=(w.end-now)/3600000;
+ });
+ return total;
 }
 
 function formatRemainingHours(hours){
@@ -808,36 +735,43 @@ function cycleMachine(name){let current=S.machineStatuses[name]||"running";S.mac
 function renderMachines(){
  machineGrid.innerHTML=Object.keys(newDefaults.machineStatuses).map(name=>{let key=S.machineStatuses[name]||"running",st=machineStatusInfo[key];return `<div class="machine"><div class="name">${esc(name)}</div><div class="meta ${st.cls}">${st.label}</div><button class="btn dark" onclick="cycleMachine('${esc(name)}')">Cambiar estado</button></div>`}).join("");
 }
-function scheduledNightStartsThisMonth(){
+function scheduledNightStartsForMonth(y,m){
  if(S.scheduleMode==="manual")return 0;
- let n=new Date(),y=n.getFullYear(),m=n.getMonth(),days=new Date(y,m+1,0).getDate(),count=0;
+ let days=new Date(y,m+1,0).getDate(),count=0;
  for(let d=1;d<=days;d++){
    let x=new Date(y,m,d,12),day=x.getDay();
    if(day===0){
      if(nextMondayShiftForSunday(x)==="night")count++;
-   }else if(weekShiftFor(x)==="night" && day>=1&&day<=4){
+   }else if(weekShiftFor(x)==="night"&&day>=1&&day<=4){
      count++;
    }
  }
  count+=extraMonthEntries(y,m).filter(([,e])=>e.shift==="night").length;
  return count;
 }
+function scheduledNightStartsThisMonth(){let n=new Date();return scheduledNightStartsForMonth(n.getFullYear(),n.getMonth())}
 
 function moneyRound(v){return Math.round((v+Number.EPSILON)*100)/100}
-function payrollValues(fromForm=true){
+function payrollValuesForMonth(y,m,fromForm=false){
  let source=fromForm?{
   grossBase:grossBase.value,seniority:seniorityPay.value,agreementBonus:agreementBonus.value,transportBonus:transportBonus.value,positionBonus:positionBonus.value,benefitsPay:benefitsPay.value,nightPremium:nightPremium.value,nightCountOverride:nightCountOverride.value,overtimeHours:overtimeHours.value,overtimeRate:overtimeRate.value,otherExtras:otherExtras.value,contributionProrata:contributionProrata.value,irpfRate:irpfRate.value,commonRate:commonRate.value,unemploymentRate:unemploymentRate.value,trainingRate:trainingRate.value,meiRate:meiRate.value,otherDeductions:otherDeductions.value
  }:S.payroll;
  let p={...S.payroll,modelVersion:2};
  ["grossBase","seniority","agreementBonus","transportBonus","positionBonus","benefitsPay","nightPremium","overtimeHours","overtimeRate","otherExtras","contributionProrata","irpfRate","commonRate","unemploymentRate","trainingRate","meiRate","otherDeductions"].forEach(k=>p[k]=Math.max(0,+source[k]||0));
  p.nightCountOverride=source.nightCountOverride===""||source.nightCountOverride==null?null:Math.max(0,Math.round(+source.nightCountOverride||0));
- let nightCount=S.scheduleMode==="rotation"?scheduledNightStartsThisMonth():(p.nightCountOverride??0),nightExtra=moneyRound(nightCount*p.nightPremium),overtime=moneyRound(p.overtimeHours*p.overtimeRate),calendarExtraPay=moneyRound(extraPayThisMonth()),calendarExtraHours=extraHoursScheduledThisMonth();
- let fixedGross=moneyRound(p.grossBase+p.seniority+p.agreementBonus+p.transportBonus+p.positionBonus+p.benefitsPay),gross=moneyRound(fixedGross+nightExtra+overtime+calendarExtraPay+p.otherExtras);
+ let nightCount=S.scheduleMode==="rotation"?scheduledNightStartsForMonth(y,m):(p.nightCountOverride??0);
+ let nightExtra=moneyRound(nightCount*p.nightPremium);
+ let overtime=moneyRound(p.overtimeHours*p.overtimeRate);
+ let calendarExtraPay=moneyRound(extraPayForMonth(y,m));
+ let calendarExtraHours=extraHoursScheduledForMonth(y,m);
+ let fixedGross=moneyRound(p.grossBase+p.seniority+p.agreementBonus+p.transportBonus+p.positionBonus+p.benefitsPay);
+ let gross=moneyRound(fixedGross+nightExtra+overtime+calendarExtraPay+p.otherExtras);
  let contributionBase=moneyRound(gross+p.contributionProrata),irpf=moneyRound(gross*p.irpfRate/100);
  let common=moneyRound(contributionBase*p.commonRate/100),unemployment=moneyRound(contributionBase*p.unemploymentRate/100),training=moneyRound(contributionBase*p.trainingRate/100),mei=moneyRound(contributionBase*p.meiRate/100);
  let socialSecurity=moneyRound(common+unemployment+training+mei),deductions=moneyRound(irpf+socialSecurity+p.otherDeductions),total=moneyRound(gross-deductions);
- return{p,nightCount,nightExtra,overtime,calendarExtraPay,calendarExtraHours,fixedGross,gross,contributionBase,irpf,socialSecurity,deductions,total}
+ return{p,nightCount,nightExtra,overtime,calendarExtraPay,calendarExtraHours,fixedGross,gross,contributionBase,irpf,socialSecurity,deductions,total};
 }
+function payrollValues(fromForm=true){let n=new Date();return payrollValuesForMonth(n.getFullYear(),n.getMonth(),fromForm)}
 function calcSalary(persist=false){
  let v=payrollValues(true);salaryNights.textContent=v.nightCount;salaryExtraDays.textContent=v.calendarExtraPay.toFixed(2)+" €";salaryGross.textContent=v.gross.toFixed(2)+" €";salaryIrpf.textContent="−"+v.irpf.toFixed(2)+" €";salarySocialSecurity.textContent="−"+v.socialSecurity.toFixed(2)+" €";salaryDeductions.textContent="−"+v.deductions.toFixed(2)+" €";salaryTotal.textContent=v.total.toFixed(2)+" €";
  calendarOvertimeHours.value=v.calendarExtraHours;
@@ -853,9 +787,27 @@ function deleteIncident(id){S.incidents=S.incidents.filter(x=>x.id!==id);save();
 function renderIncidents(){
  incidentList.innerHTML=S.incidents.length?S.incidents.map(i=>`<div class="card incident"><div class="row"><div class="ico">⚠️</div><div class="grow"><div class="name">${esc(i.machine||"Incidencia")}</div><div class="desc">${esc(i.text)}</div><div class="meta">${new Intl.DateTimeFormat("es-ES",{dateStyle:"medium",timeStyle:"short"}).format(new Date(i.date))} · ${esc(i.severity)}</div></div><button class="btn red" onclick="deleteIncident(${i.id})">Borrar</button></div></div>`).join(""):`<div class="card"><div class="desc">Todavía no has registrado incidencias.</div></div>`
 }
+let payrollDate=new Date();
+function changePayrollMonth(delta){
+ if(delta===0)payrollDate=new Date();
+ else payrollDate=new Date(payrollDate.getFullYear(),payrollDate.getMonth()+delta,1);
+ renderMoney();
+}
 function renderMoney(){
- let v=payrollValues(false);
- moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>BRUTO FIJO</small><b>${v.fixedGross.toFixed(2)} €</b></div><div class="metric"><small>NOCTURNIDAD</small><b>${v.nightExtra.toFixed(2)} €</b></div><div class="metric"><small>DÍAS LIBRES</small><b>${v.calendarExtraPay.toFixed(2)} €</b><div class="meta">${formatRemainingHours(v.calendarExtraHours)} extra</div></div><div class="metric"><small>OTRAS HORAS EXTRA</small><b>${v.overtime.toFixed(2)} €</b></div><div class="metric"><small>BRUTO TOTAL</small><b>${v.gross.toFixed(2)} €</b></div><div class="metric"><small>IRPF + SEG. SOCIAL</small><b style="color:var(--red)">−${v.deductions.toFixed(2)} €</b></div><div class="metric"><small>NETO ESTIMADO</small><b style="color:var(--green)">${v.total.toFixed(2)} €</b></div></div>`
+ let y=payrollDate.getFullYear(),m=payrollDate.getMonth(),v=payrollValuesForMonth(y,m,false);
+ let title=document.getElementById("payrollMonthTitle");
+ if(title)title.textContent=new Intl.DateTimeFormat("es-ES",{month:"long",year:"numeric"}).format(new Date(y,m,1));
+ moneySummary.innerHTML=`<div class="metricgrid"><div class="metric"><small>BRUTO FIJO</small><b>${v.fixedGross.toFixed(2)} €</b></div><div class="metric"><small>NOCTURNIDAD</small><b>${v.nightExtra.toFixed(2)} €</b><div class="meta">${v.nightCount} noches</div></div><div class="metric"><small>DÍAS LIBRES</small><b>${v.calendarExtraPay.toFixed(2)} €</b><div class="meta">${formatRemainingHours(v.calendarExtraHours)} extra</div></div><div class="metric"><small>OTRAS HORAS EXTRA</small><b>${v.overtime.toFixed(2)} €</b></div><div class="metric"><small>BRUTO TOTAL</small><b>${v.gross.toFixed(2)} €</b></div><div class="metric"><small>IRPF + SEG. SOCIAL</small><b style="color:var(--red)">−${v.deductions.toFixed(2)} €</b></div><div class="metric"><small>NETO ESTIMADO</small><b style="color:var(--green)">${v.total.toFixed(2)} €</b></div></div>`;
+ let hist=document.getElementById("payrollHistory");
+ if(hist){
+   let rows=[];
+   for(let mm=0;mm<12;mm++){
+     let pv=payrollValuesForMonth(y,mm,false);
+     let label=new Intl.DateTimeFormat("es-ES",{month:"long"}).format(new Date(y,mm,1));
+     rows.push(`<button class="card" style="width:100%;text-align:left;margin-bottom:7px" onclick="payrollDate=new Date(${y},${mm},1);renderMoney()"><div class="row"><div class="grow"><div class="name">${label.charAt(0).toUpperCase()+label.slice(1)} ${y}</div><div class="desc">${pv.nightCount} noches · ${formatRemainingHours(pv.calendarExtraHours)} extra</div></div><b>${pv.total.toFixed(2)} €</b></div></button>`);
+   }
+   hist.innerHTML=rows.join("");
+ }
 }
 function applyPersonalization(){document.documentElement.style.setProperty("--blue",S.profile.accent);document.documentElement.dataset.theme=S.profile.theme||"default";document.documentElement.dataset.layout=S.profile.layout||"comfortable";avatar.textContent=S.profile.initials||"AG";profileName.value=S.profile.name||"";profileInitials.value=S.profile.initials||"AG";accentColor.value=S.profile.accent;themeStyle.value=S.profile.theme||"default";homeLayout.value=S.profile.layout||"comfortable"}
 function savePersonalization(){S.profile={name:profileName.value.trim()||"Alejandro",initials:(profileInitials.value.trim()||"AG").toUpperCase().slice(0,3),accent:accentColor.value,theme:themeStyle.value,layout:homeLayout.value};save();applyPersonalization();toast("Diseño actualizado")}
