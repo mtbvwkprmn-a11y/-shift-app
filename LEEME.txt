@@ -169,3 +169,10 @@ ACTUALIZACIÓN 5.2 · NÓMINAS DETALLADAS
 - Los valores manuales de nómina se guardan por mes (payrollByMonth), manteniendo compatibilidad con datos anteriores.
 - Calendario, nocturnidad y extras siguen calculándose por el mes correspondiente.
 - El PDF indica que es una estimación generada por SHIFT y no un documento emitido por la empresa.
+
+
+ACTUALIZACIÓN 5.3 · BORRADO DE HORAS EXTRA
+- Corregido el fallo por el que un trabajo extra borrado podía reaparecer al cerrar y volver a abrir SHIFT.
+- Al borrar un trabajo extra, el cambio se guarda inmediatamente en el almacenamiento local y se fuerza su sincronización con Firebase.
+- Se mantiene el guardado diferido normal para el resto de cambios.
+- Caché PWA actualizada a SHIFT 5.3 para forzar la carga de la corrección.

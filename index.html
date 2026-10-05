@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="SHIFT">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>SHIFT 5.2</title>
+<title>SHIFT 5.3</title>
 <style>
 :root{
   --bg:#070b11;--panel:#0e151f;--panel2:#131d2a;--line:#25364c;--text:#f6f8ff;--muted:#93a4bb;
@@ -667,7 +667,17 @@ function saveExtraDay(){
  let key=extraDate.value;if(!key)return toast("Elige un día libre");let d=new Date(key+"T12:00:00"),info=shiftForDate(d);if(info?.working)return toast("Ese día ya tiene turno automático");
  let hours=Math.max(.5,Math.min(24,+extraHours.value||8)),shift=extraShift.value,pay=d.getDay()===6?112:Math.max(0,+extraPay.value||0);S.extraWorkDays[key]={hours,shift,pay};save();calDate=d;renderAll();toast(d.getDay()===6?"Sábado extra guardado: +112 €":"Trabajo extra guardado")
 }
-function deleteExtraDay(key){delete S.extraWorkDays[key];save();renderAll();toast("Trabajo extra eliminado")}
+async function deleteExtraDay(key){
+ if(!Object.prototype.hasOwnProperty.call(S.extraWorkDays,key))return;
+ delete S.extraWorkDays[key];
+ localStorage.setItem(ACTIVE_KEY,JSON.stringify(S));
+ renderAll();
+ toast("Trabajo extra eliminado");
+ if(window.shiftCloudSaveNow){
+   let ok=await window.shiftCloudSaveNow(S);
+   if(!ok)window.queueCloudSave?.(S);
+ }else window.queueCloudSave?.(S);
+}
 function renderExtraDays(){
  if(!extraDayList)return;let entries=extraMonthEntries(calDate.getFullYear(),calDate.getMonth()).sort((a,b)=>a[0].localeCompare(b[0]));
  extraDayList.innerHTML=S.scheduleMode==="rotation"?(entries.length?entries.map(([key,e])=>`<div class="manualRow"><div><div class="name">${new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"}).format(new Date(key+"T12:00:00"))} · ${shifts[e.shift].name}</div><div class="desc">${e.hours} horas extra · ${(+e.pay||0).toFixed(2)} € brutos${e.shift==="night"?" + 13 € de nocturnidad":""}</div></div><button class="btn red" onclick="deleteExtraDay('${key}')">Borrar</button></div>`).join(""):`<div class="desc">Todavía no has añadido trabajos en días libres este mes.</div>`):""

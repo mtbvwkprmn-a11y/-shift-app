@@ -9,7 +9,7 @@
   };
   const BASE_KEY="shift_personal_save",MIGRATION_KEY="shift_personal_cloud_owner";
   const gate=document.getElementById("authGate"),loginButton=document.getElementById("authLoginButton"),status=document.getElementById("authStatus");
-  let auth,db,currentUser=null,cloudReady=false,saveTimer=null;
+  let auth,db,currentUser=null,cloudReady=false,saveTimer=null,pendingSnapshot=null;
 
   function requireLogin(message="Inicia sesión para acceder a tus datos."){
     document.body.classList.remove("auth-pending");document.body.classList.add("auth-required");
@@ -29,9 +29,26 @@
     catch(e){document.body.classList.remove("auth-pending");requireLogin("No se pudo abrir Google. Inténtalo de nuevo.")}
   };
   window.shiftLogout=async function(){cloudReady=false;document.body.classList.add("auth-pending");status.textContent="Cerrando sesión…";await auth.signOut()};
+  async function writeCloudSnapshot(snapshot){
+    if(!cloudReady||!currentUser||!snapshot)return false;
+    try{
+      await db.collection("users").doc(currentUser.uid).set({state:snapshot,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),name:currentUser.displayName||"",email:currentUser.email||""},{merge:true});
+      return true;
+    }catch(e){return false}
+  }
   window.queueCloudSave=function(state){
-    if(!cloudReady||!currentUser)return;clearTimeout(saveTimer);let snapshot=JSON.parse(JSON.stringify(state));
-    saveTimer=setTimeout(()=>db.collection("users").doc(currentUser.uid).set({state:snapshot,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),name:currentUser.displayName||"",email:currentUser.email||""},{merge:true}).catch(()=>{}),500);
+    if(!cloudReady||!currentUser)return;
+    clearTimeout(saveTimer);
+    pendingSnapshot=JSON.parse(JSON.stringify(state));
+    saveTimer=setTimeout(async()=>{let snapshot=pendingSnapshot;pendingSnapshot=null;await writeCloudSnapshot(snapshot)},500);
+  };
+  window.shiftCloudSaveNow=async function(state){
+    if(!cloudReady||!currentUser)return false;
+    clearTimeout(saveTimer);saveTimer=null;
+    pendingSnapshot=JSON.parse(JSON.stringify(state));
+    let snapshot=pendingSnapshot,persisted=await writeCloudSnapshot(snapshot);
+    if(persisted&&pendingSnapshot===snapshot)pendingSnapshot=null;
+    return persisted;
   };
 
   auth.getRedirectResult().catch(()=>requireLogin("Google no pudo completar el acceso. Inténtalo de nuevo."));
